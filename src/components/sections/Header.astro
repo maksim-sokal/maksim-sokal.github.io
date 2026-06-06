@@ -1,0 +1,94 @@
+<header class="sticky top-0 z-50 w-full bg-[#070a13]/70 backdrop-blur-md border-b border-[#1e293b]/40">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 border border-sky-400 rounded-lg flex items-center justify-center font-display font-bold text-sky-400 text-sm tracking-tight bg-sky-500/5 select-none text-glow">
+        M.S.
+      </div>
+      <div>
+        <span class="font-display font-bold text-slate-100 text-sm tracking-wide block uppercase">Maksim Sokal</span>
+        <span class="text-[9px] text-sky-400/80 font-mono tracking-widest block uppercase">DEFI RISK AUDITS</span>
+      </div>
+    </div>
+
+    <button data-nav-toggle class="md:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5" aria-label="Toggle navigation menu">
+      <span class="block w-5 h-[2px] bg-slate-300 rounded transition-all duration-300 origin-center"></span>
+      <span class="block w-5 h-[2px] bg-slate-300 rounded transition-all duration-300"></span>
+      <span class="block w-5 h-[2px] bg-slate-300 rounded transition-all duration-300 origin-center"></span>
+    </button>
+
+    <nav data-mobile-nav class="hidden md:flex items-center gap-8 max-md:fixed max-md:inset-x-0 max-md:top-20 max-md:flex-col max-md:bg-[#070a13]/95 max-md:backdrop-blur-md max-md:border-b max-md:border-[#1e293b]/40 max-md:p-6 max-md:gap-5 max-md:z-50">
+      <a href="#about" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
+        About
+        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#experience" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
+        Experience & Audits
+        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#methodology" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
+        Methodology
+        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#eeat" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
+        Trust & Authority
+        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#contact" class="md:hidden text-xs font-mono uppercase tracking-widest bg-sky-500/10 hover:bg-sky-500/20 border border-sky-400/30 hover:border-sky-400/70 text-sky-300 px-4 py-2.5 rounded-lg transition-all duration-300 text-center w-full">
+        Verify Contact
+      </a>
+    </nav>
+
+    <div class="hidden md:block">
+      <a
+        href="#contact"
+        class="text-[11px] font-mono tracking-widest bg-sky-500/10 hover:bg-sky-500/20 border border-sky-400/30 hover:border-sky-400/70 text-sky-300 px-4 py-2.5 rounded-lg transition-all duration-300 uppercase cursor-pointer"
+      >
+        Verify Contact
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  [data-mobile-nav].is-open {
+    display: flex;
+  }
+
+  [data-nav-toggle].is-open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  [data-nav-toggle].is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  [data-nav-toggle].is-open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector("[data-nav-toggle]");
+  const nav = document.querySelector("[data-mobile-nav]");
+
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      nav.classList.toggle("is-open");
+      toggle.classList.toggle("is-open");
+    });
+
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("is-open");
+        toggle.classList.remove("is-open");
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!toggle.contains(e.target) && !nav.contains(e.target)) {
+        nav.classList.remove("is-open");
+        toggle.classList.remove("is-open");
+      }
+    });
+  }
+</script>

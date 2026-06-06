@@ -1,0 +1,17 @@
+---
+import AuditAccordion from "../react/AuditAccordion.tsx";
+---
+
+<section id="experience" class="space-y-12">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#1e293b]/40 pb-6">
+    <div>
+      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">02. On-Chain Track Record</span>
+      <h2 class="font-display font-semibold text-3xl text-slate-100 tracking-tight">Recent Auditing Log</h2>
+    </div>
+    <p class="text-xs text-slate-400 font-mono text-right max-w-md">
+      Selected list of core security models executed to protect user deposits.
+    </p>
+  </div>
+
+  <AuditAccordion client:visible />
+</section>

@@ -1,0 +1,90 @@
+---
+import { ShieldCheck, Award, BookOpen, ExternalLink } from "lucide-react";
+import { ME_BIO } from "../../data";
+---
+
+<section id="about" class="border-t border-brand-800/30 pt-16">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="lg:col-span-4 space-y-4">
+      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">01. Origin & Intent</span>
+      <h2 class="font-display font-medium text-3xl text-slate-100 tracking-tight">The Quantitative Approach To Security</h2>
+      <p class="text-xs text-slate-400 font-sans leading-relaxed italic border-l-2 border-sky-400/30 pl-3">
+        "In the digital cacophony of the crypto markets, where hype outpaces fundamentals, one question cuts through the noise: which protocols are engineered to endure?"
+      </p>
+    </div>
+
+    <div class="lg:col-span-8 space-y-6 text-slate-400 text-sm leading-relaxed font-sans">
+      <p>
+        As decentralized finance scales, the attack surface evolves from simple reentrancy bugs into highly orchestrated economic attacks. Flaws are no longer just syntactic; they are mathematical. My methodology incorporates <strong>Formal Verification (ISO/IEC 24772)</strong> principles, <strong>Static Program Analysis</strong>, and <strong>Cryptoeconomics</strong> to audit the Economic Invariants of DeFi systems, ensuring perfect state transition safety.
+      </p>
+      <p>
+        My name is <strong>Maksim Sokal</strong>. I believe that safety resides in bounding state invariants. Affiliated with <strong>DefiLlama</strong>, my rigorous methodology integrates economic Game Theory with advanced On-Chain Data Science to assess liquidity curves, evaluate slippage dynamics, and model systemic stress across Automated Market Makers (AMMs) and lending pools on <strong>Ethereum</strong> and EVM-compatible chains.
+      </p>
+      <p>
+        In addition to my independent quantitative audit practice, I provide <strong>peer review</strong> as the <strong>External Technical Reviewer</strong> for the <strong>Aster DEX Hub</strong> editorial pipeline (appointed November 11, 2024). I verified the complete <a href="https://asterdexhub.com/smart-contracts.html" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline font-mono text-xs">Aster DEX smart contract registry</a> — 24+ addresses across BNB Chain, Ethereum, Arbitrum, and Solana — for architectural accuracy. I also peer-reviewed the full content library — 40+ guides, reviews, and comparisons — to guarantee absolute editorial integrity.
+      </p>
+      <p>
+        Prior to moving independent, I designed multi-asset liquidation models and evaluated concentrated-liquidity tick spans using a rigorous physics-backed mathematical baseline. My primary mandate is to provide an analytical edge—guiding investors, creators, and protocol teams away from the ephemeral glare of hype-driven projects and towards high-conviction, sustainable opportunities.
+      </p>
+      <p>
+        You can follow my professional journey, verify recent publications, and connect directly on my <a href="https://by.linkedin.com/in/maksim-sokal" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline font-mono text-xs">LinkedIn Profile</a> and my official <a href="https://featured.com/p/maksim-sokal" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 underline font-mono text-xs">Featured.com Expert Profile</a>.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 pt-8 border-t border-[#1e293b]/40">
+        <div class="bg-[#0b101d]/60 border border-[#1e293b]/50 p-6 rounded-xl space-y-3 hover:border-sky-500/10 transition-colors">
+          <div class="flex items-center gap-2 text-sky-400">
+            <BookOpen class="w-4 h-4" />
+            <span class="text-xs font-mono uppercase tracking-wider font-semibold">Academic Pedigree</span>
+          </div>
+          <h3 class="font-display font-medium text-slate-200 text-sm">{ME_BIO.education.school}</h3>
+          <p class="text-[11px] text-indigo-300 font-mono font-medium">{ME_BIO.education.degree}</p>
+          <p class="text-xs text-slate-400 font-sans leading-relaxed">{ME_BIO.education.description}</p>
+          <div class="pt-2">
+            <a href={ME_BIO.education.schoolLink} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[10px] font-mono text-sky-400 hover:text-sky-300 transition-colors">
+              <span>Verify Academy Records</span>
+              <ExternalLink class="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-[#0b101d]/60 border border-[#1e293b]/50 p-6 rounded-xl space-y-3 hover:border-indigo-500/10 transition-colors">
+          <div class="flex items-center gap-2 text-indigo-400">
+            <Award class="w-4 h-4" />
+            <span class="text-xs font-mono uppercase tracking-wider font-semibold">Editorial Oversight Mandate</span>
+          </div>
+          <h3 class="font-display font-medium text-slate-200 text-sm">{ME_BIO.asterRole.title} @ Aster DEX Hub</h3>
+          <p class="text-[11px] text-indigo-300 font-mono font-medium">Appointed {ME_BIO.asterRole.startDate}</p>
+          <p class="text-xs text-slate-400 font-sans leading-relaxed">{ME_BIO.asterRole.description}</p>
+          <div class="pt-2">
+            <a href={ME_BIO.asterRole.link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[10px] font-mono text-indigo-400 hover:text-indigo-300 transition-colors">
+              <span>Verify Editorial Registry</span>
+              <ExternalLink class="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#0f172a]/40 border border-[#1e293b]/50 p-6 rounded-xl mt-6 space-y-3 hover:border-emerald-500/10 transition-colors">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-emerald-400">
+            <ShieldCheck class="w-4 h-4" />
+            <span class="text-xs font-mono uppercase tracking-wider font-semibold">Independent Expert Service Catalogue</span>
+          </div>
+          <span class="text-[9px] font-mono text-emerald-400 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/10">Active Offering</span>
+        </div>
+        <h4 class="font-display font-medium text-slate-200 text-sm">{ME_BIO.expertOffer.name}</h4>
+        <div class="grid grid-cols-2 gap-4 py-1 font-mono text-[9px] text-slate-400">
+          <div>
+            <span class="block text-slate-500 uppercase">Service Category</span>
+            <span class="text-slate-200 font-semibold">{ME_BIO.expertOffer.serviceType}</span>
+          </div>
+          <div>
+            <span class="block text-slate-500 uppercase">Coverage Region</span>
+            <span class="text-slate-200 font-semibold">{ME_BIO.expertOffer.areaServed}</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 font-sans leading-relaxed">{ME_BIO.expertOffer.description}</p>
+      </div>
+    </div>
+  </div>
+</section>
