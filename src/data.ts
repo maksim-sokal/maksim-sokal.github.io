@@ -127,7 +127,7 @@ export const RECENT_AUDITS: AuditLog[] = [
     score: 95,
     status: "Fully Secure",
     findingsCode: "HLX-Y-07: Added gas cost thresholds to defend harvest compounding exhaustion attacks.",
-    description: "Structural audits protecting users from mev sandwhich attacks upon compound events."
+    description: "Structural audits protecting users from MEV sandwich attacks upon compound events."
   }
 ];
 
