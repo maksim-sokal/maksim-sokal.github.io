@@ -6,19 +6,19 @@ Whenever you edit your Astro files on your computer and want to publish the upda
 Open Git Bash in your project directory and run:
 
 1. Stage all your changed files:
-   ```
+
    git add .
-   ```
+
 2. Commit your changes with a descriptive message of what you updated:
-   ```
+
    git commit -m "Update portfolio projects and resume"
-   ```
+
 
 ### Step 2: Push your code to GitHub
 Send the updates to your repository:
-```bash
+
 git push origin main
-```
+
 
 ### What happens next?
 * **Automated Build**: As soon as the push is completed, GitHub Actions will detect the new commit on your `main` branch.
