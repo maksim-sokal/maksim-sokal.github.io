@@ -1,16 +1,30 @@
 ---
 import { ShieldCheck, Award, BookOpen, ExternalLink } from "lucide-react";
 import { ME_BIO } from "../../data";
+import LetterGlitch from "../react/LetterGlitch.tsx";
 ---
 
 <section id="about" class="border-t border-brand-800/30 pt-16">
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-    <div class="lg:col-span-4 space-y-4">
-      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">01. Origin & Intent</span>
-      <h2 class="font-display font-medium text-3xl text-slate-100 tracking-tight">The Quantitative Approach To Security</h2>
-      <p class="text-xs text-slate-400 font-sans leading-relaxed italic border-l-2 border-sky-400/30 pl-3">
-        "In the digital cacophony of the crypto markets, where hype outpaces fundamentals, one question cuts through the noise: which protocols are engineered to endure?"
-      </p>
+    <div class="lg:col-span-4 flex flex-col h-full">
+      <div class="space-y-4">
+        <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">01. Origin & Intent</span>
+        <h2 class="font-display font-medium text-3xl text-slate-100 tracking-tight">The Quantitative Approach To Security</h2>
+        <p class="text-xs text-slate-400 font-sans leading-relaxed italic border-l-2 border-sky-400/30 pl-3">
+          "In the digital cacophony of the crypto markets, where hype outpaces fundamentals, one question cuts through the noise: which protocols are engineered to endure?"
+        </p>
+      </div>
+      <div class="relative flex-1 min-h-[120px] mt-6">
+        <div class="absolute inset-0 z-0 overflow-hidden rounded-xl" aria-hidden="true">
+          <LetterGlitch
+            glitchColors={["#38bdf8", "#818cf8", "#34d399", "#0ea5e9"]}
+            glitchSpeed={50}
+            smooth={true}
+            outerVignette={true}
+            client:visible
+          />
+        </div>
+      </div>
     </div>
 
     <div class="lg:col-span-8 space-y-6 text-slate-400 text-sm leading-relaxed font-sans">

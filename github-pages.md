@@ -1,9 +1,3 @@
-Now that the initial setup and authentication are fully configured, updating your live website is simple. GitHub Actions is designed to watch your repository and automatically compile and deploy your site every time you save and upload changes.
-
-Whenever you edit your Astro files on your computer and want to publish the updates:
-
-### Step 1: Stage and commit your changes in Git Bash
-Open Git Bash in your project directory and run:
 
 1. Stage all your changed files:
 
