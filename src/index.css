@@ -44,9 +44,5 @@
   animation: float-medium 10s ease-in-out infinite 2s;
 }
 
-/* Custom mesh texture helper */
-.mesh-subtle {
-  background-image: radial-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
+
 

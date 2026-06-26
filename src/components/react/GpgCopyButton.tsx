@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface Props {
   gpgKey: string;
@@ -6,11 +6,40 @@ interface Props {
 
 export default function GpgCopyButton({ gpgKey }: Props) {
   const [copiedKey, setCopiedKey] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const copyGpgKey = () => {
-    navigator.clipboard.writeText(gpgKey);
+    if (!navigator.clipboard) {
+      fallbackCopy(gpgKey);
+      return;
+    }
+    navigator.clipboard.writeText(gpgKey).then(() => {
+      setCopiedKey(true);
+      if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setCopiedKey(false), 2000);
+    }).catch(() => {
+      fallbackCopy(gpgKey);
+    });
+  };
+
+  const fallbackCopy = (text: string) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
     setCopiedKey(true);
-    setTimeout(() => setCopiedKey(false), 2000);
+    if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setCopiedKey(false), 2000);
   };
 
   return (

@@ -25,3 +25,40 @@ export interface TrustFactor {
   metric: string;
   description: string;
 }
+
+export interface BioData {
+  name: string;
+  tagline: string;
+  location: string;
+  specialty: string;
+  overview: string;
+  gpgKey: string;
+  affiliation: { name: string; link: string; github: string };
+  education: {
+    school: string;
+    degree: string;
+    focus: string;
+    schoolLink: string;
+    description: string;
+  };
+  asterRole: {
+    title: string;
+    org: string;
+    startDate: string;
+    link: string;
+    description: string;
+  };
+  asterWork: {
+    contractVerificationUrl: string;
+    expertProfileUrl: string;
+    verifiedContracts: number;
+    contentLibraryCount: number;
+  };
+  expertOffer: {
+    name: string;
+    serviceType: string;
+    areaServed: string;
+    category: string;
+    description: string;
+  };
+}

@@ -13,6 +13,11 @@ export default function AuditAccordion() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {RECENT_AUDITS.length === 0 && (
+        <div className="col-span-full text-center text-slate-500 text-sm font-mono py-12">
+          No audit logs available.
+        </div>
+      )}
       {RECENT_AUDITS.map((audit: AuditLog) => {
         const isOpen = expandedAudit === audit.id;
         return (

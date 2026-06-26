@@ -1,6 +1,6 @@
-import type { AuditLog, ExpertiseItem, TrustFactor } from "./types";
+import type { AuditLog, ExpertiseItem, TrustFactor, BioData } from "./types";
 
-export const ME_BIO = {
+export const ME_BIO: BioData = {
   name: "Maksim Sokal",
   tagline: "DeFi Analyst & Independent Technical Reviewer",
   location: "Minsk, Belarus",
