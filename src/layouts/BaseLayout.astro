@@ -74,6 +74,12 @@ import "../index.css";
           "givenName": "Maksim",
           "familyName": "Sokal",
           "url": "https://maksim-sokal.github.io/",
+          "email": "maksim@asterdexhub.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Minsk",
+            "addressCountry": "BY"
+          },
           "jobTitle": [
             "DeFi Analyst",
             "Independent Technical Reviewer"
@@ -85,23 +91,14 @@ import "../index.css";
           },
           "sameAs": [
             "https://by.linkedin.com/in/maksim-sokal",
-            "https://featured.com/p/maksim-sokal"
+            "https://featured.com/p/maksim-sokal",
+            "https://asterdexhub.com/"
           ],
           "affiliation": {
-            "@type": "Organization",
-            "name": "DefiLlama",
-            "sameAs": [
-              "https://defillama.com/",
-              "https://github.com/DefiLlama"
-            ]
+            "@id": "https://defillama.com/#organization"
           },
           "worksFor": {
-            "@type": "Organization",
-            "name": "DefiLlama",
-            "sameAs": [
-              "https://defillama.com/",
-              "https://github.com/DefiLlama"
-            ]
+            "@id": "https://defillama.com/#organization"
           },
           "description": "Maksim Sokal is an independent DeFi Analyst from DefiLlama specializing in translating complex protocol architectures into actionable insights by analyzing smart contract security, tokenomics design, and on-chain data. He verified the Aster DEX smart contract registry and peer-reviewed the entire content library at Aster DEX Hub.",
           "knowsAbout": [
@@ -297,7 +294,6 @@ import "../index.css";
               },
               "skills": "Formal Verification, EVM Bytecode Forensics, Game Theory, AMM Mathematics, On-Chain Data Science",
               "responsibilities": "Auditing economic invariants of decentralized finance protocols, verifying smart contract security, modeling systemic risk in Automated Market Makers, verifying Aster DEX ecosystem contract registry, peer-reviewing DeFi content library",
-              "occupationalCategory": "15-2099",
               "experienceRequirements": "Master of Science in Blockchain and DeFi Lab"
             },
             "startDate": "2024"
@@ -345,10 +341,7 @@ import "../index.css";
             "description": "Acts as the final technical verification layer for decentralized finance protocol reviews."
           },
           "subjectOf": {
-            "@type": "WebPage",
-            "name": "Aster DEX Smart Contracts: The Immutable Foundation of Decentralized Finance",
-            "url": "https://asterdexhub.com/smart-contracts.html",
-            "description": "Verified smart contract registry for the Aster DEX ecosystem — fact-checked by Maksim Sokal"
+            "@id": "https://maksim-sokal.github.io/#profilepage"
           }
         },
         {
@@ -378,6 +371,15 @@ import "../index.css";
           "name": "KeyForDEX",
           "url": "https://keyfordex.com/",
           "description": "Specialized DEX security partner providing smart contract audit services and cross-chain vulnerability assessments."
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://defillama.com/#organization",
+          "name": "DefiLlama",
+          "url": "https://defillama.com/",
+          "sameAs": [
+            "https://github.com/DefiLlama"
+          ]
         },
         {
           "@type": "ReviewAction",
