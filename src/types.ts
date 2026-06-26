@@ -26,6 +26,21 @@ export interface TrustFactor {
   description: string;
 }
 
+export interface AuditReport {
+  id: string;
+  component: string;
+  auditor: string;
+  focus: string;
+  pdfUrl: string;
+}
+
+export interface VerifiedContract {
+  network: string;
+  address: string;
+  implementationPattern: string;
+  logicVersion: string;
+}
+
 export interface BioData {
   name: string;
   tagline: string;

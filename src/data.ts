@@ -1,4 +1,4 @@
-import type { AuditLog, ExpertiseItem, TrustFactor, BioData } from "./types";
+import type { AuditLog, ExpertiseItem, TrustFactor, BioData, VerifiedContract, AuditReport } from "./types";
 
 export const ME_BIO: BioData = {
   name: "Maksim Sokal",
@@ -128,6 +128,85 @@ export const RECENT_AUDITS: AuditLog[] = [
     status: "Fully Secure",
     findingsCode: "HLX-Y-07: Added gas cost thresholds to defend harvest compounding exhaustion attacks.",
     description: "Structural audits protecting users from MEV sandwich attacks upon compound events."
+  }
+];
+
+export const ASTER_AUDIT_REPORTS: AuditReport[] = [
+  {
+    id: "report-01",
+    component: "asBNB Earn Protocol",
+    auditor: "PeckShield",
+    focus: "Smart Contract Integrity & Yield Mechanics",
+    pdfUrl: "https://asterdexhub.com/audits/asbnb-earn-security-audit-peckshield.pdf"
+  },
+  {
+    id: "report-02",
+    component: "asBNB Liquid Staking",
+    auditor: "Salus Security",
+    focus: "Staking Logic & Token Security",
+    pdfUrl: "https://asterdexhub.com/audits/asbnb-liquid-staked-bnb-security-audit-salus-security.pdf"
+  },
+  {
+    id: "report-03",
+    component: "USDF Stablecoin & asUSDF",
+    auditor: "Halborn",
+    focus: "Peg Stability & Collateralization",
+    pdfUrl: "https://asterdexhub.com/audits/usdf-asusdf-security-audit-halborn.pdf"
+  },
+  {
+    id: "report-04",
+    component: "USDF Earn Protocol",
+    auditor: "PeckShield",
+    focus: "Yield Generation & Vault Security",
+    pdfUrl: "https://asterdexhub.com/audits/usdf-stablecoin-earn-security-audit-peckshield.pdf"
+  },
+  {
+    id: "report-05",
+    component: "asCAKE Liquid Staking",
+    auditor: "Salus Security",
+    focus: "Staking Contract & Reward Distribution",
+    pdfUrl: "https://asterdexhub.com/audits/ascake-liquid-staked-cake-security-audit-salus-security.pdf"
+  },
+  {
+    id: "report-06",
+    component: "Aster DEX Vault",
+    auditor: "Salus Security",
+    focus: "Core Vault Logic & Asset Management",
+    pdfUrl: "https://asterdexhub.com/audits/aster-dex-vault-security-audit-report-salus.pdf"
+  },
+  {
+    id: "report-07",
+    component: "Astherus Earn Protocol",
+    auditor: "Salus Security",
+    focus: "Legacy Earn Contract Security",
+    pdfUrl: "https://asterdexhub.com/audits/astherus-earn-protocol-security-audit-salus-security.pdf"
+  }
+];
+
+export const VERIFIED_CONTRACTS: VerifiedContract[] = [
+  {
+    network: "BNB Chain",
+    address: "0x128463A60784c4D3f46c23Af3f65Ed859Ba87974",
+    implementationPattern: "Transparent Proxy",
+    logicVersion: "Solidity 0.8.19 / OZ 4.9"
+  },
+  {
+    network: "Ethereum",
+    address: "0x604DD02d620633Ae427888d41bfd15e38483736E",
+    implementationPattern: "UUPS Proxy",
+    logicVersion: "ERC-1967 / Solidity 0.8.20"
+  },
+  {
+    network: "Solana",
+    address: "EhUtRgu9iEbZXXRpEvDj6n1wnQRjMi2SERDo3c6bmN2c",
+    implementationPattern: "Immutable (Anchor)",
+    logicVersion: "SPL-Token / Rust 1.75"
+  },
+  {
+    network: "Arbitrum",
+    address: "0x9E36CB86a159d479cEd94Fa05036f235Ac40E1d5",
+    implementationPattern: "Transparent Proxy",
+    logicVersion: "Solidity 0.8.24 / L2-Optimized"
   }
 ];
 
