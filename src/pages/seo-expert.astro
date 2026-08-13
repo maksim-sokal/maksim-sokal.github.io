@@ -1,0 +1,27 @@
+---
+import SeoLayout from '../layouts/SeoLayout.astro';
+import BackgroundDecor from '../components/sections/BackgroundDecor.astro';
+import SeoHeader from '../components/sections/SeoHeader.astro';
+import SeoHero from '../components/sections/SeoHero.astro';
+import SeoAbout from '../components/sections/SeoAbout.astro';
+import SeoExperience from '../components/sections/SeoExperience.astro';
+import SeoMethodology from '../components/sections/SeoMethodology.astro';
+import SeoEeat from '../components/sections/SeoEeat.astro';
+import SeoTransparency from '../components/sections/SeoTransparency.astro';
+import SeoContact from '../components/sections/SeoContact.astro';
+import SeoFooter from '../components/sections/SeoFooter.astro';
+---
+<SeoLayout>
+  <BackgroundDecor />
+  <SeoHeader />
+  <main class="relative z-10 max-w-7xl mx-auto px-6 py-12 md:py-24 space-y-32">
+    <SeoHero />
+    <SeoAbout />
+    <SeoExperience />
+    <SeoMethodology />
+    <SeoEeat />
+    <SeoTransparency />
+    <SeoContact />
+  </main>
+  <SeoFooter />
+</SeoLayout>

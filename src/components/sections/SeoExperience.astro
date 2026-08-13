@@ -1,0 +1,166 @@
+---
+import { ExternalLink, FileText } from "lucide-react";
+import { SEO_CASE_STUDIES, SEO_PUBLICATIONS, SEO_APEX_CASE } from "../../data-seo";
+---
+
+<section id="case-studies" class="space-y-12">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#1e293b]/40 pb-6">
+    <div>
+      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">02. Growth Track Record</span>
+      <h2 class="font-display font-semibold text-3xl text-slate-100 tracking-tight">Selected SEO Case Studies</h2>
+    </div>
+    <p class="text-xs text-slate-400 font-mono text-right max-w-md">
+      Selected engagements led under Finial SEO strategy direction.
+    </p>
+  </div>
+
+  <p class="text-xs text-slate-400 font-sans max-w-3xl leading-relaxed">
+    Every project is measured against business KPIs — organic traffic, rankings, and revenue. All methods are
+    strictly white-hat: E-E-A-T content engineering, technical CWV optimization, Topical Maps, and safe outreach.
+    No PBN networks, no behavioral factor manipulation, zero penalty risk.
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {SEO_CASE_STUDIES.map((cs) => (
+      <a
+        key={cs.id}
+        href={cs.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="bg-[#111624]/40 border border-[#1e293b]/50 rounded-xl p-6 hover:border-sky-500/20 transition-all duration-300 group flex flex-col justify-between space-y-4"
+      >
+        <div class="space-y-3">
+          <div class="flex items-start justify-between gap-3">
+            <h4 class="font-display font-medium text-slate-200 text-sm tracking-wide group-hover:text-sky-300 transition-colors">
+              {cs.client}
+            </h4>
+            <ExternalLink class="w-3.5 h-3.5 text-slate-500 group-hover:text-sky-400 transition-colors shrink-0 mt-0.5" />
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-2xl font-mono font-semibold text-sky-300 text-glow">{cs.growth}</span>
+            <span class="text-[9px] font-mono text-emerald-400 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/10">
+              {cs.position}
+            </span>
+            <span class="text-[9px] font-mono text-slate-500 px-2 py-0.5 rounded border border-slate-800">
+              {cs.niche}
+            </span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed font-sans">{cs.description}</p>
+      </a>
+    ))}
+
+    <a
+      href="https://finialseo.org/en/services/seo-promotion"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="bg-[#0b101d]/60 border border-dashed border-sky-400/25 rounded-xl p-6 hover:border-sky-400/50 transition-all duration-300 group flex flex-col justify-center items-center text-center space-y-2"
+    >
+      <span class="font-mono text-[10px] uppercase tracking-widest text-sky-400">Portfolio Continues</span>
+      <span class="text-xs text-slate-400 font-sans leading-relaxed max-w-[220px]">
+        Full agency case list and service catalogue at Finial SEO →
+      </span>
+    </a>
+  </div>
+
+  <!-- Apex Deep Dive -->
+  <div class="bg-brand-900/25 border border-[#1e293b]/40 rounded-2xl p-8 md:p-10 space-y-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">Flagship Recovery Case</span>
+        <h3 class="font-display font-semibold text-2xl text-slate-100 tracking-tight">Apex Online Pharmacy — Core Update Recovery</h3>
+      </div>
+      <a href={SEO_APEX_CASE.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[10px] font-mono text-sky-400 hover:text-sky-300 transition-colors">
+        <span>apexonlinepharmacy.com</span>
+        <ExternalLink class="w-3 h-3" />
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-[#090d16] p-4 rounded-lg border border-slate-800/60">
+        <span class="block text-[9px] font-mono text-slate-500 uppercase tracking-wider mb-1">Baseline Traffic</span>
+        <span class="block text-lg font-mono text-slate-100 font-semibold">{SEO_APEX_CASE.baseline}</span>
+      </div>
+      <div class="bg-[#090d16] p-4 rounded-lg border border-slate-800/60">
+        <span class="block text-[9px] font-mono text-rose-400 uppercase tracking-wider mb-1">Core Update Impact</span>
+        <span class="block text-lg font-mono text-rose-300 font-semibold">{SEO_APEX_CASE.drop}</span>
+      </div>
+      <div class="bg-[#090d16] p-4 rounded-lg border border-slate-800/60">
+        <span class="block text-[9px] font-mono text-emerald-400 uppercase tracking-wider mb-1">Final Result</span>
+        <span class="block text-lg font-mono text-emerald-300 font-semibold">{SEO_APEX_CASE.result}</span>
+      </div>
+      <div class="bg-[#090d16] p-4 rounded-lg border border-slate-800/60">
+        <span class="block text-[9px] font-mono text-sky-400 uppercase tracking-wider mb-1">Ranking Outcome</span>
+        <span class="block text-lg font-mono text-sky-300 font-semibold">{SEO_APEX_CASE.position}</span>
+      </div>
+    </div>
+
+    <p class="text-xs text-slate-400 font-sans leading-relaxed">{SEO_APEX_CASE.context}</p>
+
+    <div class="space-y-3">
+      <span class="text-[10px] font-mono text-sky-400 uppercase tracking-widest block">E-E-A-T Rebuild Program</span>
+      <ol class="space-y-3">
+        {SEO_APEX_CASE.actions.map((action, i) => (
+          <li class="flex items-start gap-3 text-xs text-slate-400 leading-relaxed font-sans">
+            <span class="font-mono text-[10px] text-sky-400 bg-sky-500/5 border border-sky-400/10 rounded px-1.5 py-0.5 shrink-0 mt-0.5">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span>{action}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="bg-[#090d16] p-4 rounded-lg border border-slate-800/60">
+      <span class="text-[9px] font-mono text-slate-500 uppercase tracking-wider block mb-3">Traffic Dynamics (Google Search Console)</span>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        {SEO_APEX_CASE.timeline.map((t) => (
+          <div class={`p-3 rounded-lg border ${t.drop ? "border-rose-500/20 bg-rose-500/5" : t.peak ? "border-emerald-500/25 bg-emerald-500/5" : "border-sky-500/15 bg-sky-500/5"}`}>
+            <span class={`block font-mono text-base font-semibold ${t.drop ? "text-rose-300" : t.peak ? "text-emerald-300 text-glow" : "text-sky-300"}`}>
+              {t.value}
+            </span>
+            <span class="block text-[8px] font-mono text-slate-500 uppercase tracking-wider mt-1">{t.phase}</span>
+            <span class="block text-[8px] font-mono text-slate-600 uppercase tracking-wider">{t.label}</span>
+          </div>
+        ))}
+      </div>
+      <p class="text-[9px] font-mono text-slate-500 mt-3">
+        Relative weekly sessions. Baseline 38K → post-update 14K (−62%) → reindex 28K → recovery peak 44K (+950% vs minimum).
+      </p>
+    </div>
+  </div>
+
+  <!-- Publications -->
+  <div class="space-y-5">
+    <div>
+      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">Agency Publications</span>
+      <h3 class="font-display font-semibold text-2xl text-slate-100 tracking-tight">Guides & Research</h3>
+      <p class="text-sm text-slate-400 font-sans max-w-2xl mt-2 leading-relaxed">
+        Published research and methodology guides from the Finial SEO editorial team.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {SEO_PUBLICATIONS.map((pub) => (
+        <a
+          key={pub.id}
+          href={pub.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-[#111624]/40 border border-[#1e293b]/50 rounded-xl p-6 hover:border-indigo-500/20 transition-all duration-300 group flex flex-col justify-between space-y-4"
+        >
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <FileText class="w-4 h-4 text-indigo-400" />
+              <span class="text-[9px] font-mono text-indigo-300 uppercase tracking-widest">{pub.kind}</span>
+            </div>
+            <h4 class="font-display font-medium text-slate-200 text-sm tracking-wide group-hover:text-indigo-300 transition-colors">
+              {pub.title}
+            </h4>
+            <p class="text-xs text-slate-400 leading-relaxed font-sans">{pub.description}</p>
+          </div>
+          <span class="text-[10px] font-mono text-slate-500 group-hover:text-indigo-400 transition-colors">READ GUIDE →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
