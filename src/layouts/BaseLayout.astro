@@ -35,6 +35,8 @@ import "../index.css";
           "mainEntity": {
             "@id": "https://maksim-sokal.github.io/#person"
           },
+          "author": { "@id": "https://maksim-sokal.github.io/#person" },
+          "accountablePerson": { "@id": "https://maksim-sokal.github.io/#person" },
           "description": "Maksim Sokal is an independent DeFi Analyst and external technical reviewer for Aster DEX Hub. He specializes in fact-checking protocol architectures and verifying smart contract security data to ensure editorial integrity",
           "mentions": [
             {
@@ -534,6 +536,56 @@ import "../index.css";
           "description": "Fully Secure — no critical vulnerabilities remaining post-audit"
         },
         {
+          "@type": "Review",
+          "@id": "https://maksim-sokal.github.io/#tool-review-dune",
+          "itemReviewed": {
+            "@type": "SoftwareApplication",
+            "name": "Dune Analytics",
+            "applicationCategory": "Blockchain Data Analytics",
+            "operatingSystem": "Web-based",
+            "url": "https://dune.com/",
+            "sameAs": "https://www.wikidata.org/wiki/Q125767671"
+          },
+          "author": { "@id": "https://maksim-sokal.github.io/#person" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 5,
+            "bestRating": 5,
+            "worstRating": 1
+          },
+          "datePublished": "2026",
+          "reviewBody": "Core on-chain data platform for building SQL heuristics that separate genuine user adoption from sybil-driven TVL inflation."
+        },
+        {
+          "@type": "Review",
+          "@id": "https://maksim-sokal.github.io/#tool-review-defillama",
+          "itemReviewed": {
+            "@type": "SoftwareApplication",
+            "name": "DefiLlama",
+            "applicationCategory": "DeFi Analytics",
+            "operatingSystem": "Web-based",
+            "url": "https://defillama.com/",
+            "sameAs": "https://github.com/DefiLlama"
+          },
+          "author": { "@id": "https://maksim-sokal.github.io/#person" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 5,
+            "bestRating": 5,
+            "worstRating": 1
+          },
+          "datePublished": "2026",
+          "reviewBody": "Primary protocol health metrics source for TVL verification and cross-protocol economic risk assessment."
+        },
+        {
+          "@type": "Claim",
+          "@id": "https://maksim-sokal.github.io/#claim-registry",
+          "author": { "@id": "https://maksim-sokal.github.io/#person" },
+          "appearance": "https://asterdexhub.com/smart-contracts.html",
+          "firstAppearance": "https://asterdexhub.com/smart-contracts.html",
+          "name": "Claim: architectural accuracy of 24+ Aster DEX contract addresses"
+        },
+        {
           "@type": "ClaimReview",
           "@id": "https://maksim-sokal.github.io/#claim-review",
           "url": "https://asterdexhub.com/experts/maksim-sokal.html",
@@ -547,12 +599,7 @@ import "../index.css";
             "worstRating": 0,
             "alternateName": "Verified — no discrepancies found"
           },
-          "itemReviewed": {
-            "@type": "WebPage",
-            "name": "Aster DEX Smart Contracts Registry — Verified by Maksim Sokal",
-            "url": "https://asterdexhub.com/smart-contracts.html",
-            "author": { "@id": "https://asterdexhub.com/#organization" }
-          },
+          "itemReviewed": { "@id": "https://maksim-sokal.github.io/#claim-registry" },
           "datePublished": "2024-11-11",
           "positiveNotes": "All 24+ contract addresses verified with architectural accuracy. Full content library of 40+ guides, reviews, and comparisons peer-reviewed for absolute editorial integrity."
         },
@@ -694,6 +741,7 @@ import "../index.css";
           "resultReview": {
             "@type": "Review",
             "itemReviewed": { "@id": "https://maksim-sokal.github.io/#software-audit-report-01" },
+            "sameAs": "https://asterdexhub.com/audits/asbnb-earn-security-audit-peckshield.pdf",
             "author": { "@id": "https://maksim-sokal.github.io/#person" },
             "reviewRating": {
               "@type": "Rating",
@@ -722,6 +770,7 @@ import "../index.css";
           "resultReview": {
             "@type": "Review",
             "itemReviewed": { "@id": "https://maksim-sokal.github.io/#software-audit-report-02" },
+            "sameAs": "https://asterdexhub.com/audits/asbnb-liquid-staked-bnb-security-audit-salus-security.pdf",
             "author": { "@id": "https://maksim-sokal.github.io/#person" },
             "reviewRating": {
               "@type": "Rating",
@@ -750,6 +799,7 @@ import "../index.css";
           "resultReview": {
             "@type": "Review",
             "itemReviewed": { "@id": "https://maksim-sokal.github.io/#software-audit-report-03" },
+            "sameAs": "https://asterdexhub.com/audits/usdf-asusdf-security-audit-halborn.pdf",
             "author": { "@id": "https://maksim-sokal.github.io/#person" },
             "reviewRating": {
               "@type": "Rating",
@@ -778,6 +828,7 @@ import "../index.css";
           "resultReview": {
             "@type": "Review",
             "itemReviewed": { "@id": "https://maksim-sokal.github.io/#software-audit-report-04" },
+            "sameAs": "https://asterdexhub.com/audits/usdf-stablecoin-earn-security-audit-peckshield.pdf",
             "author": { "@id": "https://maksim-sokal.github.io/#person" },
             "reviewRating": {
               "@type": "Rating",
@@ -806,6 +857,7 @@ import "../index.css";
           "resultReview": {
             "@type": "Review",
             "itemReviewed": { "@id": "https://maksim-sokal.github.io/#software-audit-report-05" },
+            "sameAs": "https://asterdexhub.com/audits/ascake-liquid-staked-cake-security-audit-salus-security.pdf",
             "author": { "@id": "https://maksim-sokal.github.io/#person" },
             "reviewRating": {
               "@type": "Rating",
@@ -834,6 +886,7 @@ import "../index.css";
           "resultReview": {
             "@type": "Review",
             "itemReviewed": { "@id": "https://maksim-sokal.github.io/#software-audit-report-06" },
+            "sameAs": "https://asterdexhub.com/audits/aster-dex-vault-security-audit-report-salus.pdf",
             "author": { "@id": "https://maksim-sokal.github.io/#person" },
             "reviewRating": {
               "@type": "Rating",
@@ -862,6 +915,7 @@ import "../index.css";
           "resultReview": {
             "@type": "Review",
             "itemReviewed": { "@id": "https://maksim-sokal.github.io/#software-audit-report-07" },
+            "sameAs": "https://asterdexhub.com/audits/astherus-earn-protocol-security-audit-salus-security.pdf",
             "author": { "@id": "https://maksim-sokal.github.io/#person" },
             "reviewRating": {
               "@type": "Rating",

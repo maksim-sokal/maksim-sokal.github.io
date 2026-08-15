@@ -35,6 +35,10 @@ import "../index.css";
           "mainEntity": {
             "@id": "https://maksim-sokal.github.io/seo-expert/#person"
           },
+          "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
+          "editor": { "@id": "https://maksim-sokal.github.io/seo-expert/#elya-person" },
+          "contributor": { "@id": "https://maksim-sokal.github.io/seo-expert/#elya-person" },
+          "accountablePerson": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
           "description": "Maksim Sokal is an SEO Expert and Head of Strategy at Finial SEO. He specializes in comprehensive white-hat promotion, Google E-E-A-T frameworks, and international SEO for EU and US markets since 2007.",
           "mentions": [
             {
@@ -355,7 +359,16 @@ import "../index.css";
                   "name": "Full-Cycle SEO Promotion",
                   "serviceType": "SEO Promotion",
                   "url": "https://finialseo.org/services/seo-promotion",
-                  "provider": { "@id": "https://finialseo.org/#organization" }
+                  "provider": { "@id": "https://finialseo.org/#organization" },
+                  "areaServed": {
+                    "@type": "GeoShape",
+                    "addressCountry": ["RU", "EU", "US"]
+                  },
+                  "serviceOutput": {
+                    "@type": "WebPage",
+                    "name": "Organic Growth & Rankings Deliverables",
+                    "url": "https://finialseo.org/services/seo-promotion"
+                  }
                 }
               },
               {
@@ -366,7 +379,16 @@ import "../index.css";
                   "name": "E-E-A-T Strategies",
                   "serviceType": "Content Strategy",
                   "url": "https://finialseo.org/services/content-plan",
-                  "provider": { "@id": "https://finialseo.org/#organization" }
+                  "provider": { "@id": "https://finialseo.org/#organization" },
+                  "areaServed": {
+                    "@type": "GeoShape",
+                    "addressCountry": ["RU", "EU", "US"]
+                  },
+                  "serviceOutput": {
+                    "@type": "WebPage",
+                    "name": "E-E-A-T Content Systems",
+                    "url": "https://finialseo.org/services/content-plan"
+                  }
                 }
               },
               {
@@ -377,7 +399,16 @@ import "../index.css";
                   "name": "Technical SEO Audit",
                   "serviceType": "Technical Audit",
                   "url": "https://finialseo.org/services/technical-audit",
-                  "provider": { "@id": "https://finialseo.org/#organization" }
+                  "provider": { "@id": "https://finialseo.org/#organization" },
+                  "areaServed": {
+                    "@type": "GeoShape",
+                    "addressCountry": ["RU", "EU", "US"]
+                  },
+                  "serviceOutput": {
+                    "@type": "WebPage",
+                    "name": "Technical Diagnostic Reports",
+                    "url": "https://finialseo.org/services/technical-audit"
+                  }
                 }
               },
               {
@@ -388,7 +419,16 @@ import "../index.css";
                   "name": "Semantic Core & Topical Maps",
                   "serviceType": "Semantic Architecture",
                   "url": "https://finialseo.org/services/semantic-core",
-                  "provider": { "@id": "https://finialseo.org/#organization" }
+                  "provider": { "@id": "https://finialseo.org/#organization" },
+                  "areaServed": {
+                    "@type": "GeoShape",
+                    "addressCountry": ["RU", "EU", "US"]
+                  },
+                  "serviceOutput": {
+                    "@type": "WebPage",
+                    "name": "Topical Architecture Blueprints",
+                    "url": "https://finialseo.org/services/semantic-core"
+                  }
                 }
               },
               {
@@ -399,7 +439,16 @@ import "../index.css";
                   "name": "Safe Site Migration",
                   "serviceType": "Migration Engineering",
                   "url": "https://finialseo.org/services/migration",
-                  "provider": { "@id": "https://finialseo.org/#organization" }
+                  "provider": { "@id": "https://finialseo.org/#organization" },
+                  "areaServed": {
+                    "@type": "GeoShape",
+                    "addressCountry": ["RU", "EU", "US"]
+                  },
+                  "serviceOutput": {
+                    "@type": "WebPage",
+                    "name": "Zero-Impact Migration Deliverables",
+                    "url": "https://finialseo.org/services/migration"
+                  }
                 }
               },
               {
@@ -410,7 +459,16 @@ import "../index.css";
                   "name": "Analytics & Linkbuilding Support",
                   "serviceType": "Analytics & Linkbuilding",
                   "url": "https://finialseo.org/services/analytics-linkbuilding",
-                  "provider": { "@id": "https://finialseo.org/#organization" }
+                  "provider": { "@id": "https://finialseo.org/#organization" },
+                  "areaServed": {
+                    "@type": "GeoShape",
+                    "addressCountry": ["RU", "EU", "US"]
+                  },
+                  "serviceOutput": {
+                    "@type": "WebPage",
+                    "name": "Live ROI Dashboards & Backlink Equity",
+                    "url": "https://finialseo.org/services/analytics-linkbuilding"
+                  }
                 }
               }
             ]
@@ -536,12 +594,33 @@ import "../index.css";
             "Topical Maps",
             "E-commerce SEO"
           ],
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "contactType": "customer service",
-            "email": "contact@finialseo.org",
-            "availableLanguage": ["en", "ru"]
-          },
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "email": "contact@finialseo.org",
+              "availableLanguage": ["en", "ru"],
+              "contactOption": "TollFree"
+            },
+            {
+              "@type": "ContactPoint",
+              "contactType": "technical support",
+              "email": "contact@finialseo.org",
+              "availableLanguage": ["en", "ru"]
+            },
+            {
+              "@type": "ContactPoint",
+              "contactType": "billing support",
+              "email": "contact@finialseo.org",
+              "availableLanguage": ["en", "ru"]
+            },
+            {
+              "@type": "ContactPoint",
+              "contactType": "complaint resolution",
+              "email": "contact@finialseo.org",
+              "availableLanguage": ["en", "ru"]
+            }
+          ],
           "sameAs": [
             "https://www.linkedin.com/in/maksim-sokal/"
           ]
@@ -582,22 +661,6 @@ import "../index.css";
           },
           "subjectOf": {
             "@id": "https://maksim-sokal.github.io/seo-expert/#profilepage"
-          },
-          "resultReview": {
-            "@type": "Review",
-            "@id": "https://maksim-sokal.github.io/seo-expert/#case-review-01",
-            "itemReviewed": { "@id": "https://maksim-sokal.github.io/seo-expert/#case-site-01" },
-            "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": 5,
-              "bestRating": 5,
-              "worstRating": 1
-            },
-            "datePublished": "2026",
-            "reviewBody": "E-E-A-T recovery program after Google Core Update: author restructuring, first-hand experience layer, fact-checking pipeline, Schema.org graph, and trust layer.",
-            "positiveNotes": "Organic traffic growth of +950% in 5 months; top-3 for key YMYL queries in the pharmaceutical niche.",
-            "reviewAspect": "Organic Growth & Core Update Recovery"
           }
         },
         {
@@ -621,22 +684,6 @@ import "../index.css";
           },
           "subjectOf": {
             "@id": "https://maksim-sokal.github.io/seo-expert/#profilepage"
-          },
-          "resultReview": {
-            "@type": "Review",
-            "@id": "https://maksim-sokal.github.io/seo-expert/#case-review-02",
-            "itemReviewed": { "@id": "https://maksim-sokal.github.io/seo-expert/#case-site-02" },
-            "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": 5,
-              "bestRating": 5,
-              "worstRating": 1
-            },
-            "datePublished": "2026",
-            "reviewBody": "Entity-based topical architecture and information-gain content strategy for a DeFi protocol ecosystem.",
-            "positiveNotes": "Top-3 rankings for core protocol queries; organic traffic +1,240%.",
-            "reviewAspect": "Organic Growth & Rankings"
           }
         },
         {
@@ -660,22 +707,6 @@ import "../index.css";
           },
           "subjectOf": {
             "@id": "https://maksim-sokal.github.io/seo-expert/#profilepage"
-          },
-          "resultReview": {
-            "@type": "Review",
-            "@id": "https://maksim-sokal.github.io/seo-expert/#case-review-03",
-            "itemReviewed": { "@id": "https://maksim-sokal.github.io/seo-expert/#case-site-03" },
-            "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": 5,
-              "bestRating": 5,
-              "worstRating": 1
-            },
-            "datePublished": "2026",
-            "reviewBody": "Authority content program with silo interlinking for high-intent B2B queries.",
-            "positiveNotes": "Top-5 rankings for high-intent B2B queries; organic traffic +800%.",
-            "reviewAspect": "Organic Growth & Rankings"
           }
         },
         {
@@ -691,22 +722,6 @@ import "../index.css";
           },
           "subjectOf": {
             "@id": "https://maksim-sokal.github.io/seo-expert/#profilepage"
-          },
-          "resultReview": {
-            "@type": "Review",
-            "@id": "https://maksim-sokal.github.io/seo-expert/#case-review-04",
-            "itemReviewed": { "@id": "https://maksim-sokal.github.io/seo-expert/#case-site-04" },
-            "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": 5,
-              "bestRating": 5,
-              "worstRating": 1
-            },
-            "datePublished": "2026",
-            "reviewBody": "Technical restructuring combined with E-E-A-T reinforcement for commercial pharmacy queries.",
-            "positiveNotes": "Top-4 rankings across commercial pharmacy queries; organic traffic +780%.",
-            "reviewAspect": "Organic Growth & Rankings"
           }
         },
         {
@@ -722,22 +737,6 @@ import "../index.css";
           },
           "subjectOf": {
             "@id": "https://maksim-sokal.github.io/seo-expert/#profilepage"
-          },
-          "resultReview": {
-            "@type": "Review",
-            "@id": "https://maksim-sokal.github.io/seo-expert/#case-review-05",
-            "itemReviewed": { "@id": "https://maksim-sokal.github.io/seo-expert/#case-site-05" },
-            "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": 5,
-              "bestRating": 5,
-              "worstRating": 1
-            },
-            "datePublished": "2026",
-            "reviewBody": "Semantic core architecture and information-gain content for a specialized DEX security partner.",
-            "positiveNotes": "Key queries reached top-1; organic traffic +670%.",
-            "reviewAspect": "Organic Growth & Rankings"
           }
         },
         {
@@ -753,22 +752,6 @@ import "../index.css";
           },
           "subjectOf": {
             "@id": "https://maksim-sokal.github.io/seo-expert/#profilepage"
-          },
-          "resultReview": {
-            "@type": "Review",
-            "@id": "https://maksim-sokal.github.io/seo-expert/#case-review-06",
-            "itemReviewed": { "@id": "https://maksim-sokal.github.io/seo-expert/#case-site-06" },
-            "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": 5,
-              "bestRating": 5,
-              "worstRating": 1
-            },
-            "datePublished": "2026",
-            "reviewBody": "Conversion-focused intent mapping combined with Core Web Vitals engineering.",
-            "positiveNotes": "Key queries reached top-1; organic traffic +890%.",
-            "reviewAspect": "Organic Growth & Rankings"
           }
         },
         {
@@ -784,23 +767,95 @@ import "../index.css";
           },
           "subjectOf": {
             "@id": "https://maksim-sokal.github.io/seo-expert/#profilepage"
-          },
-          "resultReview": {
-            "@type": "Review",
-            "@id": "https://maksim-sokal.github.io/seo-expert/#case-review-07",
-            "itemReviewed": { "@id": "https://maksim-sokal.github.io/seo-expert/#case-site-07" },
-            "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": 5,
-              "bestRating": 5,
-              "worstRating": 1
-            },
-            "datePublished": "2026",
-            "reviewBody": "Trust-layer reinforcement for health-related commercial queries.",
-            "positiveNotes": "Top-3 rankings for health-related commercial queries; organic traffic +720%.",
-            "reviewAspect": "Organic Growth & Rankings"
           }
+        },
+        {
+          "@type": "Review",
+          "@id": "https://maksim-sokal.github.io/seo-expert/#tool-review-screamingfrog",
+          "itemReviewed": {
+            "@type": "SoftwareApplication",
+            "name": "Screaming Frog SEO Spider",
+            "applicationCategory": "Web Crawler",
+            "operatingSystem": "Windows, macOS, Linux",
+            "url": "https://www.screamingfrog.co.uk/seo-spider/"
+          },
+          "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 5,
+            "bestRating": 5,
+            "worstRating": 1
+          },
+          "datePublished": "2026",
+          "reviewBody": "Daily-use technical crawl engine powering 100+ parameter diagnostic baselines across all client audit engagements."
+        },
+        {
+          "@type": "Review",
+          "@id": "https://maksim-sokal.github.io/seo-expert/#tool-review-ahrefs",
+          "itemReviewed": {
+            "@type": "SoftwareApplication",
+            "name": "Ahrefs",
+            "applicationCategory": "SEO Tool Suite",
+            "operatingSystem": "Web-based",
+            "url": "https://ahrefs.com/"
+          },
+          "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 5,
+            "bestRating": 5,
+            "worstRating": 1
+          },
+          "datePublished": "2026",
+          "reviewBody": "Primary backlink gap analysis and DR-based link prospecting platform for competitive authority acquisition."
+        },
+        {
+          "@type": "Review",
+          "@id": "https://maksim-sokal.github.io/seo-expert/#tool-review-surferseo",
+          "itemReviewed": {
+            "@type": "SoftwareApplication",
+            "name": "SurferSEO",
+            "applicationCategory": "Content Optimization",
+            "operatingSystem": "Web-based",
+            "url": "https://surferseo.com/"
+          },
+          "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 5,
+            "bestRating": 5,
+            "worstRating": 1
+          },
+          "datePublished": "2026",
+          "reviewBody": "Content scoring engine used to enforce on-page information gain and topical completeness benchmarks."
+        },
+        {
+          "@type": "Review",
+          "@id": "https://maksim-sokal.github.io/seo-expert/#tool-review-looker",
+          "itemReviewed": {
+            "@type": "SoftwareApplication",
+            "name": "Google Looker Studio",
+            "applicationCategory": "Business Intelligence",
+            "operatingSystem": "Web-based",
+            "url": "https://lookerstudio.google.com/"
+          },
+          "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 5,
+            "bestRating": 5,
+            "worstRating": 1
+          },
+          "datePublished": "2026",
+          "reviewBody": "BI layer for live organic ROI dashboards with anomaly alerts and weekly progress reporting tied to revenue."
+        },
+        {
+          "@type": "Claim",
+          "@id": "https://maksim-sokal.github.io/seo-expert/#claim-growth",
+          "author": { "@id": "https://maksim-sokal.github.io/seo-expert/#person" },
+          "appearance": "https://finialseo.org/",
+          "firstAppearance": "https://finialseo.org/",
+          "name": "Claim: organic traffic growth across Finial SEO client engagements"
         },
         {
           "@type": "ClaimReview",
@@ -816,11 +871,7 @@ import "../index.css";
             "worstRating": 0,
             "alternateName": "Verified — Search Console data confirmed"
           },
-          "itemReviewed": {
-            "@type": "WebPage",
-            "name": "Finial SEO — Results & Client Cases",
-            "url": "https://finialseo.org/"
-          },
+          "itemReviewed": { "@id": "https://maksim-sokal.github.io/seo-expert/#claim-growth" },
           "datePublished": "2026",
           "positiveNotes": "Growth figures are tracked in Google Search Console and Looker Studio dashboards with full client access and monthly reporting."
         },
