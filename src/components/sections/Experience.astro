@@ -1,7 +1,7 @@
 ---
-import AuditAccordion from "../react/AuditAccordion.tsx";
-import ContractTable from "../react/ContractTable.tsx";
-import AuditReportTable from "../react/AuditReportTable.tsx";
+import AuditAccordion from "./AuditAccordion.astro";
+import ContractTable from "./ContractTable.astro";
+import AuditReportTable from "./AuditReportTable.astro";
 ---
 
 <section id="experience" class="space-y-12">
@@ -25,19 +25,19 @@ import AuditReportTable from "../react/AuditReportTable.tsx";
 
   <div class="space-y-5">
     <div>
-      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">03. Verified Aster DEX Smart Contracts</span>
+      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">Verified Aster DEX Smart Contracts</span>
       <h3 class="font-display font-semibold text-2xl text-slate-100 tracking-tight">Cross-Chain Address Verification</h3>
       <p class="text-sm text-slate-400 font-sans max-w-2xl mt-2 leading-relaxed">
         Every contract personally verified — no blind trust assumptions. Each address independently confirmed
         across its respective chain and linked to the official Aster DEX registry.
       </p>
     </div>
-    <ContractTable client:visible />
+    <ContractTable />
   </div>
 
   <div class="space-y-5">
     <div>
-      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">04. Verified Security Audit Reports</span>
+      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block mb-2">Verified Security Audit Reports</span>
       <h3 class="font-display font-semibold text-2xl text-slate-100 tracking-tight">Aster DEX Audit Reports</h3>
       <p class="text-sm text-slate-400 font-sans max-w-2xl mt-2 leading-relaxed">
         Smart contracts, staking logic, and core infrastructure are rigorously
@@ -45,8 +45,8 @@ import AuditReportTable from "../react/AuditReportTable.tsx";
         logical integrity and protect against vulnerabilities.
       </p>
     </div>
-    <AuditReportTable client:visible />
+    <AuditReportTable />
   </div>
 
-  <AuditAccordion client:visible />
+  <AuditAccordion />
 </section>
