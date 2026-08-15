@@ -1,0 +1,164 @@
+---
+import "../index.css";
+import BackgroundDecor from "../components/sections/BackgroundDecor.astro";
+import Breadcrumbs from "../components/sections/Breadcrumbs.astro";
+import Footer from "../components/sections/Footer.astro";
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Sitemap | Maksim Sokal</title>
+    <meta name="title" content="HTML Sitemap | Maksim Sokal" />
+    <meta name="description" content="Complete index of all pages on the Maksim Sokal portfolio — DeFi Risk Analyst & Protocol Auditor profile and SEO Expert profile, with in-page section anchors." />
+    <meta name="author" content="Maksim Sokal" />
+    <link rel="icon" type="image/svg+xml" href="/maksim-sokal-DeFi-analyst.svg">
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0b0f17" />
+    <link rel="canonical" href="https://maksim-sokal.github.io/sitemap" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="HTML Sitemap | Maksim Sokal" />
+    <meta property="og:description" content="Complete index of all pages on the Maksim Sokal portfolio — DeFi Risk Analyst & Protocol Auditor profile and SEO Expert profile, with in-page section anchors." />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://maksim-sokal.github.io/sitemap#webpage",
+          "url": "https://maksim-sokal.github.io/sitemap",
+          "name": "HTML Sitemap | Maksim Sokal",
+          "description": "Complete index of all pages on the Maksim Sokal portfolio — DeFi Risk Analyst & Protocol Auditor profile and SEO Expert profile, with in-page section anchors.",
+          "inLanguage": "en",
+          "isPartOf": {
+            "@id": "https://maksim-sokal.github.io/#website"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://maksim-sokal.github.io/sitemap#breadcrumbs",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://maksim-sokal.github.io/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "HTML Sitemap",
+              "item": "https://maksim-sokal.github.io/sitemap"
+            }
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://maksim-sokal.github.io/#website",
+          "url": "https://maksim-sokal.github.io/",
+          "name": "Maksim Sokal — Professional Portfolio"
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body class="bg-[#070a13] text-slate-200 antialiased min-h-screen flex flex-col">
+    <BackgroundDecor />
+
+    <header class="sticky top-0 z-50 w-full bg-[#070a13]/70 backdrop-blur-md border-b border-[#1e293b]/40">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3">
+          <div class="w-9 h-9 flex items-center justify-center mix-blend-lighten select-none">
+            <img src="/maksim-sokal-DeFi-analyst.svg" alt="M.S." class="w-full h-full" />
+          </div>
+          <div>
+            <span class="font-display font-bold text-slate-100 text-sm tracking-wide block uppercase">Maksim Sokal</span>
+            <span class="text-[9px] text-sky-400/80 font-mono tracking-widest block uppercase">HTML Sitemap</span>
+          </div>
+        </a>
+
+        <nav class="flex items-center gap-8" aria-label="Site navigation">
+          <a href="/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
+            DeFi Profile
+            <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
+          </a>
+          <a href="/seo-expert" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
+            SEO Expert
+            <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "HTML Sitemap" }]} />
+
+    <main class="relative z-10 max-w-7xl mx-auto px-6 py-12 md:py-20 flex-1 w-full">
+      <div class="space-y-4 mb-12">
+        <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Site Index</span>
+        <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight">HTML Sitemap</h1>
+        <p class="text-xs text-slate-400 font-sans leading-relaxed max-w-2xl">
+          Complete index of every page and section on this portfolio. Both profiles are statically generated and fully
+          crawlable without JavaScript.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-3">
+          <h2 class="font-display font-medium text-slate-200 text-sm tracking-wide">Pages</h2>
+          <ul class="space-y-2.5">
+            <li>
+              <a href="/" class="group flex items-center justify-between gap-3 text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">
+                <span>DeFi Analyst Profile</span>
+                <span class="text-[9px] text-slate-600 group-hover:text-sky-400/70 transition-colors">/</span>
+              </a>
+            </li>
+            <li>
+              <a href="/seo-expert" class="group flex items-center justify-between gap-3 text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">
+                <span>SEO Expert Profile</span>
+                <span class="text-[9px] text-slate-600 group-hover:text-sky-400/70 transition-colors">/seo-expert</span>
+              </a>
+            </li>
+            <li>
+              <a href="/sitemap" class="group flex items-center justify-between gap-3 text-xs font-mono text-sky-300 transition-colors">
+                <span>HTML Sitemap</span>
+                <span class="text-[9px] text-sky-500/80 transition-colors">/sitemap</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-3">
+          <h2 class="font-display font-medium text-slate-200 text-sm tracking-wide">DeFi Profile Sections</h2>
+          <ul class="space-y-2.5">
+            <li><a href="/#hero" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Overview</a></li>
+            <li><a href="/#about" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">About</a></li>
+            <li><a href="/#experience" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Experience &amp; Audits</a></li>
+            <li><a href="/#methodology" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Methodology</a></li>
+            <li><a href="/#eeat" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Trust &amp; Authority</a></li>
+            <li><a href="/#transparency" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Transparency</a></li>
+            <li><a href="/#contact" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-3">
+          <h2 class="font-display font-medium text-slate-200 text-sm tracking-wide">SEO Profile Sections</h2>
+          <ul class="space-y-2.5">
+            <li><a href="/seo-expert#hero" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Overview</a></li>
+            <li><a href="/seo-expert#about" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">About</a></li>
+            <li><a href="/seo-expert#case-studies" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Case Studies</a></li>
+            <li><a href="/seo-expert#methodology" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Methodology</a></li>
+            <li><a href="/seo-expert#trust" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Trust &amp; Authority</a></li>
+            <li><a href="/seo-expert#transparency" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Transparency</a></li>
+            <li><a href="/seo-expert#contact" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>

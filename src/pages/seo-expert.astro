@@ -2,6 +2,7 @@
 import SeoLayout from '../layouts/SeoLayout.astro';
 import BackgroundDecor from '../components/sections/BackgroundDecor.astro';
 import SeoHeader from '../components/sections/SeoHeader.astro';
+import Breadcrumbs from '../components/sections/Breadcrumbs.astro';
 import SeoHero from '../components/sections/SeoHero.astro';
 import SeoAbout from '../components/sections/SeoAbout.astro';
 import SeoExperience from '../components/sections/SeoExperience.astro';
@@ -14,6 +15,7 @@ import SeoFooter from '../components/sections/SeoFooter.astro';
 <SeoLayout>
   <BackgroundDecor />
   <SeoHeader />
+  <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "SEO Expert Profile" }]} />
   <main class="relative z-10 max-w-7xl mx-auto px-6 py-12 md:py-24 space-y-32">
     <SeoHero />
     <SeoAbout />
