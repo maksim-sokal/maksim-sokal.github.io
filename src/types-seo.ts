@@ -55,3 +55,19 @@ export interface SeoMethodologyStep {
   description: string;
   gate: string;
 }
+
+export interface SeoCoFounder {
+  name: string;
+  role: string;
+  url: string;
+  image: string;
+  bio: string;
+  focus: string[];
+}
+
+export interface SeoService {
+  id: string;
+  name: string;
+  serviceType: string;
+  url: string;
+}

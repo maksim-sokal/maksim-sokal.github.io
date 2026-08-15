@@ -1,4 +1,4 @@
-import type { SeoBioData, SeoExpertiseItem, SeoCaseStudy, SeoPublication, SeoTrustFactor, SeoMethodologyStep } from "./types-seo";
+import type { SeoBioData, SeoExpertiseItem, SeoCaseStudy, SeoPublication, SeoTrustFactor, SeoMethodologyStep, SeoCoFounder, SeoService } from "./types-seo";
 
 export const SEO_BIO: SeoBioData = {
   name: "Maksim Sokal",
@@ -15,6 +15,54 @@ export const SEO_BIO: SeoBioData = {
   overview:
     "SEO strategy expert since 2007. CEO and co-founder of Finial SEO. Specializes in comprehensive white-hat promotion, Google E-E-A-T frameworks, and international SEO for EU and US markets.",
 };
+
+export const SEO_CO_FOUNDER: SeoCoFounder = {
+  name: "Elya Sokol",
+  role: "CTO & Head of Technical SEO",
+  url: "https://elya-sokal.github.io/",
+  image: "https://finialseo.org/img/Elya-Sokol.webp",
+  bio: "Co-founded Finial SEO with Maksim in 2026, owning the technical half of the practice: Core Web Vitals engineering, web infrastructure, and NLP-assisted content pipelines. Every engagement ships with Maksim's strategy layer and Elya's engineering layer working as one.",
+  focus: ["Technical SEO", "Core Web Vitals", "Astro Framework", "Web Engineering", "Python NLP"],
+};
+
+export const SEO_SERVICES: SeoService[] = [
+  {
+    id: "seo-promotion",
+    name: "Full-Cycle SEO Promotion",
+    serviceType: "SEO Promotion",
+    url: "https://finialseo.org/services/seo-promotion",
+  },
+  {
+    id: "content-plan",
+    name: "E-E-A-T Strategies",
+    serviceType: "Content Strategy",
+    url: "https://finialseo.org/services/content-plan",
+  },
+  {
+    id: "technical-audit",
+    name: "Technical SEO Audit",
+    serviceType: "Technical Audit",
+    url: "https://finialseo.org/services/technical-audit",
+  },
+  {
+    id: "semantic-core",
+    name: "Semantic Core & Topical Maps",
+    serviceType: "Semantic Architecture",
+    url: "https://finialseo.org/services/semantic-core",
+  },
+  {
+    id: "migration",
+    name: "Safe Site Migration",
+    serviceType: "Migration Engineering",
+    url: "https://finialseo.org/services/migration",
+  },
+  {
+    id: "analytics-linkbuilding",
+    name: "Analytics & Linkbuilding Support",
+    serviceType: "Analytics & Linkbuilding",
+    url: "https://finialseo.org/services/analytics-linkbuilding",
+  },
+];
 
 export const SEO_EXPERTISE: SeoExpertiseItem[] = [
   {
@@ -189,7 +237,7 @@ export const SEO_METHODOLOGY_STEPS: SeoMethodologyStep[] = [
     codeSymbol: "$A$",
     technicalLabel: "Technical Diagnostic & Topical Mapping",
     description:
-      "Engineers capture a precise snapshot of the resource: 100+ parameter diagnostics via Screaming Frog and JetOctopus, server log analysis, commercial factors, and backlink gap assessment.",
+      "Engineers capture a precise snapshot of the resource: 100+ parameter diagnostics via Screaming Frog and JetOctopus, server log analysis, commercial factors, and backlink gap assessment via Ahrefs.",
     gate: "NODES = 100+ PARAMS",
   },
   {

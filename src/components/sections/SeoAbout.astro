@@ -1,6 +1,6 @@
 ---
-import { ShieldCheck, Award, BookOpen, ExternalLink } from "lucide-react";
-import { SEO_BIO } from "../../data-seo";
+import { ShieldCheck, Award, BookOpen, Users, ExternalLink } from "lucide-react";
+import { SEO_BIO, SEO_CO_FOUNDER, SEO_SERVICES } from "../../data-seo";
 import LetterGlitch from "../react/LetterGlitch.tsx";
 ---
 
@@ -72,8 +72,8 @@ import LetterGlitch from "../react/LetterGlitch.tsx";
           <h3 class="font-display font-medium text-slate-200 text-sm">CEO &amp; Head of Strategy @ {SEO_BIO.org}</h3>
           <p class="text-[11px] text-indigo-300 font-mono font-medium">Founded 2026 · Boutique Model</p>
           <p class="text-xs text-slate-400 font-sans leading-relaxed">
-            Every project is led directly by the founders — no juniors, no ticket queues. Limited number of concurrent
-            projects and full client access to analytics.
+            Every project is led directly by the two co-founders — no juniors, no ticket queues. Limited number of
+            concurrent projects and full client access to analytics.
           </p>
           <div class="pt-2">
             <a href="https://finialseo.org/about/Maksim-Sokol" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[10px] font-mono text-sky-400 hover:text-sky-300 transition-colors">
@@ -103,6 +103,43 @@ import LetterGlitch from "../react/LetterGlitch.tsx";
         </div>
       </div>
 
+      <div class="bg-[#0b101d]/60 border border-[#1e293b]/50 p-6 rounded-xl space-y-3 hover:border-sky-500/10 transition-colors md:col-span-2">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2 text-sky-400">
+            <Users className="w-4 h-4" />
+            <span class="text-xs font-mono uppercase tracking-wider font-semibold">Co-Founding Team</span>
+          </div>
+          <a href={SEO_CO_FOUNDER.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[10px] font-mono text-sky-400 hover:text-sky-300 transition-colors">
+            <span>Verify Co-Founder Profile</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-5 items-start">
+          <img
+            src={SEO_CO_FOUNDER.image}
+            alt={`${SEO_CO_FOUNDER.name}, ${SEO_CO_FOUNDER.role}`}
+            class="w-16 h-16 rounded-xl object-cover border border-[#1e293b]/60 shrink-0"
+            loading="lazy"
+          />
+          <div class="space-y-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="font-display font-medium text-slate-200 text-sm">{SEO_CO_FOUNDER.name}</h3>
+              <span class="text-[9px] font-mono text-indigo-300 bg-indigo-500/5 px-2 py-0.5 rounded border border-indigo-500/10">{SEO_CO_FOUNDER.role}</span>
+            </div>
+            <p class="text-xs text-slate-400 font-sans leading-relaxed">
+              {SEO_CO_FOUNDER.bio}
+            </p>
+            <div class="flex flex-wrap gap-2 pt-1">
+              {SEO_CO_FOUNDER.focus.map((item) => (
+                <span class="text-[9px] font-mono text-slate-500 bg-slate-800/40 px-2 py-0.5 rounded border border-slate-800/60">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="bg-[#0f172a]/40 border border-[#1e293b]/50 p-6 rounded-xl mt-6 space-y-3 hover:border-emerald-500/10 transition-colors">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2 text-emerald-400">
@@ -126,6 +163,19 @@ import LetterGlitch from "../react/LetterGlitch.tsx";
           Comprehensive promotion strategies with predictable KPIs: technical audit, semantic architecture, E-E-A-T
           content systems, white outreach, and end-to-end ROI dashboards.
         </p>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-[#1e293b]/40">
+          {SEO_SERVICES.map((service) => (
+            <li class="flex items-center justify-between gap-2 bg-[#0b101d]/60 border border-[#1e293b]/50 rounded-lg px-3 py-2.5 hover:border-emerald-500/20 transition-colors">
+              <div class="min-w-0">
+                <a href={service.url} target="_blank" rel="noopener noreferrer" class="block text-[11px] text-slate-200 font-mono font-semibold hover:text-emerald-300 transition-colors truncate">
+                  {service.name}
+                </a>
+                <span class="block text-[9px] font-mono text-slate-500 uppercase tracking-wider">{service.serviceType}</span>
+              </div>
+              <ExternalLink className="w-3 h-3 shrink-0 text-slate-500" />
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </div>
