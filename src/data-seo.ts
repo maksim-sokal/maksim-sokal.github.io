@@ -19,7 +19,7 @@ export const SEO_BIO: SeoBioData = {
 export const SEO_CO_FOUNDER: SeoCoFounder = {
   name: "Elya Sokol",
   role: "CTO & Head of Technical SEO",
-  url: "https://elya-sokal.github.io/",
+  url: "https://elya-sokol.github.io/",
   image: "https://finialseo.org/img/Elya-Sokol.webp",
   bio: "Co-founded Finial SEO with Maksim in 2026, owning the technical half of the practice: Core Web Vitals engineering, web infrastructure, and NLP-assisted content pipelines. Every engagement ships with Maksim's strategy layer and Elya's engineering layer working as one.",
   focus: ["Technical SEO", "Core Web Vitals", "Astro Framework", "Web Engineering", "Python NLP"],
