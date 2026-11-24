@@ -1,0 +1,63 @@
+---
+import PageLayout from "./PageLayout.astro";
+import BackgroundDecor from "../components/sections/BackgroundDecor.astro";
+import Header from "../components/sections/Header.astro";
+import Breadcrumbs from "../components/sections/Breadcrumbs.astro";
+import Footer from "../components/sections/Footer.astro";
+import type { JsonLdGraph } from "../types-schema";
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  graph: JsonLdGraph;
+  label: string;
+  modified?: Date;
+}
+
+const { title, description, canonical, graph, label, modified } = Astro.props;
+---
+
+<PageLayout title={title} description={description} canonical={canonical} graph={graph} modified={modified}>
+  <BackgroundDecor />
+
+  <Header
+    subtitle="Legal"
+    logo="/maksim-sokal-DeFi-analyst.svg"
+    links={[
+      { label: "DeFi Profile", href: "/" },
+      { label: "Aster DEX", href: "/aster-dex/" },
+      { label: "Research", href: "/research/" },
+      { label: "About", href: "/about/" },
+    ]}
+    ctaLabel="Contact"
+    ctaHref="/#contact"
+  />
+
+  <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label }]} />
+
+  <main id="main-content" class="relative z-10 max-w-3xl mx-auto px-6 py-12 md:py-20 flex-1 w-full">
+    <article class="space-y-8">
+      <header class="space-y-3">
+        <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Legal</span>
+        <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+          {label}
+        </h1>
+        <p class="text-[11px] font-mono text-slate-400">
+          Last updated <time datetime="2026-11-24">24 November 2026</time>
+        </p>
+      </header>
+      <div class="article-body">
+        <slot />
+      </div>
+      <nav class="flex flex-wrap gap-x-5 gap-y-2 border-t border-[#1e293b]/60 pt-6 text-[11px] font-mono">
+        <a href="/disclosure/" class="text-sky-400 hover:text-sky-300">Disclosure</a>
+        <a href="/privacy/" class="text-sky-400 hover:text-sky-300">Privacy</a>
+        <a href="/terms/" class="text-sky-400 hover:text-sky-300">Terms</a>
+        <a href="/aster-dex/" class="text-slate-400 hover:text-sky-300">Aster DEX guide</a>
+      </nav>
+    </article>
+  </main>
+
+  <Footer variant="neutral" />
+</PageLayout>

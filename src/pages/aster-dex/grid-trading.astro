@@ -1,0 +1,181 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/grid-trading/`;
+const description =
+  "Aster grid trading explained: neutral, long and short grids, Grid 2.0 subaccounts, cross and isolated margin limits, PnL components and the risks of leaving a position open.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Grid trading",
+  alternativeHeadline: "Grid trading on Aster",
+  name: "Grid trading on Aster",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Strategies",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Grid trading" },
+    { "@type": "Thing", name: "Perpetual futures" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Grid trading", url: `${ASTER_DOCS}trading/perpetuals/grid-trading` },
+    { "@type": "CreativeWork", name: "Grid 2.0", url: `${ASTER_DOCS}trading/perpetuals/grid-2.0` },
+    { "@type": "CreativeWork", name: "Grid Marketplace", url: `${ASTER_DOCS}trading/perpetuals/grid-marketplace` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Grid trading", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Grid Trading — Strategies, Grid 2.0 and Risks | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Grid trading" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Strategies</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Grid trading
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      A grid places buy and sell orders at fixed intervals and earns from oscillation. It is not a yield product: the
+      strategy holds a leveraged position, and when price leaves the range the position is still exposed. Grid 2.0 adds a
+      separate bot subaccount so the grid no longer shares margin with your manual trades — which changes both the
+      isolation and the failure modes.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}trading/perpetuals/grid-2.0`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official Grid 2.0 docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-3" aria-labelledby="directions-heading">
+    <h2 id="directions-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Three directions</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Neutral</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Symmetric buys and sells around the range. Profits from oscillation; no directional bias.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Long</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Accumulates as price falls, sells into strength. Directional exposure remains.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Short</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Sells as price rises, buys back lower. Also directional; a breakout can hurt.</p>
+      </div>
+    </div>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Parameters can be generated automatically from recent volatility or set manually. Auto parameters are a starting
+      point, not a forecast.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="v2-heading">
+    <h2 id="v2-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">What Grid 2.0 changes</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      <li>Each grid runs in a dedicated subaccount. Positions do not merge with your manual perps.</li>
+      <li>Initial margin is transferred from the Perpetual account to the Grid Bot account, reducing your available perps balance.</li>
+      <li>Cross margin is shared among cross grids using the same settlement asset. One liquidation can affect all of them.</li>
+      <li>Isolated margin keeps each grid separate. Up to 50 isolated grids are allowed, with no per-pair limit.</li>
+      <li>Cross grids are limited to one per trading pair.</li>
+      <li>Margin must be in the market's settlement asset. Aster does not auto-convert another asset.</li>
+      <li>Grid 2.0 is available for main accounts; regular subaccounts continue on the legacy grid mechanism.</li>
+    </ul>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="pnl-heading">
+    <h2 id="pnl-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Reading grid PnL</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+        <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Matched profit</span>
+        <span class="text-xs text-slate-300">Realised from completed grid trades</span>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+        <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Unmatched PnL</span>
+        <span class="text-xs text-slate-300">Unrealised on the open position, marked to mark price</span>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+        <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Funding</span>
+        <span class="text-xs text-slate-300">Carrying cost or income on the position</span>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+        <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Trading fees</span>
+        <span class="text-xs text-slate-300">Each filled grid order</span>
+      </div>
+    </div>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Matched profit alone is not the strategy's return. A grid can show positive matched profit while unmatched PnL and
+      funding turn the total negative.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="stop-heading">
+    <div class="space-y-3">
+      <h2 id="stop-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Ending a grid</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li><strong class="text-slate-300">Close immediately</strong> — cancels orders, closes at market and returns funds.</li>
+        <li><strong class="text-slate-300">Keep position open</strong> — cancels orders but leaves the position and its margin. The grid enters "Stopped – position open" and can still be liquidated.</li>
+        <li>Once the position is fully closed, the remaining funds return to the Perpetual account as a "Trading bot transfer".</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">Marketplace</h2>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        Running grids can be copied or reversed from the Marketplace. Copy takes the parameters, not the performance; the
+        new grid is independent. Reverse flips long to short and is unavailable for neutral grids. If the current price
+        is outside the source range, Aster warns before creation.
+      </p>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        With Account Privacy enabled, your grids do not appear in the Marketplace.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-6 space-y-2" aria-labelledby="risk-heading">
+    <h2 id="risk-heading" class="font-display font-medium text-sm text-rose-200 tracking-wide">Risks specific to grids</h2>
+    <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc pl-5">
+      <li>A range breakout leaves the grid holding a leveraged position in the wrong direction.</li>
+      <li>Cross grids share margin; one liquidation can affect the whole settlement-asset pool.</li>
+      <li>Moving margin into a grid reduces the buffer for your manual positions.</li>
+      <li>Stopping a grid without closing the position does not remove liquidation risk.</li>
+      <li>Funding accrues on the position even when the grid is not matching trades.</li>
+      <li>Past performance in the Marketplace is not a forecast.</li>
+    </ul>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/funding-rates/" class="text-sky-400 hover:text-sky-300">funding</a> ·
+      <a href="/aster-dex/liquidation-risk/" class="text-sky-400 hover:text-sky-300">liquidation</a> ·
+      <a href="/aster-dex/fees/" class="text-sky-400 hover:text-sky-300">fees</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

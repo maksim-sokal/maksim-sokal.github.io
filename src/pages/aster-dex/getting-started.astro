@@ -1,0 +1,149 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/getting-started/`;
+const description =
+  "How to start using Aster DEX: wallet versus email login, the Arbitrum-only email deposit rule, first deposit, choosing a trading mode and setting risk limits.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Getting started",
+  alternativeHeadline: "Getting started with Aster DEX",
+  name: "Getting started with Aster DEX",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Account",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Cryptocurrency wallet" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Login via Web3 wallet", url: `${ASTER_DOCS}getting-started/login-via-web3-wallet` },
+    { "@type": "CreativeWork", name: "Login via email", url: `${ASTER_DOCS}getting-started/login-via-email-address` },
+    { "@type": "CreativeWork", name: "Deposit and withdrawal guide", url: `${ASTER_DOCS}getting-started/deposit-and-withdrawal-guide` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Getting started", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Getting Started with Aster DEX — Wallet, Email and First Trade | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Getting started" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Onboarding</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Getting started
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      There are two ways in: a Web3 wallet or an email account. They do not have the same deposit rules, and the email
+      path is narrower than most people expect. Pick the account type before funding anything.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Updated <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time>
+    </p>
+  </header>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-4" aria-labelledby="login-heading">
+    <h2 id="login-heading" class="sr-only">Account types</h2>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+      <h3 class="font-display text-sm text-slate-100">Web3 wallet</h3>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        Rabby, MetaMask, Binance Wallet and any WalletConnect-compatible wallet are supported. On BNB Chain the wallet
+        needs at least 0.001 BNB for gas. You sign a message; no seed phrase is shared.
+      </p>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+      <h3 class="font-display text-sm text-slate-100">Email account</h3>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        Email login creates a generated wallet and a password, verified by a 6-digit code. At the time of verification it
+        supports <strong class="text-amber-300">USDT on Arbitrum One only</strong>. Other assets or networks can be lost.
+      </p>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="steps-heading">
+    <h2 id="steps-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">First session</h2>
+    <ol class="space-y-3 text-xs text-slate-300 leading-relaxed list-decimal pl-5">
+      <li>Go to the official site and launch the app. Do not use a search ad.</li>
+      <li>Connect a wallet or sign in with email. Approve the signature request.</li>
+      <li>Deposit through the in-app flow. Confirm the chain and asset before sending.</li>
+      <li>Wait for the balance to appear in Portfolio. Deposits normally take 1–5 minutes.</li>
+      <li>Choose a trading mode: Perpetuals, Shield Mode, 1001x or Spot.</li>
+      <li>Set leverage and margin mode before opening a position, not after.</li>
+      <li>Use a small first position to confirm the fee and slippage you actually pay.</li>
+    </ol>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="modes-heading">
+    <h2 id="modes-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Which mode to start with</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <a href="/aster-dex/shield-mode/" class="group bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+        <span class="text-sm text-slate-100 group-hover:text-sky-200">Shield Mode</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Simplest execution; pool counterparty; dynamic slippage.</span>
+      </a>
+      <a href="/aster-dex/1001x/" class="group bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+        <span class="text-sm text-slate-100 group-hover:text-sky-200">1001x</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Specialist leverage. Read the liquidation math first.</span>
+      </a>
+      <a href="/aster-dex/fees/" class="group bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+        <span class="text-sm text-slate-100 group-hover:text-sky-200">Fees</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">What each mode costs, with worked examples.</span>
+      </a>
+      <a href="/aster-dex/api/" class="group bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+        <span class="text-sm text-slate-100 group-hover:text-sky-200">API</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Keys, signing, rate limits and the unknown-state trap.</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-6 space-y-2" aria-labelledby="risk-heading">
+    <h2 id="risk-heading" class="font-display font-medium text-sm text-rose-200 tracking-wide">Before the first trade</h2>
+    <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc pl-5">
+      <li>Confirm you are eligible in your jurisdiction.</li>
+      <li>Assume you can lose the entire deposit.</li>
+      <li>Understand the difference between cross and isolated margin.</li>
+      <li>Know the liquidation price before entering, not after.</li>
+      <li>Do not use leverage you cannot explain out loud.</li>
+    </ul>
+    <p class="text-[11px] text-slate-400">
+      See <a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300">eligibility and risk</a>.
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/deposits-withdrawals/" class="text-sky-400 hover:text-sky-300">deposits and withdrawals</a> ·
+      <a href="/aster-dex/earn/" class="text-sky-400 hover:text-sky-300">Earn products</a> ·
+      <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">contract registry</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

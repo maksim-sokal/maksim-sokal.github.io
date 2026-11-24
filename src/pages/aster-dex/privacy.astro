@@ -1,0 +1,165 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/privacy/`;
+const description =
+  "How Aster's Account Privacy works: ZK-verifiable encrypted orders, stealth addresses, the viewer pass, and the trade-offs that come with them.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "How privacy works on Aster",
+  alternativeHeadline: "How privacy works on Aster DEX",
+  name: "How privacy works on Aster DEX",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Privacy",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Zero-knowledge proof", sameAs: "https://www.wikidata.org/wiki/Q191943" },
+    { "@type": "Thing", name: "Privacy" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Aster Chain overview", url: `${ASTER_DOCS}aster-chain/overview` },
+    { "@type": "CreativeWork", name: "What is Aster?", url: `${ASTER_DOCS}overview/what-is-aster` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Privacy", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="How Privacy Works on Aster DEX — ZK Orders and Stealth Addresses | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Privacy" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Privacy</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      How privacy works on Aster
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Privacy is Aster's main product claim, not a side feature. Orders are encrypted before they reach the chain,
+      positions are hidden when Account Privacy is on, and each trade can settle through a one-time address. This page
+      explains the mechanics and what they do not cover.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}aster-chain/overview`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Aster Chain overview</a>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="problem-heading">
+    <h2 id="problem-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The problem it addresses</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      On a fully transparent perp DEX, every position size, entry and liquidation level is visible. That information has
+      market value: other participants can push price toward a visible liquidation. Aster's answer is to remove the
+      information from the public order flow rather than ask traders to hide it themselves.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="mechanics-heading">
+    <h2 id="mechanics-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Three mechanisms</h2>
+    <div class="space-y-3">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">1. Account Privacy</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          When enabled, asset balances and open positions are hidden from public view. When disabled, activity is
+          published onchain and publicly visible. This is a per-account setting, not a global network property.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">2. ZK-verifiable encrypted orders</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Orders are encrypted and verified with zero-knowledge proofs. The order data is never exposed onchain in
+          plaintext, and trades do not appear directly in the transaction history of the primary address. Hidden orders
+          require ZK verification whether Account Privacy is on or off.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">3. Stealth addresses</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Each trade generates a fresh one-time address. A single account accumulates many ephemeral addresses, each used
+          once, which breaks the link between transactions and the primary account for an outside observer.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="viewer-heading">
+    <h2 id="viewer-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The viewer pass is the trade-off</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Privacy is not absolute. You can disclose your own history by providing a viewer pass, and verifying another
+      trader's private transactions requires their pass. This is selective disclosure: useful for audits, tax reporting
+      and disputes, but it means the pass is a sensitive credential. Treat it like a private key.
+    </p>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      One functional constraint is explicit in the docs: while Account Privacy is active, internal transfers to other
+      users are not permitted, for regulatory reasons. If your strategy depends on moving funds between Aster accounts,
+      privacy mode changes the workflow.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="limits-heading">
+    <div class="space-y-3">
+      <h2 id="limits-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">What privacy covers</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Balances and open positions on Aster Chain when enabled.</li>
+        <li>Order contents and the link between a trade and your primary address.</li>
+        <li>Your ability to prove history selectively with a viewer pass.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">What it does not cover</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>The source-chain deposit transaction, which is public on the chain you deposited from.</li>
+        <li>Bridge operations, which are validator-signed and verifiable onchain.</li>
+        <li>Information you disclose yourself, including the viewer pass.</li>
+        <li>Compliance obligations that apply to you in your jurisdiction.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2" aria-labelledby="who-heading">
+    <h2 id="who-heading" class="font-display font-medium text-sm text-slate-200 tracking-wide">Who benefits — and who should not rely on it</h2>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Privacy helps traders who do not want their liquidation levels advertised, and funds that do not want to reveal
+      strategy. It is not a substitute for legal advice, tax reporting or counterparty due diligence. If you need
+      anonymity from the platform itself, this is not that product; it is privacy from public observers, with selective
+      disclosure to the parties you choose.
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/aster-chain/" class="text-sky-400 hover:text-sky-300">Aster Chain</a> ·
+      <a href="/aster-dex/shield-mode/" class="text-sky-400 hover:text-sky-300">Shield Mode</a> ·
+      <a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300">eligibility</a>
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-3">
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

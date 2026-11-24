@@ -1,0 +1,153 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_AUDITS, ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/audits/`;
+const description =
+  "The seven published Aster DEX audit reports: auditor, scope, date and the findings each report states — with the limits of what an audit proves.";
+
+const auditPageUrl = `${ASTER_DOCS}overview/audit-reports`;
+
+const reportNodes = ASTER_AUDITS.map((audit) => ({
+  "@type": "Report",
+  "@id": `${url}#${audit.id}`,
+  name: audit.component,
+  description: `${audit.scope}. ${audit.findings}.`,
+  author: { "@type": "Organization", name: audit.auditor },
+  url: audit.url,
+  isPartOf: { "@id": `${url}#collection` },
+}));
+
+const pageNode = {
+  "@type": "CollectionPage",
+  "@id": `${url}#collection`,
+  url,
+  name: "Aster DEX audit reports",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+  dateModified: ASTER_LAST_VERIFIED,
+  about: { "@id": ASTER_DEX_ID },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: ASTER_AUDITS.length,
+    itemListElement: ASTER_AUDITS.map((audit, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: audit.component,
+      item: { "@id": `${url}#${audit.id}` },
+    })),
+  },
+  citation: [{ "@type": "CreativeWork", name: "Aster audit reports", url: auditPageUrl }],
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Audits", url },
+]);
+
+const graph = buildAsterPageGraph([pageNode, ...reportNodes, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster DEX Audit Reports — Scope, Dates and Findings | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Audits" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Evidence</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Aster DEX audit reports
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Seven reports are published for the Aster product suite: the vault, the earn contracts, asBNB, USDF and asUSDF,
+      and asCAKE. The table records what each report covers and what it states, without reinterpretation.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Reports and findings verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={auditPageUrl} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official audit page</a>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="reports-heading">
+    <h2 id="reports-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The seven reports</h2>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Report</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Scope</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Auditor</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Period</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Findings</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ASTER_AUDITS.map((audit) => (
+            <tr class="border-b border-[#1e293b]/30 last:border-b-0">
+              <td class="px-5 py-4">
+                <a href={audit.url} target="_blank" rel="noopener noreferrer" class="text-xs text-sky-300 hover:text-sky-200 underline underline-offset-2 decoration-sky-500/30">
+                  {audit.component}
+                </a>
+              </td>
+              <td class="px-5 py-4 text-xs text-slate-300">{audit.scope}</td>
+              <td class="px-5 py-4 text-xs text-slate-300 whitespace-nowrap">{audit.auditor}</td>
+              <td class="px-5 py-4 text-xs text-slate-400">{audit.period}</td>
+              <td class="px-5 py-4 text-xs text-slate-400">{audit.findings}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="limits-heading">
+    <div class="space-y-3">
+      <h2 id="limits-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">What this evidence supports</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Specific contracts were reviewed by named firms at a stated time.</li>
+        <li>Each report lists its findings and whether they were addressed.</li>
+        <li>The current registry can be checked against the addresses those reports cover.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">What it does not prove</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>That the code deployed today is the code that was audited.</li>
+        <li>That the economic design is sound under stress.</li>
+        <li>That the oracle, governance or upgrade keys are safe.</li>
+        <li>That the core Aster Chain contracts were reviewed — the docs state core chain contracts and RPC infrastructure are not open-sourced at this time.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2" aria-label="How to read this page">
+    <h2 class="font-display font-medium text-sm text-slate-200 tracking-wide">How to read the findings column</h2>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Counts are transcribed from each report's summary. "Low" and "informational" findings are not the same as "no
+      issues"; they describe severity, not absence. Read the report itself before drawing a conclusion about safety.
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Related:{" "}
+      <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">contract registry</a> ·
+      <a href="/research/aster-dex-contract-verification/" class="text-sky-400 hover:text-sky-300">registry verification method</a> ·
+      <a href="/research/economic-invariant-audits/" class="text-sky-400 hover:text-sky-300">what an invariant audit proves</a>
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·{" "}
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

@@ -1,0 +1,57 @@
+---
+import PageLayout from "./PageLayout.astro";
+import BackgroundDecor from "../components/sections/BackgroundDecor.astro";
+import Header from "../components/sections/Header.astro";
+import Breadcrumbs from "../components/sections/Breadcrumbs.astro";
+import Footer from "../components/sections/Footer.astro";
+import type { JsonLdGraph } from "../types-schema";
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  graph: JsonLdGraph;
+  trail: Crumb[];
+  modified?: Date;
+  ogType?: "website" | "article" | "profile";
+}
+
+const { title, description, canonical, graph, trail, modified, ogType = "article" } = Astro.props;
+---
+
+<PageLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  graph={graph}
+  modified={modified}
+  ogType={ogType}
+>
+  <BackgroundDecor />
+
+  <Header
+    subtitle="Aster DEX"
+    logo="/maksim-sokal-DeFi-analyst.svg"
+    links={[
+      { label: "DeFi Profile", href: "/" },
+      { label: "Aster DEX", href: "/aster-dex/" },
+      { label: "Research", href: "/research/" },
+      { label: "About", href: "/about/" },
+    ]}
+    ctaLabel="Contact"
+    ctaHref="/#contact"
+  />
+
+  <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "Aster DEX", href: "/aster-dex/" }, ...trail]} />
+
+  <main id="main-content" class="relative z-10 max-w-5xl mx-auto px-6 py-12 md:py-20 flex-1 w-full space-y-12">
+    <slot />
+  </main>
+
+  <Footer variant="defi" />
+</PageLayout>

@@ -1,0 +1,103 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { SITE_URL, WEBSITE_ID } from "../entity";
+import { buildBreadcrumbs, buildContentGraph } from "../lib/schema";
+
+const url = `${SITE_URL}/privacy/`;
+const description =
+  "Privacy policy for maksim-sokal.github.io: what the site does and does not collect, which third parties are involved, and how to contact the operator.";
+
+const pageNode = {
+  "@type": "WebPage",
+  "@id": `${url}#webpage`,
+  url,
+  name: "Privacy Policy",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": WEBSITE_ID },
+  dateModified: "2026-11-24",
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Privacy", url },
+]);
+
+const graph = buildContentGraph([pageNode, breadcrumbs]);
+---
+
+<LegalLayout
+  title="Privacy Policy | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  label="Privacy Policy"
+  modified={new Date("2026-11-24")}
+>
+  <p>
+    This site is operated by Maksim Sokal. It is a static website: there are no user accounts, no comments, no
+    newsletter and no advertising. This policy describes the limited data processing that still occurs.
+  </p>
+
+  <h2>What this site does not do</h2>
+  <ul>
+    <li>No analytics or tracking scripts.</li>
+    <li>No advertising or retargeting pixels.</li>
+    <li>No cookies set by this site.</li>
+    <li>No account registration or payment processing.</li>
+  </ul>
+
+  <h2>Hosting logs</h2>
+  <p>
+    The site is served by GitHub Pages. GitHub may process standard request data — IP address, user agent, requested
+    URL and timestamp — to deliver the site and protect its infrastructure. That processing is governed by{" "}
+    <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub's privacy statement</a>.
+  </p>
+
+  <h2>Fonts</h2>
+  <p>
+    Pages load fonts from Google Fonts. When your browser requests a font file, Google receives your IP address and
+    user-agent. Google's handling of that data is described in the{" "}
+    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.
+    If you prefer to avoid this request, block third-party fonts in your browser; the site remains readable.
+  </p>
+
+  <h2>Email</h2>
+  <p>
+    If you email <a href="mailto:contact@finialseo.org">contact@finialseo.org</a>, the message and your address are used
+    only to answer you and to keep a record of the enquiry. They are not added to a marketing list and are not sold.
+  </p>
+
+  <h2>Third-party links</h2>
+  <p>
+    Pages link to external sites, including Aster DEX, block explorers and audit reports. Those sites have their own
+    privacy policies and may set cookies or collect data. This policy does not cover them.
+  </p>
+
+  <h2>Legal bases and retention</h2>
+  <p>
+    Where the GDPR applies, hosting logs are processed on the basis of legitimate interests in operating a secure
+    website. Correspondence is processed to answer your request. Logs are retained according to the hosting provider's
+    policy; correspondence is kept only as long as needed for the enquiry.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    Depending on where you live, you may have the right to request access to, correction of, or deletion of personal
+    data, and to object to processing. Contact{" "}
+    <a href="mailto:contact@finialseo.org">contact@finialseo.org</a> to exercise those rights. You also have the right
+    to complain to your local data-protection authority.
+  </p>
+
+  <h2>Children</h2>
+  <p>
+    The site is intended for adults. It is not directed at anyone under 18 and does not knowingly collect data from
+    children.
+  </p>
+
+  <h2>Changes</h2>
+  <p>
+    If the site starts using analytics, embeds or other data-processing features, this policy will be updated before
+    those features go live.
+  </p>
+</LegalLayout>

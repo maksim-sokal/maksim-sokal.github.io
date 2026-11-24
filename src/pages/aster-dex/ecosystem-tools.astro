@@ -1,0 +1,140 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_ECOSYSTEM, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/ecosystem-tools/`;
+const description =
+  "The Aster Earn ecosystem: PancakeSwap, Pendle, Tranchess, restaking and YieldNest — what each does with asBNB or USDF, and the separate risks they add.";
+
+const itemNodes = ASTER_ECOSYSTEM.map((item) => ({
+  "@type": "Service",
+  "@id": `${url}#${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+  name: item.name,
+  serviceType: item.type,
+  description: item.description,
+  url: item.url,
+  provider: { "@type": "Organization", name: item.name },
+}));
+
+const pageNode = {
+  "@type": "CollectionPage",
+  "@id": `${url}#collection`,
+  url,
+  name: "Aster ecosystem tools",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+  dateModified: ASTER_LAST_VERIFIED,
+  about: { "@id": ASTER_DEX_ID },
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: ASTER_ECOSYSTEM.length,
+    itemListElement: ASTER_ECOSYSTEM.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: { "@id": `${url}#${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` },
+    })),
+  },
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Ecosystem tools", url },
+]);
+
+const graph = buildAsterPageGraph([pageNode, ...itemNodes, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Ecosystem Tools — Pendle, PancakeSwap and Restaking | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Ecosystem tools" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Ecosystem</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Ecosystem tools
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Once you hold asBNB, asUSDF or USDF, other protocols will offer to do something else with it: provide liquidity,
+      split principal from yield, restake, or route it through an aggregator. Each adds a separate smart contract and a
+      separate counterparty.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}earn/overview/ecosystem`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official ecosystem docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-3" aria-labelledby="tools-heading">
+    <h2 id="tools-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The integrations</h2>
+    <div class="space-y-3">
+      {ASTER_ECOSYSTEM.map((item) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="font-display text-sm text-slate-100">{item.name}</h3>
+            <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">{item.type}</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">{item.description}</p>
+          <a href={item.url} target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-sky-400 hover:text-sky-300">
+            Official {item.name} integration docs ↗
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="risk-heading">
+    <div class="space-y-3">
+      <h2 id="risk-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">What you add</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>A new smart contract with its own audit status.</li>
+        <li>A new liquidation or impermanent-loss profile.</li>
+        <li>New token exposure, including points and incentive tokens.</li>
+        <li>New withdrawal mechanics and queues.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">How to evaluate a partner</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Read the partner's audit, not Aster's, for the contract you use.</li>
+        <li>Check who can upgrade or pause it.</li>
+        <li>Confirm the exit path and whether it is open.</li>
+        <li>Treat points as speculative until the conversion is defined.</li>
+        <li>Size the position for the added contract risk, not just the yield.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-amber-500/5 border border-amber-400/20 rounded-xl p-5 space-y-2">
+    <h2 class="font-display font-medium text-sm text-amber-200 tracking-wide">Not covered by Aster's audits</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      An audit of an Aster contract does not extend to a partner protocol. The seven reports in the{" "}
+      <a href="/aster-dex/audits/" class="text-sky-400 hover:text-sky-300">audit library</a> cover AsterVault, AsterEarn,
+      asBNB, USDF, asUSDF and asCAKE. PancakeSwap, Pendle, Tranchess, restaking protocols and YieldNest each carry their
+      own risk.
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/earn/" class="text-sky-400 hover:text-sky-300">Aster Earn</a> ·
+      <a href="/aster-dex/usdf/" class="text-sky-400 hover:text-sky-300">USDF</a> ·
+      <a href="/aster-dex/audits/" class="text-sky-400 hover:text-sky-300">audit reports</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

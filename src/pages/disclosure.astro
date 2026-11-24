@@ -1,0 +1,79 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { SITE_URL, WEBSITE_ID } from "../entity";
+import { buildBreadcrumbs, buildContentGraph } from "../lib/schema";
+
+const url = `${SITE_URL}/disclosure/`;
+const description =
+  "Affiliate, referral and reviewer disclosures for the Aster DEX guides and research published on maksim-sokal.github.io.";
+
+const pageNode = {
+  "@type": "WebPage",
+  "@id": `${url}#webpage`,
+  url,
+  name: "Disclosure",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": WEBSITE_ID },
+  dateModified: "2026-11-24",
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Disclosure", url },
+]);
+
+const graph = buildContentGraph([pageNode, breadcrumbs]);
+---
+
+<LegalLayout
+  title="Disclosure | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  label="Disclosure"
+  modified={new Date("2026-11-24")}
+>
+  <p>
+    This site publishes independent guides and research about decentralized finance, including a cluster about{" "}
+    <a href="/aster-dex/">Aster DEX</a>. Two relationships need to be disclosed plainly.
+  </p>
+
+  <h2>Affiliate and referral links</h2>
+  <p>
+    Some links to Aster DEX are referral links. If you use one and later sign up or trade, we may receive a commission
+    from Aster at no additional cost to you. Referral links carry <code>rel="sponsored nofollow"</code> and are disclosed
+    on the page where they appear.
+  </p>
+  <p>
+    Referral links never appear on evidence pages. The <a href="/aster-dex/contracts/">contract registry</a>,
+    <a href="/aster-dex/audits/">audit reports</a> and <a href="/aster-dex/eligibility/">eligibility page</a> contain no
+    affiliate links, because a commission must not sit next to a safety claim.
+  </p>
+
+  <h2>Reviewer relationship</h2>
+  <p>
+    Maksim Sokal provides technical review services to Aster DEX as an external reviewer. That relationship is disclosed
+    because a reader could reasonably perceive a conflict of interest. It does not give Aster editorial control over
+    this site: findings, limitations and negative evidence are published regardless of the relationship.
+  </p>
+
+  <h2>Editorial independence</h2>
+  <ul>
+    <li>No payment is accepted in exchange for a positive rating, review or ranking.</li>
+    <li>Affiliate revenue does not determine which products are covered or what the conclusions are.</li>
+    <li>Every factual claim about Aster is dated and linked to the official documentation or the underlying report.</li>
+    <li>Corrections are published rather than silently edited when a material fact changes.</li>
+  </ul>
+
+  <h2>Sponsored content</h2>
+  <p>
+    There is no sponsored content on this site at present. If that changes, the page will be labelled as sponsored and
+    the sponsor will be named above the content.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about this disclosure: <a href="mailto:contact@finialseo.org">contact@finialseo.org</a>.
+  </p>
+</LegalLayout>

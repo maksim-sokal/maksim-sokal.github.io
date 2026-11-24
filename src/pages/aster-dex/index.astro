@@ -1,0 +1,230 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, SITE_URL, WEBSITE_ID } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED, ASTER_QUICK_FACTS, ASTER_SITE, ASTER_SOCIALS } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/`;
+const description =
+  "Independent guide to Aster DEX: verified contract addresses, audit reports, fees and eligibility, maintained against the official documentation.";
+
+const sections = [
+  {
+    href: "/aster-dex/contracts/",
+    label: "Registry",
+    title: "Contract addresses",
+    detail: "Five bridge chains plus Earn and USDF token contracts, each with the official source.",
+    meta: "5 chains",
+  },
+  {
+    href: "/aster-dex/audits/",
+    label: "Evidence",
+    title: "Audit reports",
+    detail: "Seven reports with scope, auditor, date and the findings each one states.",
+    meta: "7 reports",
+  },
+  {
+    href: "/aster-dex/fees/",
+    label: "Cost",
+    title: "Fee schedule",
+    detail: "Perpetuals, spot, Shield Mode, 1001x and withdrawal costs with worked examples.",
+    meta: "Verified Nov 2026",
+  },
+  {
+    href: "/aster-dex/eligibility/",
+    label: "Compliance",
+    title: "Eligibility and risk",
+    detail: "Restricted jurisdictions, the 18+ rule and what high leverage actually risks.",
+    meta: "Read first",
+  },
+];
+
+const guides = [
+  { href: "/aster-dex/getting-started/", title: "Getting started", detail: "Wallet versus email, first deposit, choosing a mode." },
+  { href: "/aster-dex/deposits-withdrawals/", title: "Deposits and withdrawals", detail: "Five chains, validator confirmations and common failures." },
+  { href: "/aster-dex/perpetuals/", title: "Perpetuals", detail: "Order book, order types, margin and stock perps." },
+  { href: "/aster-dex/spot/", title: "Spot", detail: "Maker/taker fees, order types and listing mechanics." },
+  { href: "/aster-dex/shield-mode/", title: "Shield Mode", detail: "AMM-style perpetuals, fees and dynamic slippage." },
+  { href: "/aster-dex/1001x/", title: "1001x", detail: "Leverage ladder, liquidation math and ROI caps." },
+  { href: "/aster-dex/funding-rates/", title: "Funding rates", detail: "Formula, interval changes and liquidation impact." },
+  { href: "/aster-dex/grid-trading/", title: "Grid trading", detail: "Neutral, long and short grids; Grid 2.0 subaccounts." },
+  { href: "/aster-dex/hidden-orders/", title: "Hidden orders", detail: "Private limit orders and hidden positions." },
+  { href: "/aster-dex/liquidation-risk/", title: "Liquidation risk", detail: "Margin, mark price, insurance fund and ADL." },
+  { href: "/aster-dex/prediction/", title: "Prediction markets", detail: "Binary markets, settlement and restrictions." },
+  { href: "/aster-dex/api/", title: "API", detail: "Futures, spot, testnet, RPC, auth and limits." },
+  { href: "/aster-dex/privacy/", title: "Privacy", detail: "Account Privacy, ZK orders and stealth addresses." },
+  { href: "/aster-dex/aster-chain/", title: "Aster Chain", detail: "PoSA, 50 ms blocks, the oracle and the bridge." },
+  { href: "/aster-dex/earn/", title: "Aster Earn", detail: "asBNB, asBTC, asUSDF, ALP and the asCAKE wind-down." },
+  { href: "/aster-dex/usdf/", title: "USDF", detail: "Peg mechanics, Ceffu custody and strategy risk." },
+  { href: "/aster-dex/ecosystem-tools/", title: "Ecosystem tools", detail: "Pendle, PancakeSwap, Tranchess, restaking and YieldNest." },
+  { href: "/aster-dex/staking/", title: "Staking", detail: "Lock periods, two reward layers, veASTER and early exit." },
+  { href: "/aster-dex/tokenomics/", title: "Tokenomics", detail: "Allocation, fee buyback and burns to a 3B floor." },
+  { href: "/aster-dex/referrals/", title: "Referrals", detail: "Commission rates, rules and promotion risk." },
+  { href: "/aster-dex/tax-reporting/", title: "Tax reporting", detail: "Reconstruct perps, funding, rewards and bridges." },
+  { href: "/aster-dex/glossary/", title: "Glossary", detail: "Definitions for every term used in the cluster." },
+  { href: "/aster-dex/compare/", title: "Compare modes", detail: "Perps, Shield, 1001x and spot side by side." },
+  { href: "/aster-dex/review/", title: "Review", detail: "An independent assessment of strengths and limits." },
+];
+
+const allPages = [...sections, ...guides];
+
+const pageNode = {
+  "@type": "CollectionPage",
+  "@id": `${url}#collection`,
+  url,
+  name: "Aster DEX — independent guide",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": WEBSITE_ID },
+  dateModified: ASTER_LAST_VERIFIED,
+  about: { "@id": ASTER_DEX_ID },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: allPages.length,
+    itemListElement: allPages.map((page, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: page.title,
+      url: `${SITE_URL}${page.href}`,
+    })),
+  },
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url },
+]);
+
+const graph = buildAsterPageGraph([pageNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster DEX — Independent Guide, Contracts and Fees | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[]}
+  ogType="website"
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-6 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Independent Guide</span>
+    <h1 class="font-display font-medium text-3xl md:text-5xl text-slate-100 tracking-tight leading-tight">
+      Aster DEX
+    </h1>
+    <p class="text-sm md:text-base text-slate-300 leading-relaxed">
+      Aster is a privacy-focused perpetual DEX built on Aster Chain, its own Layer 1. It offers order-book
+      perpetuals, Shield Mode, 1001x and spot trading, plus Aster Earn products including asBNB, asBTC and asUSDF,
+      and the wind-down asCAKE.
+    </p>
+    <p class="text-sm text-slate-400 leading-relaxed">
+      This cluster exists to answer the questions the official documentation does not: what a position actually
+      costs, which contracts are real, what the audits cover, and who is allowed to use the venue. Every figure is
+      checked against <a href={ASTER_DOCS} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">docs.asterdex.com</a>{" "}
+      and dated.
+    </p>
+  </header>
+
+  <section class="bg-sky-500/5 border border-sky-400/20 rounded-xl p-5 space-y-2" aria-label="Disclosure">
+    <p class="text-[11px] font-mono uppercase tracking-widest text-sky-300">Read this first</p>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      This is not the official Aster website. Maksim Sokal is an external technical reviewer for Aster DEX and
+      Kirsty Moreland writes these guides. This site is not operated by Aster. Some outbound links may be referral links — see the{" "}
+      <a href="/disclosure/" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">disclosure</a>.
+      Trading perpetuals with leverage can lose your entire deposit; see{" "}
+      <a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">eligibility and risk</a>.
+    </p>
+  </section>
+
+  <section aria-labelledby="facts-heading" class="space-y-4">
+    <div class="flex flex-wrap items-end justify-between gap-3 border-b border-[#1e293b]/60 pb-3">
+      <h2 id="facts-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">At a glance</h2>
+      <span class="text-[10px] font-mono text-slate-400">
+        Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time>
+      </span>
+    </div>
+    <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {ASTER_QUICK_FACTS.map((fact) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4 space-y-1">
+          <dt class="text-[10px] font-mono uppercase tracking-widest text-sky-400">{fact.label}</dt>
+          <dd class="text-xs text-slate-200 leading-relaxed">{fact.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section aria-labelledby="start-heading" class="space-y-4">
+    <h2 id="start-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Start here</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {sections.map((section) => (
+        <a
+          href={section.href}
+          class="group flex h-full flex-col gap-2 bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-6 transition-colors"
+        >
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">{section.label}</span>
+            <span class="text-[10px] font-mono text-slate-500">{section.meta}</span>
+          </div>
+          <h3 class="font-display text-base text-slate-100 group-hover:text-sky-200 transition-colors">{section.title}</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">{section.detail}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section aria-labelledby="guides-heading" class="space-y-4">
+    <div class="flex flex-wrap items-end justify-between gap-3 border-b border-[#1e293b]/60 pb-3">
+      <h2 id="guides-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Guides</h2>
+      <span class="text-[10px] font-mono text-slate-400">{guides.length} pages</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {guides.map((guide) => (
+        <a href={guide.href} class="group block bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+          <span class="text-sm text-slate-100 group-hover:text-sky-200">{guide.title}</span>
+          <span class="block text-[11px] text-slate-400 leading-relaxed">{guide.detail}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="scope-heading">
+    <div class="space-y-3">
+      <h2 id="scope-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">What this cluster covers</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Contract addresses across all five bridge chains, plus Earn and USDF contracts.</li>
+        <li>Every published audit report, its scope and its stated findings.</li>
+        <li>Product-specific fees: perpetuals, spot, Shield Mode and 1001x.</li>
+        <li>Eligibility, jurisdiction limits and leverage risk.</li>
+        <li>Independent checks you can repeat yourself.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">What it does not do</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Provide trading signals, price predictions or investment advice.</li>
+        <li>Mirror the official documentation or reproduce its tables.</li>
+        <li>Guarantee yields, safety or availability.</li>
+        <li>Serve users in restricted jurisdictions.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-3" aria-labelledby="official-heading">
+    <h2 id="official-heading" class="font-display font-medium text-sm text-slate-200 tracking-wide">Official links</h2>
+    <p class="text-[11px] text-slate-400">
+      Always confirm the product URL before connecting a wallet. These are the links published in the official docs.
+    </p>
+    <ul class="flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-mono">
+      <li><a href={ASTER_SITE} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Website ↗</a></li>
+      <li><a href={ASTER_SOCIALS.x} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">X ↗</a></li>
+      <li><a href={ASTER_SOCIALS.telegram} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Telegram ↗</a></li>
+      <li><a href={ASTER_SOCIALS.discord} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Discord ↗</a></li>
+      <li><a href={ASTER_SOCIALS.medium} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Medium ↗</a></li>
+    </ul>
+    <p class="text-[11px] text-slate-400 pt-2">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·{" "}
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

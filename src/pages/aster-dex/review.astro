@@ -1,0 +1,163 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED, ASTER_SITE } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/review/`;
+const description =
+  "An independent review of Aster DEX: what the privacy model and Aster Chain do well, where the design and documentation fall short, and who should avoid it.";
+
+const reviewBody =
+  "Aster DEX is a credible privacy-first perpetual venue with a purpose-built L1, audited product contracts and a wide product surface. Its limitations are material: restricted jurisdictions, a closed-source core, documentation gaps and very high leverage that can erase a position on a fraction of a percent move.";
+
+const reviewNode = {
+  "@type": "Review",
+  "@id": `${url}#review`,
+  name: "Aster DEX review",
+  description,
+  reviewBody,
+  url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  itemReviewed: { "@id": ASTER_DEX_ID },
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  citation: [
+    { "@type": "CreativeWork", name: "Aster documentation", url: ASTER_DOCS },
+    { "@type": "CreativeWork", name: "Aster audit reports", url: `${ASTER_DOCS}overview/audit-reports` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Review", url },
+]);
+
+const graph = buildAsterPageGraph([reviewNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster DEX Review — Independent Assessment | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Review" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Review</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Aster DEX review
+    </h1>
+    <p class="text-sm md:text-base text-slate-300 leading-relaxed">
+      Aster is one of the few perp DEXs that built its own settlement layer instead of renting one. That decision buys
+      speed and privacy, and it creates a different risk profile from an Ethereum-native DEX. This review separates the
+      two.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Reviewed <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={ASTER_SITE} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official site</a>
+    </p>
+  </header>
+
+  <section class="bg-sky-500/5 border border-sky-400/20 rounded-xl p-5 space-y-2" aria-label="Disclosure">
+    <p class="text-[11px] font-mono uppercase tracking-widest text-sky-300">Disclosure</p>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Maksim Sokal provides technical review services to Aster DEX as an external reviewer. That relationship is
+      disclosed because it could be perceived as a conflict. Aster does not have editorial control over this review,
+      and no affiliate link is used on this page. See the <a href="/disclosure/" class="text-sky-400 hover:text-sky-300">full disclosure</a>.
+    </p>
+  </section>
+
+  <section class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2" aria-label="Review summary">
+    <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Review summary</span>
+    <p class="text-xs text-slate-300 leading-relaxed">{reviewBody}</p>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="verdict-heading">
+    <h2 id="verdict-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The short version</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Aster is a credible venue for traders who value privacy and can legally access it. The product surface is broad —
+      order-book perps, Shield Mode, 1001x, spot and Earn — and the contracts behind the Earn products have been audited
+      by named firms. The constraints are equally real: access is prohibited in 11 jurisdictions, the core chain is not
+      open source, the docs leave gaps that matter for integrators, and 1001x can liquidate a position on a 0.1% move.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="pros-heading">
+    <div class="space-y-3">
+      <h2 id="pros-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">What it does well</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li><strong class="text-slate-300">Privacy is real architecture, not a toggle.</strong> Encrypted orders, stealth addresses and selective disclosure are built into the chain.</li>
+        <li><strong class="text-slate-300">Performance.</strong> 50 ms blocks, up to 100k TPS and zero gas on Aster Chain.</li>
+        <li><strong class="text-slate-300">Multiple ways to trade.</strong> Order book, AMM-style Shield Mode, 1001x and spot cover different user jobs.</li>
+        <li><strong class="text-slate-300">Audited product contracts.</strong> Seven reports across vault, earn, asBNB, USDF, asUSDF and asCAKE.</li>
+        <li><strong class="text-slate-300">Published contract registry.</strong> Five bridge chains plus token contracts, with explorer links.</li>
+        <li><strong class="text-slate-300">Earn with institutional custody.</strong> Ceffu holds assets for asBTC and the USDF strategy.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">Where it falls short</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li><strong class="text-slate-300">Access is restricted.</strong> The US, Canada, UK, China, Russia, Ukraine and six other jurisdictions are prohibited.</li>
+        <li><strong class="text-slate-300">The core is closed source.</strong> Chain contracts and RPC infrastructure are not published, so execution logic cannot be independently reviewed.</li>
+        <li><strong class="text-slate-300">Documentation gaps.</strong> The registry lists Earn token contracts without a network label, and one product (asCAKE) is in wind-down.</li>
+        <li><strong class="text-slate-300">Validator centralisation.</strong> External validators are not supported in Phase 1.</li>
+        <li><strong class="text-slate-300">1001x risk.</strong> The ROI cap and the no-added-margin rule make it unsuitable for most retail traders.</li>
+        <li><strong class="text-slate-300">Promotional pricing.</strong> Shield Mode's zero-fee period is temporary; the standing model includes a profit share.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="compare-heading">
+    <h2 id="compare-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Who should use it</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-emerald-300">A reasonable fit</h3>
+        <ul class="space-y-1.5 text-xs text-slate-400 leading-relaxed">
+          <li>Traders outside restricted jurisdictions who want position privacy.</li>
+          <li>Users who value CEX-like latency with self-custody.</li>
+          <li>Yield users who understand custody and strategy risk in Earn.</li>
+          <li>Developers who need a Binance-compatible futures API.</li>
+        </ul>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-rose-300">A poor fit</h3>
+        <ul class="space-y-1.5 text-xs text-slate-400 leading-relaxed">
+          <li>Anyone in a prohibited jurisdiction.</li>
+          <li>Traders who cannot absorb the loss of the full margin.</li>
+          <li>Users who require fully open-source execution.</li>
+          <li>Anyone looking for guaranteed yield.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="evidence-heading">
+    <h2 id="evidence-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Evidence behind this review</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+      <li><a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">Contract registry</a> — five bridge chains and ten Earn/USDF contracts, verified against the official page.</li>
+      <li><a href="/aster-dex/audits/" class="text-sky-400 hover:text-sky-300">Audit reports</a> — seven reports with scope, date and stated findings.</li>
+      <li><a href="/aster-dex/fees/" class="text-sky-400 hover:text-sky-300">Fee schedule</a> — every rate used in the cost analysis.</li>
+      <li><a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300">Eligibility</a> — the jurisdiction list and leverage risk.</li>
+    </ul>
+  </section>
+
+  <section class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2">
+    <h2 class="font-display font-medium text-sm text-slate-200 tracking-wide">Bottom line</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Aster is a serious product with a coherent privacy thesis and a real audit trail. It is not a low-risk venue, and
+      it is not available everywhere. Treat the privacy model as a reason to use it, the closed core as a reason to limit
+      exposure, and 1001x as a specialist tool rather than a feature to try.
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a>
+    </p>
+  </section>
+</AsterLayout>

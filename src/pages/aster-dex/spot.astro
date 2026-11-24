@@ -1,0 +1,157 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED, ASTER_SPOT_FEES } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/spot/`;
+const description =
+  "Aster spot trading: maker and taker fees, the 5% ASTER discount, post-only and time-in-force orders, listing mechanics and how spot differs from perpetuals.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Aster spot",
+  alternativeHeadline: "Aster spot trading and fees",
+  name: "Aster spot trading and fees",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Spot",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Spot market" },
+    { "@type": "Thing", name: "Order book" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Spot overview", url: `${ASTER_DOCS}trading/spot` },
+    { "@type": "CreativeWork", name: "Spot fee structure", url: `${ASTER_DOCS}trading/spot/spot-fee-structure` },
+    { "@type": "CreativeWork", name: "Spot order types", url: `${ASTER_DOCS}trading/spot/order-types` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Spot", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Spot Trading — Fees, Orders and Listings | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Spot" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Spot</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Aster spot
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Spot is the simplest product on Aster: you buy the token and own it. No funding, no liquidation, no leverage. The
+      interesting parts are the fee structure, the order types, and the fact that the cheapest fee is available only if
+      you provide liquidity.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}trading/spot`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official spot docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="fees-heading">
+    <h2 id="fees-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Fees</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {ASTER_SPOT_FEES.map((row) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-3">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">Maker</span>
+            <span class="text-slate-100 font-mono">{row.maker}</span>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">Taker</span>
+            <span class="text-slate-100 font-mono">{row.taker}</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">{row.note}</p>
+        </div>
+      ))}
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Patience is worth 8×</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          A maker order pays 0.005%; a taker order pays 0.04%. On a $10,000 trade that is $0.50 versus $4.00. If the
+          strategy allows posting, post.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="orders-heading">
+    <h2 id="orders-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Order types that change the cost</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      <li><strong class="text-slate-300">Limit</strong> — rests on the book and earns the maker rate.</li>
+      <li><strong class="text-slate-300">Market</strong> — executes immediately and pays the taker rate.</li>
+      <li><strong class="text-slate-300">Post-only</strong> — rejected if it would cross the spread, guaranteeing maker pricing.</li>
+      <li><strong class="text-slate-300">Time-in-force</strong> — GTC, IOC or FOK controls how long an order stays alive.</li>
+      <li><strong class="text-slate-300">Small assets exchange</strong> — converts dust below the minimum trade size.</li>
+      <li><strong class="text-slate-300">USDT–USDC swap</strong> — a direct stablecoin conversion without going through the book.</li>
+    </ul>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="listing-heading">
+    <h2 id="listing-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Listings and liquidity</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Spot listings follow the AOS-1 standard. Permissionless listings carry a 50,000 USDT fee, which is collected weekly
+      and used for the ASTER buyback. That fee is a filter: it makes a listing expensive enough to discourage spam, but
+      it does not guarantee depth.
+    </p>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      New pairs can have wide spreads and thin books. Check depth before sizing a market order; the fee is not the main
+      cost on a new listing.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="risk-heading">
+    <div class="space-y-3">
+      <h2 id="risk-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Spot versus perpetuals</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Spot: you own the token; the maximum loss is the position.</li>
+        <li>Perps: you own a contract; funding and liquidation apply.</li>
+        <li>Spot has no funding and no liquidation price.</li>
+        <li>Perps can short; spot generally cannot, except through structured products.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">Risks specific to spot</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Token risk: a listed asset can fall to zero.</li>
+        <li>Liquidity risk on new or thin pairs.</li>
+        <li>Custody risk: balances sit in the Aster account, not a hardware wallet.</li>
+        <li>Listing and delisting decisions are discretionary.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/fees/" class="text-sky-400 hover:text-sky-300">full fee schedule</a> ·
+      <a href="/aster-dex/tokenomics/" class="text-sky-400 hover:text-sky-300">ASTER buyback</a> ·
+      <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">contract registry</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

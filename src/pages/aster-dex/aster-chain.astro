@@ -1,0 +1,172 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_BRIDGE_FACTS, ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/aster-chain/`;
+const description =
+  "Aster Chain explained: PoSA consensus, 50 ms blocks, 100k TPS, zero gas, the 14-exchange oracle, cross/isolated margin and the 3-of-4 bridge.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Aster Chain",
+  alternativeHeadline: "Aster Chain: the settlement layer behind Aster DEX",
+  name: "Aster Chain: the settlement layer behind Aster DEX",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Infrastructure",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Blockchain", sameAs: "https://www.wikidata.org/wiki/Q20514253" },
+    { "@type": "Thing", name: "Proof of authority" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Aster Chain overview", url: `${ASTER_DOCS}aster-chain/overview` },
+    { "@type": "CreativeWork", name: "What is Aster?", url: `${ASTER_DOCS}overview/what-is-aster` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Aster Chain", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Chain — PoSA, 50 ms Blocks and the 14-Exchange Oracle | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Aster Chain" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Infrastructure</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Aster Chain
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Aster is not a contract deployed on someone else's chain. Trading settles on Aster Chain, a purpose-built Layer 1
+      with its own consensus, oracle and clearinghouse. That design explains the fee structure, the privacy model and
+      several of the risks.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}aster-chain/overview`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official overview</a>
+    </p>
+  </header>
+
+  <section class="grid grid-cols-2 md:grid-cols-4 gap-3" aria-label="Chain specifications">
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Block time</span>
+      <span class="text-lg font-display text-slate-100">50 ms</span>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Throughput</span>
+      <span class="text-lg font-display text-slate-100">100k TPS</span>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Gas</span>
+      <span class="text-lg font-display text-slate-100">0</span>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Consensus</span>
+      <span class="text-lg font-display text-slate-100">PoSA</span>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="consensus-heading">
+    <h2 id="consensus-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">PoSA: performance with a validator assumption</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Proof-of-Staked Authority combines staking incentives with a reputation-based validator set. It is the reason the
+      chain can produce 50 ms blocks without a public mempool auction. The trade-off is the same as every PoA-derived
+      design: you are trusting a defined validator set more than you would trust a fully permissionless one.
+    </p>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      During Phase 1, external validator participation is not supported. Observer nodes and staking validators are
+      described as future work. Until then, decentralisation is a roadmap item, not a current property.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="oracle-heading">
+    <h2 id="oracle-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Oracle and clearinghouse</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">14-source weighted median</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Each validator calculates a weighted median spot price from 14 major exchanges. The oracle feeds funding, mark
+          price, TP/SL triggers and liquidation. A median across venues is harder to manipulate than a single feed, but
+          it is still an input assumption.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Clearinghouse and margin</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          The clearinghouse tracks margin balances and positions. Deposits enter cross margin by default; traders can
+          switch a position to isolated margin. Each perpetual market has an independent order book.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="bridge-heading">
+    <h2 id="bridge-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The bridge is the trust boundary</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Trading is on Aster Chain, but deposits come from five chains. The bridge is where most users first interact with
+      validator assumptions.
+    </p>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      {ASTER_BRIDGE_FACTS.map((fact) => (
+        <li>{fact}</li>
+      ))}
+    </ul>
+    <p class="text-[11px] text-slate-400">
+      The five bridge addresses are maintained in the <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">contract registry</a>.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="open-heading">
+    <h2 id="open-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">What is open source — and what is not</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Bridge contracts and related code are published on the Smart Contracts page. The docs state that core chain
+      contracts and RPC infrastructure are not open-sourced at this time, to protect the matching engine and during early
+      deployment. That is a material limitation for independent verification: the parts that decide execution are not
+      available for review.
+    </p>
+  </section>
+
+  <section class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2">
+    <h2 class="font-display font-medium text-sm text-slate-200 tracking-wide">How to weigh it</h2>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Aster Chain is a performance-first design with a credible privacy model and a defined validator set. It is not a
+      trustless chain in the same sense as Ethereum. If your threat model includes validator collusion or closed-source
+      execution, size positions accordingly. If you mainly care about privacy from public observers and CEX-like speed,
+      the architecture is coherent.
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/privacy/" class="text-sky-400 hover:text-sky-300">privacy mechanics</a> ·
+      <a href="/aster-dex/deposits-withdrawals/" class="text-sky-400 hover:text-sky-300">deposits and withdrawals</a>
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6">
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

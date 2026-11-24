@@ -1,0 +1,174 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/hidden-orders/`;
+const description =
+  "Aster hidden orders and hidden positions: how they stay out of the public book, how they differ from iceberg orders and dark pools, and where privacy ends.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Hidden orders",
+  alternativeHeadline: "Hidden orders and hidden positions on Aster",
+  name: "Hidden orders and hidden positions on Aster",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Trading",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Order book" },
+    { "@type": "Thing", name: "Dark pool" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Hidden order and hidden position", url: `${ASTER_DOCS}trading/perpetuals/order-types/hidden-order-and-hidden-position` },
+    { "@type": "CreativeWork", name: "Privacy overview", url: `${ASTER_DOCS}aster-chain/overview` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Hidden orders", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Hidden Orders and Hidden Positions Explained | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Hidden orders" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Trading</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Hidden orders
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      A hidden order is a limit order that never appears in the public book. The position it creates is also excluded
+      from public feeds and portfolio analytics. It is the most direct expression of Aster's privacy thesis, and it has
+      specific limits.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}trading/perpetuals/order-types/hidden-order-and-hidden-position`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="what-heading">
+    <h2 id="what-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">What is hidden</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">The order</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          No size, price or presence appears on the public order book. It still shares liquidity with visible orders, so
+          it can fill against normal flow.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">The position</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          The resulting position is excluded from public data feeds and portfolio analytics. Size, direction and PnL are
+          visible to you, not to outside observers.
+        </p>
+      </div>
+    </div>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Hidden orders are limit orders only. Matching, margin and liquidation operate on the full position size; privacy
+      changes visibility, not the risk engine.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="compare-heading">
+    <h2 id="compare-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">How it differs from similar tools</h2>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Property</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Hidden order</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Iceberg</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Dark pool</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-[#1e293b]/30">
+            <td class="px-5 py-3 text-xs text-slate-300">Invisible to the book</td>
+            <td class="px-5 py-3 text-xs text-emerald-300">Yes</td>
+            <td class="px-5 py-3 text-xs text-slate-400">Partially</td>
+            <td class="px-5 py-3 text-xs text-emerald-300">Yes</td>
+          </tr>
+          <tr class="border-b border-[#1e293b]/30">
+            <td class="px-5 py-3 text-xs text-slate-300">Minimal market impact</td>
+            <td class="px-5 py-3 text-xs text-emerald-300">Yes</td>
+            <td class="px-5 py-3 text-xs text-slate-400">No</td>
+            <td class="px-5 py-3 text-xs text-emerald-300">Yes</td>
+          </tr>
+          <tr>
+            <td class="px-5 py-3 text-xs text-slate-300">Access to public liquidity</td>
+            <td class="px-5 py-3 text-xs text-emerald-300">Yes</td>
+            <td class="px-5 py-3 text-xs text-emerald-300">Yes</td>
+            <td class="px-5 py-3 text-xs text-rose-300">No</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="how-heading">
+    <h2 id="how-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Placing one</h2>
+    <ol class="space-y-2 text-xs text-slate-300 leading-relaxed list-decimal pl-5">
+      <li>Open Aster Perps (Pro mode), choose the contract, leverage and amount.</li>
+      <li>Tick the <strong>Hidden Order</strong> checkbox. It becomes a limit order automatically.</li>
+      <li>The order appears under Open Orders with a not-visible icon, but not in the public book.</li>
+      <li>Once filled, the position appears in your Positions tab and remains private to your account.</li>
+    </ol>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="limits-heading">
+    <div class="space-y-3">
+      <h2 id="limits-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">What it solves</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Position hunting: your liquidation level is not advertised.</li>
+        <li>Copy trading: observers cannot mirror the order before it fills.</li>
+        <li>Market impact: large orders do not signal intent to the book.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">What it does not solve</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Liquidation risk. The risk engine still closes the position at the mark price.</li>
+        <li>Fill risk. A hidden limit order may never fill.</li>
+        <li>Deposit visibility. The source-chain transfer remains public.</li>
+        <li>Your own disclosure. A viewer pass can reveal history.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/privacy/" class="text-sky-400 hover:text-sky-300">privacy mechanics</a> ·
+      <a href="/aster-dex/liquidation-risk/" class="text-sky-400 hover:text-sky-300">liquidation risk</a> ·
+      <a href="/aster-dex/fees/" class="text-sky-400 hover:text-sky-300">fees</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

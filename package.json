@@ -9,7 +9,9 @@
     "preview": "astro preview",
     "clean": "node -e \"const{rmSync}=require('fs');rmSync('dist',{recursive:true,force:true})\"",
     "lint": "tsc --noEmit",
-    "check": "astro check"
+    "check": "astro check",
+    "validate:entities": "node scripts/validate-entities.mjs",
+    "audit:schema": "node scripts/audit-schema-alignment.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.0",

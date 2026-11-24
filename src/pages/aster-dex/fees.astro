@@ -1,0 +1,227 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import {
+  ASTER_1001X_LADDER,
+  ASTER_DOCS,
+  ASTER_EXECUTION_FEES,
+  ASTER_FEE_NOTES,
+  ASTER_LAST_VERIFIED,
+  ASTER_PERP_FEES,
+  ASTER_SOURCES,
+  ASTER_SPOT_FEES,
+} from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/fees/`;
+const description =
+  "Aster DEX fees for perpetuals, spot, Shield Mode and 1001x, with worked examples and the official source for every rate.";
+
+const feeSources = ASTER_SOURCES.filter((source) =>
+  /fee|funding|VIP|1001x/i.test(source.label),
+);
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Aster DEX fees",
+  name: "Aster DEX fees",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Cost",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Cryptocurrency exchange fee" },
+  ],
+  citation: feeSources.map((source) => ({
+    "@type": "CreativeWork",
+    name: source.label,
+    url: source.url,
+  })),
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Fees", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster DEX Fees — Perpetuals, Spot, Shield and 1001x | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Fees" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Cost</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Aster DEX fees
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Aster does not have one fee schedule. Perpetuals, spot, Shield Mode and 1001x each price risk differently, and
+      the maker/taker split changes the answer. The tables below use the published rates and state where a promotion or
+      a VIP tier changes them.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> · rates can change; re-check before trading.
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="perp-heading">
+    <div class="flex flex-wrap items-end justify-between gap-3 border-b border-[#1e293b]/60 pb-3">
+      <h2 id="perp-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Perpetual futures</h2>
+      <span class="text-[10px] font-mono text-slate-400">Order-book perpetuals</span>
+    </div>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Contract class</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Maker</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Taker</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ASTER_PERP_FEES.map((row) => (
+            <tr class="border-b border-[#1e293b]/30 last:border-b-0">
+              <td class="px-5 py-4 text-xs text-slate-200">{row.product}</td>
+              <td class="px-5 py-4 text-xs text-slate-300 font-mono">{row.maker}</td>
+              <td class="px-5 py-4 text-xs text-slate-300 font-mono">{row.taker}</td>
+              <td class="px-5 py-4 text-xs text-slate-400">{row.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-4" aria-labelledby="spot-heading">
+    <div class="space-y-3">
+      <h2 id="spot-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Spot</h2>
+      {ASTER_SPOT_FEES.map((row) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">Maker</span>
+            <span class="text-slate-100 font-mono">{row.maker}</span>
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">Taker</span>
+            <span class="text-slate-100 font-mono">{row.taker}</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed pt-1">{row.note}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">Execution fee</h2>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        {ASTER_EXECUTION_FEES.map((row) => (
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">{row.chain}</span>
+            <span class="text-slate-100 font-mono">{row.fee}</span>
+          </div>
+        ))}
+        <p class="text-[11px] text-slate-400 leading-relaxed pt-1">
+          Charged on opening a 1001x position; covers network execution.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="shield-heading">
+    <h2 id="shield-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Shield Mode</h2>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-3">
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Shield Mode is an AMM-style interface. The standing model is a <strong>0.03% flat fee</strong> plus a
+        <strong>15–20% profit share</strong> on winning positions; losing positions pay no profit share.
+      </p>
+      <p class="text-xs text-amber-300/90 leading-relaxed">
+        At the time of verification, Aster was running a limited-time zero-fee promotion on opening and closing
+        positions. Promotions can end without notice — treat 0% as temporary.
+      </p>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="leverage-heading">
+    <h2 id="leverage-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">1001x</h2>
+    <div class="space-y-3">
+      {ASTER_1001X_LADDER.map((row) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-sm text-slate-100 font-display">{row.market}</span>
+            <span class="text-[11px] font-mono text-sky-300">max {row.maxLeverage}</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">{row.fees}</p>
+          <p class="text-[11px] text-slate-400 leading-relaxed">{row.note}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="examples-heading">
+    <h2 id="examples-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Worked examples</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Perpetual taker</span>
+        <p class="text-xs text-slate-300 leading-relaxed">$10,000 notional × 0.04%</p>
+        <p class="text-lg font-display text-slate-100">$4.00</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Spot maker</span>
+        <p class="text-xs text-slate-300 leading-relaxed">0.1 BTC at $100,000 × 0.005%</p>
+        <p class="text-lg font-display text-slate-100">$0.50</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">1001x open</span>
+        <p class="text-xs text-slate-300 leading-relaxed">1 ETH at $1,500 × 0.08%</p>
+        <p class="text-lg font-display text-slate-100">$1.20</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="notes-heading">
+    <h2 id="notes-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">What changes the number</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      {ASTER_FEE_NOTES.map((note) => (
+        <li>{note}</li>
+      ))}
+    </ul>
+    <p class="text-[11px] text-slate-400">
+      The full VIP schedule is published in the{" "}
+      <a href={`${ASTER_DOCS}program-and-rewards/vip-program`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">official VIP program</a>.
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-3" aria-labelledby="sources-heading">
+    <h2 id="sources-heading" class="font-display font-medium text-sm text-slate-200 tracking-wide">Sources</h2>
+    <ul class="space-y-2 text-[11px]">
+      {feeSources.map((source) => (
+        <li>
+          <a href={source.url} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">
+            {source.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="text-[11px] text-slate-400 pt-2">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·{" "}
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

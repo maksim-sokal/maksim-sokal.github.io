@@ -1,0 +1,129 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import BackgroundDecor from "../../components/sections/BackgroundDecor.astro";
+import Header from "../../components/sections/Header.astro";
+import Breadcrumbs from "../../components/sections/Breadcrumbs.astro";
+import Footer from "../../components/sections/Footer.astro";
+import ResearchCard from "../../components/sections/ResearchCard.astro";
+import { getCollection } from "astro:content";
+import { buildBreadcrumbs, buildContentGraph } from "../../lib/schema";
+import { SITE_URL, WEBSITE_ID } from "../../entity";
+import { PRACTICES, formatDate, isoDate, readingTime } from "../../lib/research";
+
+const url = `${SITE_URL}/research/`;
+
+const articles = (await getCollection("research")).sort((a, b) => +b.data.published - +a.data.published);
+const defi = articles.filter((entry) => entry.data.practice === "defi");
+const seo = articles.filter((entry) => entry.data.practice === "seo");
+const latest = articles[0]?.data.published ?? new Date();
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Research", url },
+]);
+
+const pageNode = {
+  "@type": "CollectionPage",
+  "@id": `${url}#collection`,
+  url,
+  name: "Research — Maksim Sokal",
+  description:
+    "Long-form research on DeFi risk, invariant audits and search strategy, written from practice and cited to primary sources.",
+  inLanguage: "en",
+  isPartOf: { "@id": WEBSITE_ID },
+  dateModified: isoDate(latest),
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: articles.length,
+    itemListElement: articles.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: entry.data.title,
+      url: `${SITE_URL}/research/${entry.id}/`,
+    })),
+  },
+};
+
+const graph = buildContentGraph([pageNode, breadcrumbs]);
+
+const sections = [
+  { key: "defi", practice: PRACTICES.defi, articles: defi },
+  { key: "seo", practice: PRACTICES.seo, articles: seo },
+];
+---
+
+<PageLayout
+  title="Research | Maksim Sokal"
+  description="Long-form research on DeFi risk, invariant audits and search strategy, written from practice and cited to primary sources."
+  canonical={url}
+  graph={graph}
+  modified={latest}
+>
+  <BackgroundDecor />
+
+  <Header
+    subtitle="Research"
+    logo="/maksim-sokal-DeFi-analyst.svg"
+    links={[
+      { label: "DeFi Profile", href: "/" },
+      { label: "SEO Expert", href: "/seo-expert/" },
+      { label: "Research", href: "/research/" },
+      { label: "About", href: "/about/" },
+    ]}
+    ctaLabel="Contact"
+    ctaHref="/#contact"
+  />
+
+  <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "Research" }]} />
+
+  <main id="main-content" class="relative z-10 max-w-5xl mx-auto px-6 py-12 md:py-20 flex-1 w-full space-y-16">
+    <header class="space-y-5 max-w-3xl">
+      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Research</span>
+      <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+        Notes from audit and search practice
+      </h1>
+      <p class="text-sm text-slate-300 leading-relaxed">
+        Long-form writing on the two things this site is accountable for: whether a DeFi protocol's accounting holds,
+        and whether a search system can identify, trust and cite a page. Every paper lists its sources and its limits.
+      </p>
+    </header>
+
+    {sections.map(({ key, practice, articles: items }) => (
+      <section class="space-y-5" aria-labelledby={`${key}-heading`}>
+        <div class="flex flex-wrap items-end justify-between gap-3 border-b border-[#1e293b]/60 pb-3">
+          <div class="space-y-1">
+            <h2 id={`${key}-heading`} class="font-display font-medium text-xl text-slate-100 tracking-tight">
+              {practice.hubTitle}
+            </h2>
+            <p class="text-[11px] font-mono text-slate-400">{items.length} papers · {practice.description}</p>
+          </div>
+          <a href={practice.hubPath} class="text-[11px] font-mono text-sky-400 hover:text-sky-300">
+            Open hub →
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {items.map((entry) => (
+            <ResearchCard
+              title={entry.data.title}
+              dek={entry.data.dek}
+              href={`/research/${entry.id}/`}
+              label={practice.label}
+              date={formatDate(entry.data.published)}
+              minutes={readingTime(entry.body)}
+            />
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="border-t border-[#1e293b]/60 pt-6 flex flex-wrap gap-x-6 gap-y-2 text-[11px] font-mono">
+      <a href="/" class="text-sky-400 hover:text-sky-300">DeFi profile →</a>
+      <a href="/seo-expert/" class="text-sky-400 hover:text-sky-300">SEO profile →</a>
+      <a href="/about/" class="text-slate-400 hover:text-sky-300">About the author →</a>
+      <a href="/llms.txt" class="text-slate-400 hover:text-sky-300">llms.txt →</a>
+    </section>
+  </main>
+
+  <Footer variant="neutral" />
+</PageLayout>

@@ -1,0 +1,177 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_1001X_LADDER, ASTER_DOCS, ASTER_EXECUTION_FEES, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/1001x/`;
+const description =
+  "How Aster's 1001x and Degen Mode work: the leverage ladder, the liquidation formula, the ROI caps, and why a 0.1% move can close a position.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "1001x",
+  alternativeHeadline: "Aster 1001x: leverage, liquidation and the caps that matter",
+  name: "Aster 1001x: leverage, liquidation and the caps that matter",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Trading modes",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Leverage (finance)", sameAs: "https://www.wikidata.org/wiki/Q1148384" },
+    { "@type": "Thing", name: "Liquidation" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "1001x leverage", url: `${ASTER_DOCS}trading/1001x/leverage` },
+    { "@type": "CreativeWork", name: "1001x fees and slippage", url: `${ASTER_DOCS}trading/1001x/fees-and-slippage` },
+    { "@type": "CreativeWork", name: "Degen Mode", url: `${ASTER_DOCS}trading/1001x/degen-mode` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "1001x", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster 1001x — Leverage, Liquidation and ROI Caps | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "1001x" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Trading Modes</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      1001x
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      1001x is Aster's onchain-liquidity perpetual mode. The headline is leverage up to 1001x on BTC/USD; the part that
+      matters is how little price movement that implies before liquidation, and the caps that limit the upside.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}trading/1001x/leverage`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official leverage docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="ladder-heading">
+    <h2 id="ladder-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The leverage ladder</h2>
+    <div class="space-y-3">
+      {ASTER_1001X_LADDER.map((row) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-sm text-slate-100 font-display">{row.market}</span>
+            <span class="text-[11px] font-mono text-sky-300">max {row.maxLeverage}</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">{row.fees}</p>
+          <p class="text-[11px] text-slate-400 leading-relaxed">{row.note}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="degen-heading">
+    <h2 id="degen-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Degen Mode</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Degen Mode is the BTC/USD-only path for 500x, 750x and 1001x. It charges no opening fee, applies 0.01% slippage,
+      and replaces the closing fee with a dynamic PnL-based fee with a 0.03% minimum. Margin cannot be added to an open
+      position.
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+        <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Max net profit ROI</span>
+        <span class="text-sm text-slate-100">≈500% at 500x / 750x</span>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+        <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Max net profit ROI</span>
+        <span class="text-sm text-slate-100">≈300% at 1001x</span>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+        <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Slippage</span>
+        <span class="text-sm text-slate-100">0.01% (BTC/USD)</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="liq-heading">
+    <h2 id="liq-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Liquidation: the number that matters</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      The docs give the distance to liquidation as:
+    </p>
+    <div class="bg-brand-950/60 border border-[#1e293b]/60 rounded-xl p-5">
+      <code class="block text-xs text-sky-200 leading-relaxed">
+        distance = entry × (initial margin × liquidation loss rate + cumulative funding) / initial margin / leverage
+      </code>
+    </div>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Their worked example: entry $1,500, margin $100, funding $2, loss rate 85%, leverage 10x. The distance is $130.50
+      and the liquidation price is $1,369.50.
+    </p>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Now change the leverage. At 1001x, a 0.1% adverse move is roughly the entire margin before fees and funding. The
+      liquidation price sits next to the entry, which is why adding margin is disabled and why the ROI cap exists.
+    </p>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Funding is calculated every block in this mode and is reflected in unrealised PnL, so it moves the liquidation
+      price continuously. A position that is not moving can still drift toward liquidation.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="fees-heading">
+    <h2 id="fees-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Fees and execution</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+        <h3 class="font-display text-sm text-slate-100 mb-2">Below 500x</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">0.08% opening fee and 0.08% closing fee. Margin can be added.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+        <h3 class="font-display text-sm text-slate-100 mb-2">500x and above</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">0% opening fee, dynamic PnL-based closing fee (minimum 0.03%), no added margin.</p>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-4 text-[11px] font-mono text-slate-400">
+      {ASTER_EXECUTION_FEES.map((row) => (
+        <span>{row.chain}: <span class="text-slate-200">{row.fee}</span></span>
+      ))}
+    </div>
+    <p class="text-[11px] text-slate-400">Execution fees apply on opening a position.</p>
+  </section>
+
+  <section class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-6 space-y-2" aria-labelledby="risk-heading">
+    <h2 id="risk-heading" class="font-display font-medium text-sm text-rose-200 tracking-wide">Before you use it</h2>
+    <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc pl-5">
+      <li>You can lose the full margin on a very small move.</li>
+      <li>The profit upside is capped at roughly 300% at 1001x, even if price moves further.</li>
+      <li>You cannot add margin at 500x or above; the position cannot be rescued by topping up.</li>
+      <li>Funding accrues every block and changes the liquidation price.</li>
+      <li>This mode is not available in restricted jurisdictions. See <a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300">eligibility</a>.</li>
+    </ul>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/shield-mode/" class="text-sky-400 hover:text-sky-300">Shield Mode</a> ·
+      <a href="/aster-dex/fees/" class="text-sky-400 hover:text-sky-300">fee schedule</a>
+    </p>
+  </section>
+</AsterLayout>

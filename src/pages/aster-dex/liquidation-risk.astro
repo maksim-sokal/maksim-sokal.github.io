@@ -1,0 +1,154 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/liquidation-risk/`;
+const description =
+  "How liquidation works on Aster: maintenance margin, mark price, the staged IOC close, the insurance fund, ADL and why the liquidation price keeps moving.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Liquidation mechanics",
+  alternativeHeadline: "Liquidation mechanics on Aster",
+  name: "Liquidation mechanics on Aster",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Risk",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Liquidation" },
+    { "@type": "Thing", name: "Margin (finance)" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Liquidations", url: `${ASTER_DOCS}trading/perpetuals/fees-and-specs/liquidations-1` },
+    { "@type": "CreativeWork", name: "1001x liquidation", url: `${ASTER_DOCS}trading/1001x/fees-and-slippage` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Liquidation risk", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Liquidation Mechanics — Margin, Mark Price and ADL | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Liquidation risk" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-rose-400 uppercase tracking-widest block">Risk</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Liquidation mechanics
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Liquidation is not a single event. Aster cancels orders, attempts a partial IOC close, rechecks margin, and only
+      then hands the remainder to the insurance fund. Understanding the sequence explains why some positions are closed
+      gradually and others disappear at once.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}trading/perpetuals/fees-and-specs/liquidations-1`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official liquidation docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-3" aria-labelledby="trigger-heading">
+    <h2 id="trigger-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">When liquidation triggers</h2>
+    <div class="bg-brand-950/60 border border-[#1e293b]/60 rounded-xl p-5">
+      <code class="block text-xs text-sky-200 leading-relaxed">
+        margin = initial collateral + realised PnL + unrealised PnL
+      </code>
+      <p class="text-[11px] text-slate-400 mt-2">Liquidation is triggered when margin falls below the maintenance requirement.</p>
+    </div>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Aster recommends keeping the margin ratio below 80%. At 100% the position is at the liquidation threshold. The
+      mark price, not the last traded price, decides the trigger; that reduces manipulation but can diverge from the
+      price on your chart.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="process-heading">
+    <h2 id="process-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The five-step process</h2>
+    <ol class="space-y-2 text-xs text-slate-300 leading-relaxed list-decimal pl-5">
+      <li><strong class="text-slate-200">Cancel open orders</strong> to stop new exposure entering the liquidation flow.</li>
+      <li><strong class="text-slate-200">Attempt an IOC close</strong> for as much size as the market allows; the unfilled portion is cancelled.</li>
+      <li><strong class="text-slate-200">Recheck margin</strong> after realised losses and the liquidation fee. If the requirement is met, the remaining position stays open.</li>
+      <li><strong class="text-slate-200">Insurance fund takeover</strong> of any bankrupt remainder at the bankruptcy price.</li>
+      <li><strong class="text-slate-200">ADL</strong> if the fund cannot cover the shortfall: profitable opposing positions are reduced.</li>
+    </ol>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="margin-heading">
+    <div class="space-y-3">
+      <h2 id="margin-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Cross vs isolated</h2>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        Cross margin is the default: all collateral and unrealised PnL support every position. It lowers the chance of a
+        single-position liquidation but puts the whole account in one risk pool. Isolated margin ring-fences a position;
+        its liquidation price depends only on the margin assigned to it.
+      </p>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">Why the price keeps moving</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Funding payments change equity.</li>
+        <li>Collateral value fluctuates.</li>
+        <li>Opening or closing other positions changes cross margin.</li>
+        <li>Realised losses and fees reduce the buffer.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="negative-heading">
+    <h2 id="negative-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Negative balances</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      If a liquidation leaves a negative USDT balance, automatic settlement is considered only when all of the following
+      apply: the balance is in a USDT perpetual account, there are no open positions, the deficit is no more than 5,000
+      USDT, and no funds were transferred in after the liquidation to offset it. Outside those conditions, the deficit
+      remains your obligation.
+    </p>
+  </section>
+
+  <section class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-6 space-y-2" aria-labelledby="reduce-heading">
+    <h2 id="reduce-heading" class="font-display font-medium text-sm text-rose-200 tracking-wide">Reducing the risk</h2>
+    <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc pl-5">
+      <li>Lower leverage; the buffer grows faster than the position size falls.</li>
+      <li>Add collateral before the ratio approaches 80%.</li>
+      <li>Use a stop loss that executes before the liquidation engine.</li>
+      <li>Monitor funding; a quiet position can still drift toward liquidation.</li>
+      <li>Close or reduce before high-volatility events and thin liquidity windows.</li>
+    </ul>
+    <p class="text-[11px] text-slate-400">
+      For the 1001x-specific distance formula and ROI caps, see <a href="/aster-dex/1001x/" class="text-sky-400 hover:text-sky-300">1001x</a>.
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/1001x/" class="text-sky-400 hover:text-sky-300">1001x</a> ·
+      <a href="/aster-dex/shield-mode/" class="text-sky-400 hover:text-sky-300">Shield Mode</a> ·
+      <a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300">eligibility</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

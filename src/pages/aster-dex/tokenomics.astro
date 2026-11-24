@@ -1,0 +1,175 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED, ASTER_MAX_SUPPLY, ASTER_TOKEN_ADDRESS, ASTER_TOKEN_STANDARD, ASTER_TOKENOMICS } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/tokenomics/`;
+const description =
+  "ASTER tokenomics: the 8 billion supply, allocation and vesting, the 99% fee buyback, bi-weekly burns to a 3 billion floor, and veASTER distribution.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "ASTER tokenomics",
+  alternativeHeadline: "ASTER tokenomics and the buyback mechanism",
+  name: "ASTER tokenomics and the buyback mechanism",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Token",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Tokenomics" },
+    { "@type": "Thing", name: "Cryptocurrency token" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "ASTER token overview", url: `${ASTER_DOCS}usdaster-token/overview` },
+    { "@type": "CreativeWork", name: "Tokenomics", url: `${ASTER_DOCS}usdaster-token/tokenomics` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Tokenomics", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="ASTER Tokenomics — Allocation, Buyback and Burns | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Tokenomics" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Token</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      ASTER tokenomics
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      ASTER is the network, governance and reward asset. The design has two moving parts worth understanding: a large
+      community allocation with a long tail of unlocks, and a fee-funded buyback that distributes to locked stakers while
+      burning from reserve.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}usdaster-token/tokenomics`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official tokenomics</a>
+    </p>
+  </header>
+
+  <section class="grid grid-cols-1 sm:grid-cols-3 gap-3" aria-label="Token facts">
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4 space-y-1">
+      <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Max supply</span>
+      <span class="text-sm text-slate-100">{ASTER_MAX_SUPPLY}</span>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4 space-y-1">
+      <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Standard</span>
+      <span class="text-sm text-slate-100">{ASTER_TOKEN_STANDARD}</span>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4 space-y-1 sm:col-span-1">
+      <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Contract</span>
+      <code class="block text-[10px] text-slate-200 break-all">{ASTER_TOKEN_ADDRESS}</code>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="allocation-heading">
+    <h2 id="allocation-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Allocation</h2>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Category</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Share</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Tokens</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ASTER_TOKENOMICS.map((row) => (
+            <tr class="border-b border-[#1e293b]/30 last:border-b-0">
+              <td class="px-5 py-4 text-xs text-slate-200">{row.category}</td>
+              <td class="px-5 py-4 text-xs text-slate-300 font-mono">{row.share}</td>
+              <td class="px-5 py-4 text-xs text-slate-300 font-mono">{row.amount}</td>
+              <td class="px-5 py-4 text-xs text-slate-400">{row.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-[11px] text-slate-400">
+      The team allocation (5%) remains locked under an extended cliff. The docs describe a 40-month linear vesting
+      schedule at 10,000,000 ASTER per month after unlock; confirm the current schedule before relying on a specific
+      date.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="buyback-heading">
+    <h2 id="buyback-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The buyback and burn loop</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">1. Fees</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">99% of daily platform fees are routed to a buyback wallet.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">2. Buyback</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">A TWAP executes across the day and settles onchain. Bought ASTER goes to veASTER stakers.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">3. Burn</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">An equal amount is burned from reserve, team allocation first, bi-weekly, until supply reaches 3 billion.</p>
+      </div>
+    </div>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Permissionless spot listings also feed the loop: each listing costs 50,000 USDT, collected weekly and used to buy
+      back ASTER.
+    </p>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="meaning-heading">
+    <h2 id="meaning-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">What this does and does not mean</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+        <h3 class="font-display text-sm text-emerald-300 mb-2">Mechanically</h3>
+        <ul class="space-y-1.5 text-xs text-slate-400 leading-relaxed">
+          <li>Fee revenue creates buy pressure and a matching burn.</li>
+          <li>Stakers who lock longer capture more of the buyback.</li>
+          <li>The 3 billion floor is a hard supply target.</li>
+        </ul>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+        <h3 class="font-display text-sm text-rose-300 mb-2">Not guaranteed</h3>
+        <ul class="space-y-1.5 text-xs text-slate-400 leading-relaxed">
+          <li>Buyback size depends on trading volume, which falls in quiet markets.</li>
+          <li>Burns reduce supply but do not determine price.</li>
+          <li>Unlocks and emissions can offset the effect.</li>
+          <li>Nothing here is a price prediction or investment advice.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/staking/" class="text-sky-400 hover:text-sky-300">staking and veASTER</a> ·
+      <a href="/aster-dex/fees/" class="text-sky-400 hover:text-sky-300">fee schedule</a> ·
+      <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">token contract</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

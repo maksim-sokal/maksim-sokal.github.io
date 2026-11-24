@@ -29,3 +29,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Validate entity graph
+        run: npm run validate:entities
+
+      - name: Audit schema alignment
+        run: npm run audit:schema

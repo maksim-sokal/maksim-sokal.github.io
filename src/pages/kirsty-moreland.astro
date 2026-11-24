@@ -1,0 +1,165 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import BackgroundDecor from "../components/sections/BackgroundDecor.astro";
+import Header from "../components/sections/Header.astro";
+import Breadcrumbs from "../components/sections/Breadcrumbs.astro";
+import Footer from "../components/sections/Footer.astro";
+import { KIRSTY_ID, SITE_URL, WEBSITE_ID } from "../entity";
+import { buildBreadcrumbs, buildContentGraph, buildKirstyNode } from "../lib/schema";
+
+const url = `${SITE_URL}/kirsty-moreland/`;
+const description =
+  "Kirsty Moreland is a DeFi writer and editor covering DEX mechanics, tokenomics and on-chain analysis. She writes the Aster DEX guides on this site.";
+
+const profilePage = {
+  "@type": ["ProfilePage", "AboutPage"],
+  "@id": `${url}#profilepage`,
+  url,
+  name: "Kirsty Moreland — DeFi Writer & Editor",
+  description,
+  mainEntity: { "@id": KIRSTY_ID },
+  about: { "@id": KIRSTY_ID },
+  author: { "@id": KIRSTY_ID },
+  accountablePerson: { "@id": KIRSTY_ID },
+  inLanguage: "en",
+  isPartOf: { "@id": WEBSITE_ID },
+  dateModified: "2026-11-24",
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Kirsty Moreland", url },
+]);
+
+const graph = buildContentGraph([profilePage, breadcrumbs, buildKirstyNode()]);
+
+const guides = [
+  { href: "/aster-dex/", label: "Aster DEX overview", detail: "What the product is now: Aster Chain, four trading modes and the Earn suite." },
+  { href: "/aster-dex/contracts/", label: "Contract registry", detail: "Five bridge chains plus the Earn and USDF token contracts." },
+  { href: "/aster-dex/audits/", label: "Audit reports", detail: "Seven reports with scope, date and stated findings." },
+  { href: "/aster-dex/fees/", label: "Fee schedule", detail: "Perpetuals, spot, Shield Mode and 1001x, with worked examples." },
+  { href: "/aster-dex/eligibility/", label: "Eligibility and risk", detail: "Restricted jurisdictions and the mechanics of leverage risk." },
+];
+---
+
+<PageLayout title="Kirsty Moreland — DeFi Writer & Editor | Maksim Sokal" description={description} canonical={url} graph={graph} modified={new Date("2026-11-24")}>
+  <BackgroundDecor />
+
+  <Header
+    subtitle="Author"
+    logo="/maksim-sokal-DeFi-analyst.svg"
+    links={[
+      { label: "DeFi Profile", href: "/" },
+      { label: "Aster DEX", href: "/aster-dex/" },
+      { label: "Research", href: "/research/" },
+      { label: "About", href: "/about/" },
+    ]}
+    ctaLabel="Contact"
+    ctaHref="/#contact"
+  />
+
+  <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "Kirsty Moreland" }]} />
+
+  <main id="main-content" class="relative z-10 max-w-4xl mx-auto px-6 py-12 md:py-20 flex-1 w-full space-y-14">
+    <section class="grid grid-cols-1 md:grid-cols-[1fr_260px] gap-8 items-start">
+      <div class="space-y-5">
+        <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Author</span>
+        <h1 class="font-display font-medium text-3xl md:text-5xl text-slate-100 tracking-tight leading-tight">
+          Kirsty Moreland
+        </h1>
+        <p class="text-sm md:text-base text-slate-300 leading-relaxed">
+          Kirsty Moreland is a DeFi writer and editor covering DEX mechanics, tokenomics and on-chain analysis. She
+          founded Aster DEX Hub in 2017 and now writes the Aster DEX guides on this site.
+        </p>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Her work focuses on translating protocol mechanics into decisions a reader can act on: what a product costs,
+          which contract is real, what an audit actually covers and where the risks sit.
+        </p>
+        <p class="text-[11px] font-mono text-slate-400">
+          Reviewed by <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+          <a href="/disclosure/" class="text-sky-400 hover:text-sky-300">Disclosure</a>
+        </p>
+        <p class="text-[11px] font-mono text-slate-500">
+          Profile updated <time datetime="2026-11-24">24 November 2026</time>
+        </p>
+      </div>
+      <figure class="space-y-2">
+        <img
+          src="/images/Kirsty-Moreland.webp"
+          width="1707"
+          height="2560"
+          alt="Kirsty Moreland, DeFi writer and editor"
+          class="w-full max-w-[260px] rounded-xl border border-[#1e293b]/60 object-cover"
+          loading="lazy"
+        />
+        <figcaption class="text-[10px] font-mono text-slate-500">Kirsty Moreland</figcaption>
+      </figure>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="background-heading">
+      <div class="space-y-3">
+        <h2 id="background-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Background</h2>
+        <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+          <li>BSc Computer Science, University College London (UCL).</li>
+          <li>Hands-on work in UCL's blockchain and DeFi research environment.</li>
+          <li>Founder of Aster DEX Hub (2017–2026), a publication covering DEX architecture and tokenomics.</li>
+          <li>Writer and editor since 2017, focused on technical DeFi education.</li>
+        </ul>
+      </div>
+      <div class="space-y-3">
+        <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">Focus</h2>
+        <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+          <li>DEX mechanics and order-book versus AMM execution.</li>
+          <li>Perpetuals, funding and liquidation risk.</li>
+          <li>Tokenomics and on-chain data analysis.</li>
+          <li>Editorial standards: dated facts, primary sources, explicit limits.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="space-y-4" aria-labelledby="guides-heading">
+      <div class="flex flex-wrap items-end justify-between gap-3 border-b border-[#1e293b]/60 pb-3">
+        <h2 id="guides-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Writes here</h2>
+        <a href="/aster-dex/" class="text-[11px] font-mono text-sky-400 hover:text-sky-300">Aster DEX cluster →</a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {guides.map((guide) => (
+          <a href={guide.href} class="group block bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+            <span class="text-xs text-slate-100 group-hover:text-sky-200">{guide.label}</span>
+            <span class="block text-[11px] text-slate-400 leading-relaxed">{guide.detail}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="profiles-heading">
+      <div class="space-y-3">
+        <h2 id="profiles-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Verified profiles</h2>
+        <ul class="space-y-2 text-xs">
+          <li>
+            <a href="https://dune.com/asterdexhub/analytics" target="_blank" rel="me noopener noreferrer" class="text-sky-400 hover:text-sky-300">Dune Analytics ↗</a>
+          </li>
+          <li>
+            <a href="https://linktr.ee/asterdexhub" target="_blank" rel="me noopener noreferrer" class="text-sky-400 hover:text-sky-300">Linktree ↗</a>
+          </li>
+        </ul>
+      </div>
+      <div class="space-y-3">
+        <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">A note on Aster DEX Hub</h2>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Aster DEX Hub was the publication Kirsty founded in 2017. The domain is no longer online. Its guides are
+          being rewritten against the current product documentation and continued here, under the same authorship and
+          an independent technical review.
+        </p>
+      </div>
+    </section>
+
+    <nav class="border-t border-[#1e293b]/60 pt-6 flex flex-wrap gap-x-6 gap-y-2 text-[11px] font-mono">
+      <a href="/aster-dex/" class="text-sky-400 hover:text-sky-300">Aster DEX guide →</a>
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal →</a>
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure →</a>
+    </nav>
+  </main>
+
+  <Footer variant="neutral" />
+</PageLayout>

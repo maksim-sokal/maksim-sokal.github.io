@@ -1,0 +1,146 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_ELIGIBILITY, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/eligibility/`;
+const description =
+  "Aster DEX eligibility: the restricted jurisdictions published in its terms, the 18+ requirement, and the risks of trading perpetuals with up to 1001x leverage.";
+
+const termsUrl = `${ASTER_DOCS}resources/terms-and-conditions`;
+
+const pageNode = {
+  "@type": "WebPage",
+  "@id": `${url}#webpage`,
+  url,
+  name: "Aster DEX eligibility and risk disclosure",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+  dateModified: ASTER_LAST_VERIFIED,
+  about: { "@id": ASTER_DEX_ID },
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  citation: [{ "@type": "CreativeWork", name: "Aster terms and conditions", url: termsUrl }],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Eligibility", url },
+]);
+
+const graph = buildAsterPageGraph([pageNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster DEX Eligibility and Risk Disclosure | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Eligibility" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+  ogType="website"
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-amber-400 uppercase tracking-widest block">Compliance</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Eligibility and risk
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Aster's terms restrict access by jurisdiction and require users to be at least 18. Leveraged perpetual trading
+      can lose the entire deposit. This page summarises the published constraints; it is not legal advice and it is not
+      a substitute for the official terms.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> against{" "}
+      <a href={termsUrl} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">the official terms</a>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="jurisdiction-heading">
+    <h2 id="jurisdiction-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Restricted jurisdictions</h2>
+    <p class="text-xs text-slate-400 leading-relaxed max-w-3xl">
+      The published terms state that the services are not available to anyone who resides in, is located in, is
+      incorporated in, or has a registered office in the following jurisdictions:
+    </p>
+    <ul class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      {ASTER_ELIGIBILITY.map((jurisdiction) => (
+        <li class="bg-rose-500/5 border border-rose-400/15 rounded-lg px-4 py-2 text-xs text-rose-200/90 font-mono">
+          {jurisdiction}
+        </li>
+      ))}
+    </ul>
+    <p class="text-[11px] text-slate-400 leading-relaxed max-w-3xl">
+      The prohibition also extends to jurisdictions subject to comprehensive sanctions and to anyone on a restricted-party
+      list. The list above is a summary; the operative wording is in the official terms.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="age-heading">
+    <h2 id="age-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Age and identity</h2>
+    <p class="text-xs text-slate-300 leading-relaxed max-w-3xl">
+      Users must be at least 18 and legally able to enter into the terms. Aster may apply identity verification and may
+      suspend access where verification is not completed. Providing a false location to bypass a restriction is itself a
+      breach of the terms.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="risk-heading">
+    <h2 id="risk-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Leverage risk</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">1001x is not a free option</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          At 500x and above, margin cannot be added to an open position. A small adverse move can liquidate the
+          position, and the maximum net profit ROI is capped at roughly 300% at 1001x and 500% at 500x/750x.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Slippage and funding</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Fixed 0.01% slippage applies to BTC/USD in Degen Mode; other pairs use fixed or dynamic slippage. Funding is
+          peer-to-peer, is charged periodically, and can move the liquidation price against you.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Smart contract and peg risk</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Audits cover specific contracts at a point in time. They do not guarantee the deployed code, the oracle, the
+          bridge or the stablecoin peg. USDF depends on delta-neutral backing and 1:1 redemption.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">No advice</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Nothing on this site is financial, investment, legal or tax advice. Past performance is not indicative of
+          future results. If you do not understand the liquidation mechanics, do not use leverage.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-amber-500/5 border border-amber-400/20 rounded-xl p-6 space-y-2" aria-label="Scope of this page">
+    <h2 class="font-display font-medium text-sm text-amber-200 tracking-wide">What this page is</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      A dated summary of the constraints published by Aster, written for readers of this independent guide. It is not
+      legal advice, it does not create a relationship with Aster, and it does not authorise access from a restricted
+      jurisdiction.
+    </p>
+    <p class="text-[11px] text-slate-400">
+      See also:{" "}
+      <a href="/disclosure/" class="text-sky-400 hover:text-sky-300">disclosure</a> ·
+      <a href="/aster-dex/fees/" class="text-sky-400 hover:text-sky-300">fees</a> ·
+      <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">contracts</a>
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·{" "}
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

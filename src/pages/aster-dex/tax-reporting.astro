@@ -1,0 +1,160 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/tax-reporting/`;
+const description =
+  "How to reconstruct Aster DEX activity for tax reporting: perp PnL, funding, staking rewards, airdrops, bridges and the records most traders forget.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Tax reporting",
+  alternativeHeadline: "Reconstructing Aster DEX activity for tax reporting",
+  name: "Reconstructing Aster DEX activity for tax reporting",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Tax",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Tax", sameAs: "https://www.wikidata.org/wiki/Q8161" },
+    { "@type": "Thing", name: "Capital gain", sameAs: "https://www.wikidata.org/wiki/Q1850816" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Aster API documentation", url: `${ASTER_DOCS}for-developers/aster-api/api-documentation` },
+    { "@type": "CreativeWork", name: "Aster terms: taxes", url: `${ASTER_DOCS}resources/terms-and-conditions` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Tax reporting", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster DEX Tax Reporting — Records, PnL and Common Gaps | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Tax reporting" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Tax</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Tax reporting
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      DEX activity is harder to report than exchange activity because there is no single statement. Perp closes,
+      funding, staking rewards, airdrops, bridges and LP positions each create a different record. This page is about
+      reconstructing those records correctly — not about a specific country's rates.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Updated <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> · not tax advice
+    </p>
+  </header>
+
+  <section class="bg-amber-500/5 border border-amber-400/20 rounded-xl p-5 space-y-2" aria-label="Tax disclaimer">
+    <p class="text-[11px] font-mono uppercase tracking-widest text-amber-200">Scope</p>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Tax treatment depends on your residence, citizenship and the character of the activity. Nothing here is tax,
+      legal or accounting advice. Use it as a checklist for the data you need, then confirm the treatment with a
+      qualified professional in your jurisdiction.
+    </p>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="events-heading">
+    <h2 id="events-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The events to capture</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      <li><strong class="text-slate-300">Perp opens and closes</strong> — realised PnL on close, plus fees.</li>
+      <li><strong class="text-slate-300">Funding payments</strong> — income or expense depending on direction and jurisdiction.</li>
+      <li><strong class="text-slate-300">Trading fees</strong> — often deductible against gains, but only if recorded.</li>
+      <li><strong class="text-slate-300">Staking and Earn rewards</strong> — asBNB NAV growth, USDF/asUSDF distributions, ALP NAV changes.</li>
+      <li><strong class="text-slate-300">Airdrops</strong> — usually income at receipt, with a cost basis for later disposal.</li>
+      <li><strong class="text-slate-300">Bridges</strong> — often not a disposal, but the transfer must be tracked to preserve basis.</li>
+      <li><strong class="text-slate-300">Liquidations</strong> — realised loss plus the liquidation fee.</li>
+      <li><strong class="text-slate-300">Referral commissions</strong> — income in most jurisdictions.</li>
+      <li><strong class="text-slate-300">Token swaps</strong> — including USDT–USDC and small-asset conversions.</li>
+    </ul>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="sources-heading">
+    <h2 id="sources-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Where the data lives</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Aster account</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Trade history, funding, fees and positions. Export or query before closing the account.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Aster API</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">For high-volume accounts, pulls fills and funding without manual exports. See the <a href="/aster-dex/api/" class="text-sky-400 hover:text-sky-300">API guide</a>.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Explorers</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Deposits and withdrawals on BNB Chain, Ethereum, Arbitrum, Solana and SUI. Needed to tie the account back to the wallet.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="perps-heading">
+    <h2 id="perps-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Perpetuals: realised, not unrealised</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Opening a perp is usually not a disposal; closing it realises the PnL. The trap is treating an open position's
+      unrealised gain as taxable, or forgetting that funding has been accruing the whole time. Reconstruct the position
+      lifecycle: open, every funding payment, fees, partial closes, final close.
+    </p>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="yield-heading">
+    <h2 id="yield-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Earn products need a different treatment</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      asBNB, asBTC and asUSDF accrue value into the token's net asset value rather than paying a separate dividend. That
+      means the reward is embedded in the token price, and it becomes realised when you sell or redeem. ALP is a pool
+      token whose NAV moves with profit and loss, so part of the change is yield and part is capital. Record the mint,
+      the NAV at each reporting date, and the redemption separately.
+    </p>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      asCAKE is in wind-down. Redemptions to CAKE after April 2025 are disposals and should be recorded like any other
+      token swap.
+    </p>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="mistakes-heading">
+    <h2 id="mistakes-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Common gaps</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      <li>Using only the exchange statement and missing on-chain deposits.</li>
+      <li>Ignoring funding because it does not appear as a trade.</li>
+      <li>Treating a bridge transfer as a disposal, or losing the original cost basis.</li>
+      <li>Recording airdrops at zero cost and later overpaying tax on the full sale.</li>
+      <li>Not recording fees, which are often the easiest deduction to support.</li>
+      <li>Assuming one jurisdiction's wash-sale or loss rules apply everywhere.</li>
+    </ul>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/api/" class="text-sky-400 hover:text-sky-300">API</a> ·
+      <a href="/aster-dex/earn/" class="text-sky-400 hover:text-sky-300">Earn products</a> ·
+      <a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300">eligibility</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

@@ -1,0 +1,206 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import BackgroundDecor from "../../components/sections/BackgroundDecor.astro";
+import Header from "../../components/sections/Header.astro";
+import Breadcrumbs from "../../components/sections/Breadcrumbs.astro";
+import Footer from "../../components/sections/Footer.astro";
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { buildBreadcrumbs, buildContentGraph } from "../../lib/schema";
+import { PERSON_ID, SITE_URL } from "../../entity";
+import { PRACTICES, formatDate, isoDate, readingTime } from "../../lib/research";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("research");
+  return articles.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+type Props = { entry: CollectionEntry<"research"> };
+
+const { entry } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const practice = PRACTICES[entry.data.practice];
+const url = `${SITE_URL}/research/${entry.id}/`;
+const hubUrl = `${SITE_URL}${practice.hubPath}`;
+const published = entry.data.published;
+const modified = entry.data.updated ?? published;
+const minutes = readingTime(entry.body);
+const wordCount = entry.body?.trim().split(/\s+/).filter(Boolean).length ?? 0;
+
+const all = await getCollection("research");
+const related = entry.data.related
+  .map((slug) => all.find((article) => article.id === slug))
+  .filter((article): article is CollectionEntry<"research"> => Boolean(article));
+const siblings = all
+  .filter((article) => article.data.practice === entry.data.practice && article.id !== entry.id)
+  .sort((a, b) => +b.data.published - +a.data.published)
+  .slice(0, 2);
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Research", url: `${SITE_URL}/research/` },
+  { name: practice.hubTitle, url: hubUrl },
+  { name: entry.data.title, url },
+]);
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: entry.data.title,
+  name: entry.data.title,
+  description: entry.data.description,
+  url,
+  inLanguage: "en",
+  datePublished: isoDate(published),
+  dateModified: isoDate(modified),
+  author: { "@id": PERSON_ID },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${hubUrl}#collection` },
+  mainEntityOfPage: url,
+  articleSection: practice.label,
+  proficiencyLevel: "Expert",
+  wordCount,
+  image: [`${SITE_URL}/images/og-image.jpg`],
+  keywords: entry.data.topics.map((topic) => topic.name).join(", "),
+  about: entry.data.topics.map((topic) => ({
+    "@type": "Thing",
+    name: topic.name,
+    ...(topic.sameAs ? { sameAs: topic.sameAs } : {}),
+  })),
+  citation: entry.data.sources.map((source) => ({
+    "@type": "CreativeWork",
+    name: source.name,
+    url: source.url,
+    publisher: { "@type": "Organization", name: source.publisher },
+  })),
+};
+
+const graph = buildContentGraph([articleNode, breadcrumbs]);
+---
+
+<PageLayout
+  title={`${entry.data.title} | Maksim Sokal`}
+  description={entry.data.description}
+  canonical={url}
+  ogType="article"
+  graph={graph}
+  published={published}
+  modified={modified}
+>
+  <BackgroundDecor />
+
+  <Header
+    subtitle={practice.label}
+    logo={entry.data.practice === "defi" ? "/maksim-sokal-DeFi-analyst.svg" : "/maksim-sokal-SEO-expert.svg"}
+    links={[
+      { label: "DeFi Profile", href: "/" },
+      { label: "SEO Expert", href: "/seo-expert/" },
+      { label: "Research", href: "/research/" },
+      { label: "About", href: "/about/" },
+    ]}
+    ctaLabel="Contact"
+    ctaHref={entry.data.practice === "defi" ? "/#contact" : "/seo-expert/#contact"}
+  />
+
+  <Breadcrumbs
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Research", href: "/research/" },
+      { label: practice.hubTitle, href: practice.hubPath },
+      { label: entry.data.title },
+    ]}
+  />
+
+  <main id="main-content" class="relative z-10 max-w-3xl mx-auto px-6 py-12 md:py-20 flex-1 w-full">
+    <article class="space-y-8">
+      <header class="space-y-5">
+        <div class="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-widest text-sky-400">
+          <a href={practice.hubPath} class="hover:text-sky-300 transition-colors">{practice.label}</a>
+          <span class="text-slate-600" aria-hidden="true">/</span>
+          <time datetime={isoDate(published)}>{formatDate(published)}</time>
+          <span class="text-slate-600" aria-hidden="true">/</span>
+          <span>{minutes} min read</span>
+        </div>
+
+        <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+          {entry.data.title}
+        </h1>
+        <p class="text-sm md:text-base text-slate-300 leading-relaxed">{entry.data.dek}</p>
+
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 pt-4 border-t border-[#1e293b]/50 text-[11px] font-mono text-slate-400">
+          <span>
+            By{" "}
+            <a href="/about/" rel="author" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a>
+          </span>
+          <span class="text-slate-600" aria-hidden="true">·</span>
+          <span>{entry.data.practice === "defi" ? "DeFi Risk Analyst" : "SEO Strategist"}</span>
+          {entry.data.updated && isoDate(entry.data.updated) !== isoDate(published) && (
+            <>
+              <span class="text-slate-600" aria-hidden="true">·</span>
+              <span>Updated <time datetime={isoDate(entry.data.updated)}>{formatDate(entry.data.updated)}</time></span>
+            </>
+          )}
+        </div>
+      </header>
+
+      <div class="article-body">
+        <Content />
+      </div>
+
+      <section class="border-t border-[#1e293b]/60 pt-8 space-y-3" aria-labelledby="sources-heading">
+        <h2 id="sources-heading" class="font-display font-medium text-sm text-slate-200 tracking-wide">Sources</h2>
+        <ol class="space-y-2">
+          {entry.data.sources.map((source) => (
+            <li class="text-[11px] text-slate-400 leading-relaxed">
+              <a href={source.url} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">
+                {source.name}
+              </a>
+              <span class="text-slate-500"> — {source.publisher}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {related.length > 0 && (
+        <section class="space-y-4" aria-labelledby="related-heading">
+          <h2 id="related-heading" class="font-display font-medium text-sm text-slate-200 tracking-wide">Related research</h2>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {related.map((item) => (
+              <li>
+                <a href={`/research/${item.id}/`} class="group block h-full bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-4 space-y-1 transition-colors">
+                  <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">{PRACTICES[item.data.practice].label}</span>
+                  <span class="block text-xs text-slate-200 group-hover:text-sky-200 leading-relaxed">{item.data.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {siblings.length > 0 && (
+        <section class="space-y-4" aria-labelledby="more-heading">
+          <h2 id="more-heading" class="font-display font-medium text-sm text-slate-200 tracking-wide">More in {practice.hubTitle}</h2>
+          <ul class="space-y-2">
+            {siblings.map((item) => (
+              <li>
+                <a href={`/research/${item.id}/`} class="group flex items-start justify-between gap-4 text-xs text-slate-400 hover:text-sky-300 transition-colors">
+                  <span class="leading-relaxed">{item.data.title}</span>
+                  <span class="font-mono text-[10px] text-slate-500 group-hover:text-sky-400">{readingTime(item.body)} min</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <div class="flex flex-wrap gap-x-6 gap-y-2 border-t border-[#1e293b]/60 pt-6 text-[11px] font-mono">
+        <a href="/about/" class="text-sky-400 hover:text-sky-300">About the author →</a>
+        <a href={practice.profilePath} class="text-sky-400 hover:text-sky-300">{practice.profileLabel} →</a>
+        <a href={practice.hubPath} class="text-slate-400 hover:text-sky-300">All {practice.label} research →</a>
+      </div>
+    </article>
+  </main>
+
+  <Footer variant={entry.data.practice} />
+</PageLayout>

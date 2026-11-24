@@ -1,0 +1,179 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_EARN_PRODUCTS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/earn/`;
+const description =
+  "Aster Earn explained: asBNB, asBTC, asUSDF, ALP and the wind-down asCAKE — yield source, redemption terms, custody and risks.";
+
+const productNodes = ASTER_EARN_PRODUCTS.map((product) => ({
+  "@type": "Product",
+  "@id": `${url}#${product.id}`,
+  name: product.name,
+  description: `${product.yieldSource} ${product.note}`,
+  category: "Yield product",
+  brand: { "@id": ASTER_DEX_ID },
+  url: product.doc,
+}));
+
+const pageNode = {
+  "@type": "CollectionPage",
+  "@id": `${url}#collection`,
+  url,
+  name: "Aster Earn products",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+  dateModified: ASTER_LAST_VERIFIED,
+  about: { "@id": ASTER_DEX_ID },
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: ASTER_EARN_PRODUCTS.length,
+    itemListElement: ASTER_EARN_PRODUCTS.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: product.name,
+      item: { "@id": `${url}#${product.id}` },
+    })),
+  },
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Earn", url },
+]);
+
+const graph = buildAsterPageGraph([pageNode, ...productNodes, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Earn — asBNB, asBTC, asUSDF and ALP | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Earn" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Yield</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-relaxed">
+      Aster Earn
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Aster Earn wraps several different products under one interface. They do not share a risk profile: asBNB is liquid
+      staking with a Launchpool queue, asBTC is a managed strategy with a 14-day exit, asUSDF is a stablecoin strategy,
+      ALP is a market-making pool whose NAV can fall, and asCAKE is winding down.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}earn/overview`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official Earn overview</a>
+    </p>
+  </header>
+
+  <section class="bg-amber-500/5 border border-amber-400/20 rounded-xl p-5 space-y-2" aria-label="Yield disclaimer">
+    <p class="text-[11px] font-mono uppercase tracking-widest text-amber-200">About the APY figures</p>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Aster publishes "up to" APY figures for some products. They are variable, not guaranteed, and not a promise of
+      future return. This page describes the mechanism and the exit terms; it does not recommend a product.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="products-heading">
+    <h2 id="products-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The five products</h2>
+    <div class="space-y-3">
+      {ASTER_EARN_PRODUCTS.map((product) => (
+        <article class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="font-display text-base text-slate-100">{product.name}</h3>
+            <span
+              class:list={[
+                "text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded border",
+                product.status === "active"
+                  ? "text-emerald-300 bg-emerald-400/5 border-emerald-400/15"
+                  : "text-amber-300 bg-amber-400/5 border-amber-400/15",
+              ]}
+            >
+              {product.status === "active" ? "Active" : "Wind-down"}
+            </span>
+          </div>
+          <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <dt class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Deposit asset</dt>
+              <dd class="text-slate-300 leading-relaxed">{product.asset}</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Redemption</dt>
+              <dd class="text-slate-300 leading-relaxed">{product.redemption}</dd>
+            </div>
+          </dl>
+          <p class="text-xs text-slate-400 leading-relaxed">{product.yieldSource}</p>
+          <p class="text-[11px] text-slate-400 leading-relaxed">{product.note}</p>
+          <a href={product.doc} target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-sky-400 hover:text-sky-300">
+            Official {product.name} documentation ↗
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="custody-heading">
+    <h2 id="custody-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Where the assets sit</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Aster Earn is a CeDeFi structure: the smart contracts are onchain, but the underlying assets are held and deployed
+      through partners. asBTC and the USDF backing use Ceffu, an institutional custodian. USDF's strategy then opens
+      delta-neutral positions on Binance. That is a different trust model from a fully onchain vault, and it should be
+      priced into the position size.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="risk-heading">
+    <div class="space-y-3">
+      <h2 id="risk-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Risks to underwrite</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Smart contract risk in the minting and token contracts.</li>
+        <li>Custody and counterparty risk at Ceffu and the trading venues used for strategies.</li>
+        <li>Strategy risk: delta-neutral is low-directional, not risk-free.</li>
+        <li>Liquidity and queue risk during Launchpool periods (asBNB) or the 14-day exit (asBTC).</li>
+        <li>Peg risk for USDF and asUSDF.</li>
+        <li>NAV risk for ALP, where the pool can lose money.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">Questions before minting</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>What exactly do I receive on withdrawal — the original asset or a receipt token?</li>
+        <li>Is there a queue, and how long is it?</li>
+        <li>Which chain am I on, and does the product support it?</li>
+        <li>Who holds the underlying asset?</li>
+        <li>What happens to the yield if the strategy loses money?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-5 space-y-2">
+    <h2 class="font-display font-medium text-sm text-rose-200 tracking-wide">asCAKE status</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      asCAKE minting stopped on 23 April 2025 after CAKE Tokenomics 3.0 retired veCAKE and the gauge voting system.
+      Redemptions to CAKE are available. It remains in the contract registry and the audit library for completeness, not
+      as an active yield product.
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/usdf/" class="text-sky-400 hover:text-sky-300">USDF mechanics</a> ·
+      <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">contract registry</a> ·
+      <a href="/aster-dex/audits/" class="text-sky-400 hover:text-sky-300">audit reports</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

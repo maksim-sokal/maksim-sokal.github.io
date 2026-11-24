@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string;
+  dek: string;
+  href: string;
+  label: string;
+  date: string;
+  minutes: number;
+}
+
+const { title, dek, href, label, date, minutes } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group flex h-full flex-col gap-3 bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-6 transition-colors"
+>
+  <div class="flex flex-wrap items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-sky-400">
+    <span>{label}</span>
+    <span class="text-slate-600" aria-hidden="true">/</span>
+    <time>{date}</time>
+    <span class="text-slate-600" aria-hidden="true">/</span>
+    <span>{minutes} min</span>
+  </div>
+  <h3 class="font-display text-base text-slate-100 leading-snug group-hover:text-sky-200 transition-colors">
+    {title}
+  </h3>
+  <p class="text-xs text-slate-400 leading-relaxed">{dek}</p>
+</a>

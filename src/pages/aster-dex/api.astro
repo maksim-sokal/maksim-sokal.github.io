@@ -1,0 +1,856 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL, WEBSITE_ID } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import {
+  ASTER_AGENT_SKILLS,
+  ASTER_API_CHANGES,
+  ASTER_API_ENDPOINTS,
+  ASTER_API_FACTS,
+  ASTER_API_FAQ,
+  ASTER_API_STREAMS,
+  ASTER_API_SURFACES,
+  ASTER_DATA_PROVIDERS,
+  ASTER_DOCS,
+  ASTER_LAST_VERIFIED,
+} from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/api/`;
+const description =
+  "Aster DEX API guide: futures at fapi.asterdex.com, spot at sapi.asterdex.com, testnet, Chain RPC, V1 and V3 auth, exchangeInfo, WebSocket streams, rate limits and errors.";
+
+const webPageNode = {
+  "@type": "WebPage",
+  "@id": url,
+  url,
+  name: "Aster DEX API — Futures, Spot, Testnet and RPC",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": WEBSITE_ID },
+  mainEntity: { "@id": `${url}#article` },
+};
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Aster DEX API",
+  alternativeHeadline: "Futures, spot, testnet and Chain RPC",
+  name: "Aster DEX API",
+  description,
+  url,
+  mainEntityOfPage: { "@id": url },
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  proficiencyLevel: "Intermediate",
+  image: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/images/aster-api-key-creation.png`,
+    caption: "Aster API Management screen showing the Create API button and the Pro API tab",
+  },
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "API",
+  about: [
+    { "@id": `${url}#futures-api` },
+    { "@id": `${url}#spot-api` },
+    { "@id": `${url}#rpc` },
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Application programming interface" },
+    { "@type": "Thing", name: "Algorithmic trading", sameAs: "https://www.wikidata.org/wiki/Q139445" },
+    { "@type": "Thing", name: "REST", sameAs: "https://www.wikidata.org/wiki/Q749568" },
+    { "@type": "Thing", name: "WebSocket", sameAs: "https://en.wikipedia.org/wiki/WebSocket" },
+    { "@type": "Thing", name: "HMAC", sameAs: "https://www.wikidata.org/wiki/Q1669397" },
+    { "@type": "Thing", name: "EIP-712" },
+  ],
+  mentions: [
+    { "@type": "Organization", name: "Bitquery", sameAs: "https://bitquery.io/" },
+    { "@type": "Organization", name: "Aster AI Labs", sameAs: "https://www.asterlab.ai/" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Aster API overview", url: ASTER_API_FACTS.apiPage },
+    { "@type": "CreativeWork", name: "Aster futures API v3 reference", url: ASTER_API_FACTS.docs },
+    { "@type": "CreativeWork", name: "Aster spot API v3 reference", url: ASTER_API_FACTS.spotDocs },
+    { "@type": "CreativeWork", name: "Aster Chain RPC reference", url: ASTER_API_FACTS.rpcDocs },
+    { "@type": "CreativeWork", name: "Aster API changelog", url: ASTER_API_FACTS.changelog },
+  ],
+};
+
+const futuresApiNode = {
+  "@type": "WebAPI",
+  "@id": `${url}#futures-api`,
+  name: "Aster Futures API",
+  alternateName: "Aster DEX Futures API",
+  description:
+    "REST and WebSocket API for Aster perpetual futures: market data, account state, order management and user data streams.",
+  documentation: ASTER_API_FACTS.docs,
+  provider: { "@id": ASTER_DEX_ID },
+  termsOfService: `${ASTER_DOCS}resources/terms-and-conditions`,
+  url: ASTER_API_FACTS.restBase,
+  serviceType: "Perpetual futures trading API",
+};
+
+const spotApiNode = {
+  "@type": "WebAPI",
+  "@id": `${url}#spot-api`,
+  name: "Aster Spot API",
+  alternateName: "Aster DEX Spot API",
+  description:
+    "REST and WebSocket API for Aster spot markets: /api/v3 market data, spot orders, balances and user data streams.",
+  documentation: ASTER_API_FACTS.spotDocs,
+  provider: { "@id": ASTER_DEX_ID },
+  termsOfService: `${ASTER_DOCS}resources/terms-and-conditions`,
+  url: ASTER_API_FACTS.spotRestBase,
+  serviceType: "Spot trading API",
+};
+
+const rpcNode = {
+  "@type": "WebAPI",
+  "@id": `${url}#rpc`,
+  name: "Aster Chain RPC",
+  description:
+    "JSON-RPC 2.0 endpoint for Aster Chain: balances, open orders and fills via aster_* methods.",
+  documentation: ASTER_API_FACTS.rpcDocs,
+  provider: { "@id": ASTER_DEX_ID },
+  termsOfService: `${ASTER_DOCS}resources/terms-and-conditions`,
+  url: ASTER_API_FACTS.rpcBase,
+  serviceType: "JSON-RPC blockchain API",
+};
+
+const howToNode = {
+  "@type": "HowTo",
+  "@id": `${url}#howto-api-key`,
+  name: "How to create an Aster DEX API key",
+  step: [
+    {
+      "@type": "HowToStep",
+      name: "Open API Management",
+      text: "Log in to Aster and open API Management, then connect the wallet.",
+    },
+    {
+      "@type": "HowToStep",
+      name: "Create and label the key",
+      text: "Select Create API and label the key for the strategy that will use it.",
+    },
+    {
+      "@type": "HowToStep",
+      name: "Copy the credentials",
+      text: "Copy the API key and secret immediately; the secret is shown only once.",
+    },
+    {
+      "@type": "HowToStep",
+      name: "Restrict the key",
+      text: "Bind the key to a fixed IP and grant only the permissions the bot needs.",
+    },
+  ],
+};
+
+const faqNode = {
+  "@type": "FAQPage",
+  "@id": `${url}#faq`,
+  mainEntity: ASTER_API_FAQ.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "API", url },
+]);
+
+const graph = buildAsterPageGraph([
+  webPageNode,
+  articleNode,
+  futuresApiNode,
+  spotApiNode,
+  rpcNode,
+  howToNode,
+  faqNode,
+  breadcrumbs,
+]);
+
+const futuresEndpoints = ASTER_API_ENDPOINTS.filter((endpoint) => endpoint.path.startsWith("/fapi/"));
+const spotEndpoints = ASTER_API_ENDPOINTS.filter((endpoint) => endpoint.path.startsWith("/api/v3/"));
+const futuresStreams = ASTER_API_STREAMS.filter((stream) => stream.surface === "futures");
+const spotStreams = ASTER_API_STREAMS.filter((stream) => stream.surface === "spot");
+
+const toc = [
+  { href: "#surface-map", label: "API surfaces" },
+  { href: "#migration", label: "V1 to V3" },
+  { href: "#auth", label: "Authentication" },
+  { href: "#rate-limits", label: "Rate limits" },
+  { href: "#first-request", label: "First request" },
+  { href: "#exchangeinfo", label: "exchangeInfo" },
+  { href: "#market-data", label: "Futures endpoints" },
+  { href: "#spot", label: "Spot API" },
+  { href: "#websocket", label: "WebSocket" },
+  { href: "#testnet", label: "Testnet" },
+  { href: "#rpc", label: "Chain RPC" },
+  { href: "#errors", label: "Errors" },
+  { href: "#agents", label: "AI agent skills" },
+  { href: "#data-providers", label: "Indexed data" },
+  { href: "#changelog", label: "Changelog" },
+  { href: "#faq", label: "FAQ" },
+];
+---
+
+<AsterLayout
+  title="Aster DEX API — Futures, Spot, Testnet and RPC | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "API" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Developer</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Aster DEX API
+    </h1>
+    <p class="text-sm font-mono text-sky-200/90">Futures, spot, testnet and Chain RPC</p>
+    <p class="text-sm md:text-base text-slate-300 leading-relaxed">
+      <strong class="text-slate-100">Aster DEX API</strong> (also called Aster API, Aster Exchange API and Aster Pro API)
+      is the REST and WebSocket interface to Aster's futures and spot markets. Futures run on
+      <code class="text-sky-200">fapi.asterdex.com</code>, spot on <code class="text-sky-200">sapi.asterdex.com</code>,
+      and Aster Chain exposes a separate JSON-RPC endpoint. This guide covers the surfaces, versions, auth models and
+      limits that break integrations.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Level: Intermediate · Published 24 November 2026 · Updated 24 November 2026
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={ASTER_API_FACTS.apiPage} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official API overview</a>
+      {" · "}
+      <a href={ASTER_API_FACTS.docs} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">futures reference</a>
+      {" · "}
+      <a href={ASTER_API_FACTS.spotDocs} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">spot reference</a>
+    </p>
+  </header>
+
+  <aside class="bg-amber-500/5 border border-amber-400/20 rounded-xl p-5 space-y-2" aria-label="Disambiguation">
+    <p class="text-[11px] font-mono uppercase tracking-widest text-amber-200">Name disambiguation</p>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      “Aster API” is ambiguous. This page covers <strong class="text-slate-100">Aster DEX</strong>, the perpetual and spot
+      exchange. <a href="https://www.asterlab.ai/inference" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Aster AI Labs</a>{" "}
+      (asterlab.ai) is an unrelated LLM inference provider. If you are looking for an inference API, this is not the right
+      entity.
+    </p>
+  </aside>
+
+  <section class="grid grid-cols-1 sm:grid-cols-2 gap-3" aria-label="API quick reference">
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Futures REST</span>
+      <code class="block text-xs text-slate-200 break-all">{ASTER_API_FACTS.restBase}</code>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Futures WebSocket</span>
+      <code class="block text-xs text-slate-200 break-all">{ASTER_API_FACTS.wsBase}</code>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Spot REST</span>
+      <code class="block text-xs text-slate-200 break-all">{ASTER_API_FACTS.spotRestBase}</code>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Spot WebSocket</span>
+      <code class="block text-xs text-slate-200 break-all">{ASTER_API_FACTS.spotWsBase}</code>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Chain RPC</span>
+      <code class="block text-xs text-slate-200 break-all">{ASTER_API_FACTS.rpcBase}</code>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+      <span class="block text-[10px] font-mono uppercase tracking-widest text-sky-400">Migrations</span>
+      <span class="block text-xs text-slate-200">V1 keys sunset 2026-03-25 · V3 deposit rule 2026-09-01</span>
+    </div>
+  </section>
+
+  <nav class="bg-brand-900/25 border border-[#1e293b]/50 rounded-xl p-5" aria-label="On this page">
+    <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400 block mb-2">On this page</span>
+    <ul class="flex flex-wrap gap-x-4 gap-y-2">
+      {toc.map((item) => (
+        <li><a href={item.href} class="text-[11px] font-mono text-slate-400 hover:text-sky-300">{item.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+
+  <section id="surface-map" class="space-y-4 scroll-mt-24" aria-labelledby="surface-heading">
+    <h2 id="surface-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">API surfaces</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {ASTER_API_SURFACES.map((surface) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-3">
+          <h3 class="font-display text-sm text-slate-100">{surface.name}</h3>
+          <div class="space-y-1">
+            <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">REST</span>
+            {surface.rest.split(" · ").map((url) => (
+              <code class="block text-[11px] text-sky-300 break-all">{url}</code>
+            ))}
+          </div>
+          <div class="space-y-1">
+            <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">WebSocket</span>
+            {surface.stream.split(" · ").map((url) => (
+              <code class="block text-[11px] text-slate-400 break-all">{url}</code>
+            ))}
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed"><strong class="text-slate-300">Auth:</strong> {surface.auth}</p>
+          <p class="text-[11px] text-slate-400 leading-relaxed">{surface.note}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="migration" class="space-y-4 scroll-mt-24" aria-labelledby="migration-heading">
+    <h2 id="migration-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">V1 to V3: what changed and when</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">V1 — API key + HMAC</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Send <code>X-MBX-APIKEY</code>, add <code>timestamp</code> and optionally <code>recvWindow</code>, sign the
+          parameter string with HMAC SHA256. New V1 key creation stopped on 25 March 2026; existing keys still work.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">V3 — API Wallet + EIP-712</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Send <code>user</code> (main wallet), <code>signer</code> (API Wallet), a microsecond <code>nonce</code> and an
+          EIP-712 signature. V3 is built on Aster L1 and is the recommended path for new integrations.
+        </p>
+      </div>
+    </div>
+    <div class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-5 space-y-2">
+      <h3 class="font-display text-sm text-rose-200">Two dates that break integrations</h3>
+      <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc pl-5">
+        <li><strong>25 March 2026:</strong> new V1 API key creation ended. Existing V1 keys continue to work.</li>
+        <li><strong>1 September 2026:</strong> authenticated V3 endpoints require a completed deposit on the main wallet. Until then, requests return <code>-5050</code>, “This function can only be used after deposit.” Public market data, agent and builder endpoints are unaffected.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="auth" class="space-y-4 scroll-mt-24" aria-labelledby="auth-heading">
+    <h2 id="auth-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Authentication</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      The two models are not interchangeable. Confirm which one your key or API Wallet is provisioned for before writing
+      a signer.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Compatibility key (HMAC SHA256)</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Send the API key in <code>X-MBX-APIKEY</code>, add <code>timestamp</code> and optionally{" "}
+          <code>recvWindow</code> (default {ASTER_API_FACTS.defaultRecvWindowMs} ms), and sign the total parameter string
+          with HMAC SHA256 using the secret. The signature must be the last parameter.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">API Wallet / agent (EIP-712)</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Sign a <code>user</code> (master wallet) and <code>signer</code> (API Wallet) pair with a microsecond
+          <code>nonce</code> and an EIP-712 signature over the parameter string. The API Wallet is self-custodied: Aster
+          does not store the private key and cannot recover it.
+        </p>
+      </div>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+      <h3 class="font-display text-sm text-slate-100">Creating credentials</h3>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        Create keys in API Management. The flow is four steps:
+      </p>
+      <ol class="space-y-1.5 text-xs text-slate-400 leading-relaxed list-decimal pl-5">
+        <li><strong class="text-slate-300">Open API Management.</strong> Log in to Aster and open API Management, then connect the wallet.</li>
+        <li><strong class="text-slate-300">Create and label the key.</strong> Select Create API and label the key for the strategy that will use it.</li>
+        <li><strong class="text-slate-300">Copy the credentials.</strong> Copy the API key and secret immediately; the secret is shown only once.</li>
+        <li><strong class="text-slate-300">Restrict the key.</strong> Bind the key to a fixed IP and grant only the permissions the bot needs.</li>
+      </ol>
+      <p class="text-[11px] text-slate-400 leading-relaxed">
+        Each account supports up to {ASTER_API_FACTS.maxKeysPerAccount} keys. Keys that are no longer used should be deleted.
+      </p>
+      <figure class="space-y-2 pt-2">
+        <img
+          src="/images/aster-api-key-creation.png"
+          width="1682"
+          height="513"
+          alt="Aster API Management screen showing the Create API button, the Pro API tab and the list of API keys"
+          loading="lazy"
+          class="w-full rounded-lg border border-[#1e293b]/60"
+        />
+        <figcaption class="text-[10px] font-mono text-slate-500">
+          Aster API Management, captured December 2025. The <strong class="text-slate-400">Pro API</strong> tab is where
+          the agent/API Wallet flow begins. Labels and layout can change.
+        </figcaption>
+      </figure>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+      <h3 class="font-display text-sm text-slate-100">V3 nonce and nonceWindow</h3>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+        <li>The nonce is the current timestamp in microseconds and is valid within ±{ASTER_API_FACTS.nonceWindowSeconds} seconds of server time.</li>
+        <li>Only the most recent 100 nonces per agent address are retained; older or duplicated values are rejected.</li>
+        <li><code>nonceWindow</code> is optional, 1–60,000 ms, measured from the nonce. If the sequencer misses the deadline, the request is rejected with code -4227 and never included in a block.</li>
+        <li>It applies to sequencer-submitted actions such as placing, modifying and cancelling orders, not to read-only endpoints.</li>
+      </ul>
+    </div>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Security type</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">What it requires</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">NONE</td><td class="px-4 py-3 text-xs text-slate-400">Public endpoint; no key.</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">TRADE</td><td class="px-4 py-3 text-xs text-slate-400">Valid signer and signature.</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">USER_DATA</td><td class="px-4 py-3 text-xs text-slate-400">Valid signer and signature.</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">USER_STREAM</td><td class="px-4 py-3 text-xs text-slate-400">Valid signer and signature for the listen key.</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">MARKET_DATA</td><td class="px-4 py-3 text-xs text-slate-400">Public, except endpoints that still require a key.</td></tr>
+          <tr><td class="px-4 py-3 text-xs text-slate-300 font-mono">TRANSFER / WITHDRAW</td><td class="px-4 py-3 text-xs text-slate-400">Signed; not needed for a trading bot.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="rate-limits" class="space-y-4 scroll-mt-24" aria-labelledby="limits-heading">
+    <h2 id="limits-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Rate limits</h2>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Surface</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Weight/min</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Orders/min</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Orders/10s</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">WS inbound</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-[#1e293b]/30">
+            <td class="px-4 py-3 text-xs text-slate-200">Futures</td>
+            <td class="px-4 py-3 text-xs text-slate-300 font-mono">{ASTER_API_FACTS.requestWeightPerMinute.toLocaleString("en-US")}</td>
+            <td class="px-4 py-3 text-xs text-slate-300 font-mono">{ASTER_API_FACTS.ordersPerMinute.toLocaleString("en-US")}</td>
+            <td class="px-4 py-3 text-xs text-slate-300 font-mono">{ASTER_API_FACTS.ordersPerTenSeconds}</td>
+            <td class="px-4 py-3 text-xs text-slate-300 font-mono">10/sec</td>
+          </tr>
+          <tr>
+            <td class="px-4 py-3 text-xs text-slate-200">Spot</td>
+            <td class="px-4 py-3 text-xs text-slate-300 font-mono">{ASTER_API_FACTS.spotWeightPerMinute.toLocaleString("en-US")}</td>
+            <td class="px-4 py-3 text-xs text-slate-300 font-mono">{ASTER_API_FACTS.spotOrdersPerMinute.toLocaleString("en-US")}</td>
+            <td class="px-4 py-3 text-xs text-slate-300 font-mono">{ASTER_API_FACTS.spotOrdersPerTenSeconds}</td>
+            <td class="px-4 py-3 text-xs text-slate-300 font-mono">5/sec</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      <li>Weight is enforced per IP; order limits are enforced per account.</li>
+      <li>Read <code>X-MBX-USED-WEIGHT-(interval)</code> and <code>X-MBX-ORDER-COUNT-(interval)</code> from the response headers.</li>
+      <li>A 429 means back off. A 418 means the IP is banned; durations scale from 2 minutes to 3 days.</li>
+      <li>Futures allows 200 streams per connection and 24-hour connections; spot allows 5 inbound messages per second.</li>
+    </ul>
+  </section>
+
+  <section id="first-request" class="space-y-4 scroll-mt-24" aria-labelledby="first-heading">
+    <h2 id="first-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">First request: futures and spot</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      The ping endpoints are public. A successful ping returns an empty JSON object and confirms connectivity without
+      authentication.
+    </p>
+    <pre class="bg-brand-950/70 border border-[#1e293b]/60 rounded-xl p-5 overflow-x-auto"><code class="text-xs text-sky-200">{`# Futures
+curl -X GET "https://fapi.asterdex.com/fapi/v1/ping"
+# {}
+
+# Spot
+curl -X GET "https://sapi.asterdex.com/api/v3/ping"
+# {}`}</code></pre>
+    <p class="text-[11px] text-slate-400">
+      The same routes respond under <code>/fapi/v3/</code>. Spot uses <code>/api/v3/</code> throughout.
+    </p>
+  </section>
+
+  <section id="exchangeinfo" class="space-y-4 scroll-mt-24" aria-labelledby="exchange-heading">
+    <h2 id="exchange-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">exchangeInfo: the trading rulebook</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Futures <code>/fapi/v1/exchangeInfo</code> and <code>/fapi/v3/exchangeInfo</code> return symbols, order types,
+      time-in-force values, filters and rate limits. Spot <code>/api/v3/exchangeInfo</code> returns the same shape for spot
+      markets. An algorithm that ignores the filters will send orders the matching engine rejects.
+    </p>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Filter</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Field to use</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">What it controls</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">PRICE_FILTER</td><td class="px-4 py-3 text-xs text-slate-400 font-mono">tickSize</td><td class="px-4 py-3 text-xs text-slate-400">Minimum price increment</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">LOT_SIZE</td><td class="px-4 py-3 text-xs text-slate-400 font-mono">stepSize</td><td class="px-4 py-3 text-xs text-slate-400">Quantity increment</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">MARKET_LOT_SIZE</td><td class="px-4 py-3 text-xs text-slate-400 font-mono">stepSize</td><td class="px-4 py-3 text-xs text-slate-400">Market-order quantity limits</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">MIN_NOTIONAL</td><td class="px-4 py-3 text-xs text-slate-400 font-mono">notional</td><td class="px-4 py-3 text-xs text-slate-400">Minimum order value</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">PERCENT_PRICE</td><td class="px-4 py-3 text-xs text-slate-400 font-mono">multiplierUp/Down</td><td class="px-4 py-3 text-xs text-slate-400">Allowed distance from mark price</td></tr>
+          <tr><td class="px-4 py-3 text-xs text-slate-300 font-mono">MAX_NUM_ORDERS</td><td class="px-4 py-3 text-xs text-slate-400 font-mono">limit</td><td class="px-4 py-3 text-xs text-slate-400">Open orders per symbol</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre class="bg-brand-950/70 border border-[#1e293b]/60 rounded-xl p-5 overflow-x-auto"><code class="text-xs text-sky-200">{`// BTCUSDT futures, trimmed from /fapi/v1/exchangeInfo
+{
+  "symbol": "BTCUSDT",
+  "status": "TRADING",
+  "orderTypes": ["LIMIT","MARKET","STOP","STOP_MARKET","TAKE_PROFIT","TAKE_PROFIT_MARKET","TRAILING_STOP_MARKET"],
+  "timeInForce": ["GTC","IOC","GTX","HIDDEN"],
+  "filters": [
+    {"filterType":"PRICE_FILTER","tickSize":"0.1"},
+    {"filterType":"LOT_SIZE","stepSize":"0.001"},
+    {"filterType":"MIN_NOTIONAL","notional":"5"}
+  ]
+}`}</code></pre>
+    <p class="text-[11px] text-slate-400">
+      Do not use <code>pricePrecision</code> or <code>quantityPrecision</code> as tick or step size. Read the filter
+      values. <code>HIDDEN</code> is a time-in-force value used by hidden orders; it is not a separate order type.
+    </p>
+  </section>
+
+  <section id="market-data" class="space-y-4 scroll-mt-24" aria-labelledby="market-heading">
+    <h2 id="market-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Futures endpoints</h2>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Method</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Path</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Purpose</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Auth</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          {futuresEndpoints.map((endpoint) => (
+            <tr class="border-b border-[#1e293b]/30 last:border-b-0">
+              <td class="px-4 py-3 text-xs text-slate-300 font-mono">{endpoint.method}</td>
+              <td class="px-4 py-3 text-xs text-sky-300 font-mono whitespace-nowrap">{endpoint.path}</td>
+              <td class="px-4 py-3 text-xs text-slate-400">{endpoint.purpose}</td>
+              <td class="px-4 py-3 text-xs text-slate-400">{endpoint.auth}</td>
+              <td class="px-4 py-3 text-xs text-slate-400">{endpoint.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="spot" class="space-y-4 scroll-mt-24" aria-labelledby="spot-heading">
+    <h2 id="spot-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Spot API</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Spot V3 is a separate API on <code>{ASTER_API_FACTS.spotRestBase}</code> with endpoints under{" "}
+      <code>/api/v3/*</code> and a WebSocket at <code>{ASTER_API_FACTS.spotWsBase}</code>. The live spot exchangeInfo
+      listed 79 symbols. Spot rate limits are higher than futures, but FOK is not supported for spot order placement.
+    </p>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Method</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Path</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Purpose</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Auth</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          {spotEndpoints.map((endpoint) => (
+            <tr class="border-b border-[#1e293b]/30 last:border-b-0">
+              <td class="px-4 py-3 text-xs text-slate-300 font-mono">{endpoint.method}</td>
+              <td class="px-4 py-3 text-xs text-sky-300 font-mono whitespace-nowrap">{endpoint.path}</td>
+              <td class="px-4 py-3 text-xs text-slate-400">{endpoint.purpose}</td>
+              <td class="px-4 py-3 text-xs text-slate-400">{endpoint.auth}</td>
+              <td class="px-4 py-3 text-xs text-slate-400">{endpoint.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-[11px] text-slate-400">
+      Spot depth weight is 2 for limits 5–50, 5 for 100, 10 for 500 and 20 for 1,000. Klines allow up to 1,500 points.
+      <code>historicalTrades</code> and <code>commissionRate</code> require a signed request.
+    </p>
+  </section>
+
+  <section id="websocket" class="space-y-4 scroll-mt-24" aria-labelledby="ws-heading">
+    <h2 id="ws-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">WebSocket streams</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Futures stream from <code>{ASTER_API_FACTS.wsBase}</code>; spot streams from{" "}
+      <code>{ASTER_API_FACTS.spotWsBase}</code>. Stream names and symbols must be lowercase. Combined streams wrap each
+      event as <code>{`{"stream":"...","data":{...}}`}</code>.
+    </p>
+    <pre class="bg-brand-950/70 border border-[#1e293b]/60 rounded-xl p-5 overflow-x-auto"><code class="text-xs text-sky-200">{`{
+  "method": "SUBSCRIBE",
+  "params": ["btcusdt@aggTrade", "btcusdt@bookTicker"],
+  "id": 1
+}`}</code></pre>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Surface</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Stream</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Payload</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[...futuresStreams, ...spotStreams].map((stream) => (
+            <tr class="border-b border-[#1e293b]/30 last:border-b-0">
+              <td class="px-4 py-3 text-xs text-slate-300 font-mono">{stream.surface}</td>
+              <td class="px-4 py-3 text-xs text-sky-300 font-mono">{stream.name}</td>
+              <td class="px-4 py-3 text-xs text-slate-400">{stream.payload}</td>
+              <td class="px-4 py-3 text-xs text-slate-400">{stream.speed}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+      <h3 class="font-display text-sm text-slate-100">bookTicker payload</h3>
+      <pre class="bg-brand-950/70 border border-[#1e293b]/60 rounded-lg p-4 overflow-x-auto"><code class="text-xs text-sky-200">{`{
+  "e": "bookTicker",
+  "u": 400900217,
+  "s": "BTCUSDT",
+  "b": "25.35190000",  // best bid price
+  "B": "31.21000000",  // best bid qty
+  "a": "25.36520000",  // best ask price
+  "A": "40.66000000"   // best ask qty
+}`}</code></pre>
+      <p class="text-[11px] text-slate-400">
+        For order and position updates, open a user data stream with a listen key and keep it alive. Futures allows 10
+        inbound messages per second; spot allows 5.
+      </p>
+    </div>
+  </section>
+
+  <section id="testnet" class="space-y-4 scroll-mt-24" aria-labelledby="testnet-heading">
+    <h2 id="testnet-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Testnet</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Testnet is a separate environment with its own API Wallet and symbols. Do not use mainnet keys, and do not assume a
+      testnet symbol exists on mainnet.
+    </p>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Surface</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">REST</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">WebSocket</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-[#1e293b]/30">
+            <td class="px-4 py-3 text-xs text-slate-200">Futures testnet</td>
+            <td class="px-4 py-3 text-[11px] text-sky-300 font-mono break-all">{ASTER_API_FACTS.futuresTestnetRest}</td>
+            <td class="px-4 py-3 text-[11px] text-slate-400 font-mono break-all">{ASTER_API_FACTS.futuresTestnetWs}</td>
+          </tr>
+          <tr>
+            <td class="px-4 py-3 text-xs text-slate-200">Spot testnet</td>
+            <td class="px-4 py-3 text-[11px] text-sky-300 font-mono break-all">{ASTER_API_FACTS.spotTestnetRest}</td>
+            <td class="px-4 py-3 text-[11px] text-slate-400 font-mono break-all">{ASTER_API_FACTS.spotTestnetWs}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="rpc" class="space-y-4 scroll-mt-24" aria-labelledby="rpc-heading">
+    <h2 id="rpc-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Aster Chain RPC</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Aster Chain exposes a JSON-RPC 2.0 endpoint at <code>{ASTER_API_FACTS.rpcBase}</code>. It is separate from the
+      trading API and is used for chain-level reads.
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {["aster_getBalance", "aster_openOrders", "aster_userFills", "aster_spotOpenOrders", "aster_spotUserFills"].map((method) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-4">
+          <code class="text-xs text-sky-300">{method}</code>
+        </div>
+      ))}
+    </div>
+    <p class="text-[11px] text-slate-400">
+      Use RPC for balance and fill reads; use the REST API for market data and order management. See the{" "}
+      <a href={ASTER_API_FACTS.rpcDocs} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Aster Chain RPC reference</a>.
+    </p>
+  </section>
+
+  <section id="errors" class="space-y-4 scroll-mt-24" aria-labelledby="errors-heading">
+    <h2 id="errors-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Error handling</h2>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Code</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Meaning</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">400</td><td class="px-4 py-3 text-xs text-slate-400">Malformed request or bad parameter</td><td class="px-4 py-3 text-xs text-slate-400">Fix the request; do not retry unchanged</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">403</td><td class="px-4 py-3 text-xs text-slate-400">WAF limit</td><td class="px-4 py-3 text-xs text-slate-400">Stop and investigate</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">418</td><td class="px-4 py-3 text-xs text-slate-400">IP auto-banned</td><td class="px-4 py-3 text-xs text-slate-400">Wait out the ban; rotate carefully</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">429</td><td class="px-4 py-3 text-xs text-slate-400">Rate limit</td><td class="px-4 py-3 text-xs text-slate-400">Back off with jitter</td></tr>
+          <tr class="border-b border-[#1e293b]/30"><td class="px-4 py-3 text-xs text-slate-300 font-mono">5XX</td><td class="px-4 py-3 text-xs text-slate-400">Server-side error</td><td class="px-4 py-3 text-xs text-slate-400">Retry with backoff, then reconcile</td></tr>
+          <tr><td class="px-4 py-3 text-xs text-slate-300 font-mono">503</td><td class="px-4 py-3 text-xs text-slate-400">Timeout; execution status unknown</td><td class="px-4 py-3 text-xs text-slate-400">Query the order before retrying</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre class="bg-brand-950/70 border border-[#1e293b]/60 rounded-xl p-5 overflow-x-auto"><code class="text-xs text-sky-200">{`{"code": -1121, "msg": "Invalid symbol."}
+{"code": -1115, "msg": "Invalid TIF"}          // spot FOK
+{"code": -4227, "msg": "Request was not processed within the nonceWindow"}
+{"code": -5050, "msg": "This function can only be used after deposit"}`}</code></pre>
+  </section>
+
+  <section id="agents" class="space-y-4 scroll-mt-24" aria-labelledby="agents-heading">
+    <h2 id="agents-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">AI agent skills</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Aster publishes an official AgentSkills repository for futures and spot testnet. The skills are Markdown
+      instructions loaded on demand by an agent, not a Python SDK.
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {ASTER_AGENT_SKILLS.map((group) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+          <span class="text-2xl font-display text-slate-100">{group.count}</span>
+          <span class="block text-xs text-slate-200">{group.name}</span>
+          <span class="block text-[11px] text-slate-400 leading-relaxed">{group.note}</span>
+        </div>
+      ))}
+    </div>
+    <p class="text-[11px] text-slate-400">
+      Source: <a href={ASTER_API_FACTS.skillsHub} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">asterdex/aster-skills-hub</a>.
+      The spot skills target testnet; the futures skills cover both V1 and V3. A third-party directory listing is available on{" "}
+      <a href="https://www.typingmind.com/skills/asterdex-aster-api-spot-market-data-v3" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">TypingMind</a>.
+    </p>
+  </section>
+
+  <section id="data-providers" class="space-y-4 scroll-mt-24" aria-labelledby="providers-heading">
+    <h2 id="providers-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Official API vs indexed data</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      The official API is for trading and account state. Indexed providers decode on-chain events for analytics and
+      backfills. They solve different jobs and should not be confused.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Official Aster API</h3>
+        <ul class="space-y-1.5 text-xs text-slate-400 leading-relaxed">
+          <li>Orders, positions, balances, funding and user data streams.</li>
+          <li>Auth via V1 HMAC or V3 API Wallet.</li>
+          <li>Real-time exchange state, not historical analytics.</li>
+        </ul>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Indexed data providers</h3>
+        <ul class="space-y-1.5 text-xs text-slate-400 leading-relaxed">
+          <li>Decoded trades, funding settlements, liquidations and order fills.</li>
+          <li>GraphQL for history, WebSocket for streams, Kafka for pipelines.</li>
+          <li>Useful for backtesting, dashboards and cross-venue analytics.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="space-y-3">
+      {ASTER_DATA_PROVIDERS.map((provider) => (
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="font-display text-sm text-slate-100">{provider.name}</h3>
+            <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">{provider.type}</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">{provider.description}</p>
+          <a href={provider.url} target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-sky-400 hover:text-sky-300">
+            Aster DEX data product ↗
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="changelog" class="space-y-4 scroll-mt-24" aria-labelledby="changelog-heading">
+    <h2 id="changelog-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Changelog watch</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      The official CHANGELOG is the source for breaking changes. These are the entries most likely to affect an
+      integration:
+    </p>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      {ASTER_API_CHANGES.map((entry) => (
+        <li><strong class="text-slate-300">{entry.date}:</strong> {entry.change}</li>
+      ))}
+    </ul>
+    <p class="text-[11px] text-slate-400">
+      Full history: <a href={ASTER_API_FACTS.changelog} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Aster API CHANGELOG</a>.
+    </p>
+  </section>
+
+  <section id="sdk" class="space-y-3 scroll-mt-24" aria-labelledby="sdk-heading">
+    <h2 id="sdk-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">SDK and GitHub</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      <strong class="text-slate-200">No verified official Python package was found at the time of writing.</strong> The
+      legacy guide referenced <code>aster-connector-python</code> with a <code>Frenchie</code> client; that package does
+      not resolve on PyPI or GitHub, so the import example is not safe to reuse.
+    </p>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      The official reference includes Python EIP-712 signing examples. The AgentSkills repository is the closest official
+      integration layer. Start there:
+      <a href={ASTER_API_FACTS.docs} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">futures V3</a>
+      {" · "}
+      <a href={ASTER_API_FACTS.spotDocs} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">spot V3</a>
+      {" · "}
+      <a href={ASTER_API_FACTS.github} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">api-docs repository</a>.
+    </p>
+  </section>
+
+  <section id="bot" class="space-y-3 scroll-mt-24" aria-labelledby="bot-heading">
+    <h2 id="bot-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Trading bot checklist</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+        <li>One key and one API Wallet per strategy; separate permissions.</li>
+        <li>Bind the key to the bot's egress IP.</li>
+        <li>Store secrets in a secret manager, never in the repository or logs.</li>
+        <li>Generate microsecond nonces carefully; do not reuse them across agents.</li>
+        <li>Use <code>recvWindow</code> ≤ 5,000 ms and handle nonce rejections.</li>
+      </ul>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+        <li>Subscribe to the user data stream for order and position state.</li>
+        <li>Budget request weight; cache <code>exchangeInfo</code> and refresh it deliberately.</li>
+        <li>On 503, query before retrying; on 418, stop.</li>
+        <li>Use testnet for first deployment and separate hosts for futures and spot.</li>
+        <li>Implement a kill switch that cancels orders and flattens positions.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="faq" class="space-y-4 scroll-mt-24" aria-labelledby="faq-heading">
+    <h2 id="faq-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">FAQ</h2>
+    <div class="space-y-5">
+      {ASTER_API_FAQ.map((item) => (
+        <div class="space-y-1">
+          <h3 class="font-display text-sm text-slate-100">{item.question}</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">{item.answer}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-3">
+    <p class="text-[11px] text-slate-400">
+      Sources: <a href={ASTER_API_FACTS.apiPage} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Aster API overview</a> ·
+      <a href={ASTER_API_FACTS.docs} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">futures V3 reference</a> ·
+      <a href={ASTER_API_FACTS.spotDocs} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">spot V3 reference</a> ·
+      <a href={ASTER_API_FACTS.rpcDocs} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Chain RPC</a> ·
+      <a href={ASTER_API_FACTS.changelog} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">changelog</a> ·
+      <a href={ASTER_API_FACTS.skillsHub} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">skills hub</a> ·
+      <a href={`${ASTER_DOCS}resources/terms-and-conditions`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Terms of service</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> · Published by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

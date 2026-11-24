@@ -1,0 +1,165 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_BRIDGE_FACTS, ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/deposits-withdrawals/`;
+const description =
+  "Aster deposits and withdrawals: the five bridge chains, validator confirmations, processing times, negative balances and the mistakes that delay funds.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Deposits and withdrawals",
+  alternativeHeadline: "Aster deposits and withdrawals",
+  name: "Aster deposits and withdrawals",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Account",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Cryptocurrency wallet" },
+    { "@type": "Thing", name: "Bridge (blockchain)" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Deposit and withdrawal guide", url: `${ASTER_DOCS}getting-started/deposit-and-withdrawal-guide` },
+    { "@type": "CreativeWork", name: "Aster Chain overview", url: `${ASTER_DOCS}aster-chain/overview` },
+    { "@type": "CreativeWork", name: "Email login", url: `${ASTER_DOCS}getting-started/login-via-email-address` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Deposits & withdrawals", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Deposits and Withdrawals — Chains, Times and Failures | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Deposits & withdrawals" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Account</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Deposits and withdrawals
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Funds enter Aster through a five-chain bridge and settle on Aster Chain. Most support tickets come from three
+      mistakes: the wrong network, an asset that is not supported by the account type, and a withdrawal attempted with a
+      negative balance.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}getting-started/deposit-and-withdrawal-guide`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official guide</a>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="bridge-heading">
+    <h2 id="bridge-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">How the bridge works</h2>
+    <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc pl-5">
+      {ASTER_BRIDGE_FACTS.map((fact) => (
+        <li>{fact}</li>
+      ))}
+    </ul>
+    <p class="text-[11px] text-slate-400">
+      Addresses: <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">five-chain contract registry</a>.
+      Never use an address from a message, ad or search result.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="steps-heading">
+    <h2 id="steps-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Step by step</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Deposit</h3>
+        <ol class="space-y-1.5 text-xs text-slate-400 leading-relaxed list-decimal pl-4">
+          <li>Connect the wallet or sign in with email.</li>
+          <li>Open Deposit and select the source chain and asset.</li>
+          <li>Send to the displayed bridge address, or use the in-app flow.</li>
+          <li>Wait for validator confirmation; 1–5 minutes in normal conditions.</li>
+          <li>Confirm the balance appears in Portfolio.</li>
+        </ol>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Withdraw</h3>
+        <ol class="space-y-1.5 text-xs text-slate-400 leading-relaxed list-decimal pl-4">
+          <li>Open Withdraw and select the destination network and token.</li>
+          <li>Enter the amount and confirm the fee shown.</li>
+          <li>Approve the transaction in your wallet.</li>
+          <li>Wait for the batched withdrawal; about 30 seconds in normal conditions.</li>
+          <li>Ethereum destinations can take longer depending on network conditions.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="email-heading">
+    <h2 id="email-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Email accounts are not the same as wallet accounts</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Email login creates a generated wallet. At the time of verification, it supports <strong>USDT on Arbitrum One
+      only</strong>. Sending another asset or using another network can lose the funds; the docs state Aster is not
+      liable for refunds in that case. Wallet logins on BNB Chain need at least 0.001 BNB for gas.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="negative-heading">
+    <h2 id="negative-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Negative balances</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      USDT is the settlement asset, but multiple assets can be used as collateral. Realised losses, funding and
+      commissions can leave a negative balance in one asset. Withdrawals are blocked until it is resolved. Use
+      <strong>Rebalance</strong> on the withdraw screen, or deposit the exact amount owed. Rebalancing appears as
+      "auto-conversion" in the transaction history.
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="errors-heading">
+    <div class="space-y-3">
+      <h2 id="errors-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Common failures</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Depositing to the wrong chain or an unsupported asset.</li>
+        <li>Using an email account for a non-Arbitrum deposit.</li>
+        <li>Withdrawing while a balance is negative.</li>
+        <li>Assuming the bridge is instant during congestion.</li>
+        <li>Sending to an address copied from a chat or advertisement.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">If funds do not arrive</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Check the source transaction on the origin chain explorer.</li>
+        <li>Confirm the destination address matches the registry.</li>
+        <li>Wait past the normal window before escalating; Ethereum can be slower.</li>
+        <li>Use the official support channel listed in the docs, not a direct message.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/getting-started/" class="text-sky-400 hover:text-sky-300">getting started</a> ·
+      <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">contract registry</a> ·
+      <a href="/aster-dex/fees/" class="text-sky-400 hover:text-sky-300">withdrawal fees</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

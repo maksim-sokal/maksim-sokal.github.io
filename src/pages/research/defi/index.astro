@@ -1,0 +1,120 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import BackgroundDecor from "../../../components/sections/BackgroundDecor.astro";
+import Header from "../../../components/sections/Header.astro";
+import Breadcrumbs from "../../../components/sections/Breadcrumbs.astro";
+import Footer from "../../../components/sections/Footer.astro";
+import ResearchCard from "../../../components/sections/ResearchCard.astro";
+import { getCollection } from "astro:content";
+import { buildBreadcrumbs, buildContentGraph } from "../../../lib/schema";
+import { SITE_URL, WEBSITE_ID } from "../../../entity";
+import { PRACTICES, formatDate, isoDate, readingTime } from "../../../lib/research";
+
+const practice = PRACTICES.defi;
+const url = `${SITE_URL}${practice.hubPath}`;
+
+const articles = (await getCollection("research"))
+  .filter((entry) => entry.data.practice === "defi")
+  .sort((a, b) => +b.data.published - +a.data.published);
+
+const latest = articles[0]?.data.published ?? new Date();
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Research", url: `${SITE_URL}/research/` },
+  { name: practice.hubTitle, url },
+]);
+
+const pageNode = {
+  "@type": "CollectionPage",
+  "@id": `${url}#collection`,
+  url,
+  name: practice.hubTitle,
+  description: practice.description,
+  inLanguage: "en",
+  isPartOf: { "@id": WEBSITE_ID },
+  dateModified: isoDate(latest),
+  about: {
+    "@type": "Thing",
+    name: "Decentralized finance",
+    sameAs: "https://www.wikidata.org/wiki/Q4159573",
+  },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: articles.length,
+    itemListElement: articles.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: entry.data.title,
+      url: `${SITE_URL}/research/${entry.id}/`,
+    })),
+  },
+};
+
+const graph = buildContentGraph([pageNode, breadcrumbs]);
+---
+
+<PageLayout
+  title={`${practice.hubTitle} | Maksim Sokal`}
+  description={practice.description}
+  canonical={url}
+  graph={graph}
+  modified={latest}
+>
+  <BackgroundDecor />
+
+  <Header
+    subtitle="Research"
+    logo="/maksim-sokal-DeFi-analyst.svg"
+    links={[
+      { label: "DeFi Profile", href: "/" },
+      { label: "SEO Expert", href: "/seo-expert/" },
+      { label: "Research", href: "/research/" },
+      { label: "About", href: "/about/" },
+    ]}
+    ctaLabel="Contact"
+    ctaHref="/#contact"
+  />
+
+  <Breadcrumbs
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Research", href: "/research/" },
+      { label: practice.hubTitle },
+    ]}
+  />
+
+  <main id="main-content" class="relative z-10 max-w-5xl mx-auto px-6 py-12 md:py-20 flex-1 w-full space-y-12">
+    <header class="space-y-5 max-w-3xl">
+      <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Research Hub</span>
+      <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+        {practice.hubTitle}
+      </h1>
+      <p class="text-sm text-slate-300 leading-relaxed">{practice.description}</p>
+      <p class="text-[11px] font-mono text-slate-400">
+        {articles.length} {articles.length === 1 ? "paper" : "papers"} · updated {formatDate(latest)}
+      </p>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4" aria-label="Articles">
+      {articles.map((entry) => (
+        <ResearchCard
+          title={entry.data.title}
+          dek={entry.data.dek}
+          href={`/research/${entry.id}/`}
+          label={practice.label}
+          date={formatDate(entry.data.published)}
+          minutes={readingTime(entry.body)}
+        />
+      ))}
+    </section>
+
+    <section class="border-t border-[#1e293b]/60 pt-6 flex flex-wrap gap-x-6 gap-y-2 text-[11px] font-mono">
+      <a href={practice.profilePath} class="text-sky-400 hover:text-sky-300">{practice.profileLabel} →</a>
+      <a href="/research/seo/" class="text-slate-400 hover:text-sky-300">Search Strategy research →</a>
+      <a href="/about/" class="text-slate-400 hover:text-sky-300">About the author →</a>
+    </section>
+  </main>
+
+  <Footer variant="defi" />
+</PageLayout>

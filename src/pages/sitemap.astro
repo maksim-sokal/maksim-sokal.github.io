@@ -4,6 +4,34 @@ import BackgroundDecor from "../components/sections/BackgroundDecor.astro";
 import Header from "../components/sections/Header.astro";
 import Breadcrumbs from "../components/sections/Breadcrumbs.astro";
 import Footer from "../components/sections/Footer.astro";
+import { buildWebsiteNode, serializeGraph } from "../lib/schema";
+import type { JsonLdGraph } from "../types-schema";
+
+const graph: JsonLdGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://maksim-sokal.github.io/sitemap/#webpage",
+      url: "https://maksim-sokal.github.io/sitemap/",
+      name: "HTML Sitemap | Maksim Sokal",
+      description: "Complete index of all pages on the Maksim Sokal portfolio, including the DeFi profile, SEO expert profile and entity record.",
+      inLanguage: "en",
+      isPartOf: { "@id": "https://maksim-sokal.github.io/#website" },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://maksim-sokal.github.io/sitemap/#breadcrumbs",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://maksim-sokal.github.io/" },
+        { "@type": "ListItem", position: 2, name: "HTML Sitemap", item: "https://maksim-sokal.github.io/sitemap/" },
+      ],
+    },
+    buildWebsiteNode(),
+  ],
+};
+
+const serializedGraph = serializeGraph(graph);
 ---
 
 <!doctype html>
@@ -12,7 +40,7 @@ import Footer from "../components/sections/Footer.astro";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HTML Sitemap | Maksim Sokal</title>
-    <meta name="description" content="Complete index of the Maksim Sokal portfolio — DeFi Risk Analyst and SEO Expert profiles, with direct links to every in-page section." />
+    <meta name="description" content="Complete index of the Maksim Sokal portfolio — DeFi analyst profile, SEO expert profile and canonical entity record, with direct links to every section." />
     <meta name="author" content="Maksim Sokal" />
     <link rel="icon" type="image/svg+xml" href="/maksim-sokal-DeFi-analyst.svg">
     <meta name="robots" content="index, follow" />
@@ -30,7 +58,7 @@ import Footer from "../components/sections/Footer.astro";
     <meta property="og:site_name" content="Maksim Sokal — Professional Portfolio" />
     <meta property="og:url" content="https://maksim-sokal.github.io/sitemap/" />
     <meta property="og:title" content="HTML Sitemap | Maksim Sokal" />
-    <meta property="og:description" content="Complete index of all pages on the Maksim Sokal portfolio — DeFi Risk Analyst & Protocol Auditor profile and SEO Expert profile, with in-page section anchors." />
+    <meta property="og:description" content="Complete index of all pages on the Maksim Sokal portfolio — DeFi profile, SEO expert profile, entity record and research papers." />
     <meta property="og:image" content="https://maksim-sokal.github.io/images/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -40,49 +68,7 @@ import Footer from "../components/sections/Footer.astro";
     <meta name="twitter:description" content="Complete index of all pages on the Maksim Sokal portfolio." />
     <meta name="twitter:image" content="https://maksim-sokal.github.io/images/og-image.jpg" />
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebPage",
-          "@id": "https://maksim-sokal.github.io/sitemap/#webpage",
-          "url": "https://maksim-sokal.github.io/sitemap/",
-          "name": "HTML Sitemap | Maksim Sokal",
-          "description": "Complete index of all pages on the Maksim Sokal portfolio — DeFi Risk Analyst & Protocol Auditor profile and SEO Expert profile, with in-page section anchors.",
-          "inLanguage": "en",
-          "isPartOf": {
-            "@id": "https://maksim-sokal.github.io/#website"
-          }
-        },
-        {
-          "@type": "BreadcrumbList",
-          "@id": "https://maksim-sokal.github.io/sitemap/#breadcrumbs",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://maksim-sokal.github.io/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "HTML Sitemap",
-              "item": "https://maksim-sokal.github.io/sitemap/"
-            }
-          ]
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://maksim-sokal.github.io/#website",
-          "url": "https://maksim-sokal.github.io/",
-          "name": "Maksim Sokal — Professional Portfolio",
-          "inLanguage": "en"
-        }
-      ]
-    }
-    </script>
+    <script type="application/ld+json" is:inline set:html={serializedGraph} />
   </head>
   <body class="relative bg-[#0b0f17] text-slate-200 antialiased min-h-screen flex flex-col overflow-x-hidden">
     <a
@@ -99,6 +85,7 @@ import Footer from "../components/sections/Footer.astro";
       links={[
         { label: "DeFi Profile", href: "/" },
         { label: "SEO Expert", href: "/seo-expert/" },
+        { label: "Research", href: "/research/" },
         { label: "HTML Sitemap", href: "/sitemap/" },
       ]}
       ctaLabel="Contact"
@@ -117,7 +104,7 @@ import Footer from "../components/sections/Footer.astro";
         </p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-3">
           <h2 class="font-display font-medium text-slate-200 text-sm tracking-wide">Pages</h2>
           <ul class="space-y-2.5">
@@ -131,6 +118,12 @@ import Footer from "../components/sections/Footer.astro";
               <a href="/seo-expert/" class="group flex items-center justify-between gap-3 text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">
                 <span>SEO Expert Profile</span>
                 <span class="text-[9px] text-slate-400 group-hover:text-sky-400/70 transition-colors">/seo-expert/</span>
+              </a>
+            </li>
+            <li>
+              <a href="/about/" class="group flex items-center justify-between gap-3 text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">
+                <span>About — Entity Record</span>
+                <span class="text-[9px] text-slate-400 group-hover:text-sky-400/70 transition-colors">/about/</span>
               </a>
             </li>
             <li>
@@ -165,6 +158,58 @@ import Footer from "../components/sections/Footer.astro";
             <li><a href="/seo-expert/#trust" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Trust &amp; Authority</a></li>
             <li><a href="/seo-expert/#transparency" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Transparency</a></li>
             <li><a href="/seo-expert/#contact" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-3">
+          <h2 class="font-display font-medium text-slate-200 text-sm tracking-wide">Research</h2>
+          <ul class="space-y-2.5">
+            <li><a href="/research/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Research index</a></li>
+            <li><a href="/research/defi/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">DeFi Risk Research</a></li>
+            <li><a href="/research/seo/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Search Strategy Research</a></li>
+            <li><a href="/research/economic-invariant-audits/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">What an economic invariant audit proves</a></li>
+            <li><a href="/research/aster-dex-contract-verification/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Verifying a DEX contract registry</a></li>
+            <li><a href="/research/read-only-reentrancy-concentrated-liquidity/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Read-only reentrancy in CL routers</a></li>
+            <li><a href="/research/sybil-adjusted-tvl/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Sybil-adjusted TVL</a></li>
+            <li><a href="/research/entity-seo-topical-map/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Entity SEO and topical maps</a></li>
+            <li><a href="/research/geo-aeo-ai-citations/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">How AI answer engines choose sources</a></li>
+          </ul>
+        </div>
+        <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-3">
+          <h2 class="font-display font-medium text-slate-200 text-sm tracking-wide">Aster DEX &amp; Trust</h2>
+          <ul class="space-y-2.5">
+            <li><a href="/aster-dex/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Aster DEX guide</a></li>
+            <li><a href="/aster-dex/contracts/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Contract registry</a></li>
+            <li><a href="/aster-dex/audits/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Audit reports</a></li>
+            <li><a href="/aster-dex/fees/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Fee schedule</a></li>
+            <li><a href="/aster-dex/eligibility/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Eligibility and risk</a></li>
+            <li><a href="/aster-dex/getting-started/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Getting started</a></li>
+            <li><a href="/aster-dex/deposits-withdrawals/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Deposits and withdrawals</a></li>
+            <li><a href="/aster-dex/api/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">API</a></li>
+            <li><a href="/aster-dex/privacy/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Privacy mechanics</a></li>
+            <li><a href="/aster-dex/aster-chain/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Aster Chain</a></li>
+            <li><a href="/aster-dex/shield-mode/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Shield Mode</a></li>
+            <li><a href="/aster-dex/1001x/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">1001x</a></li>
+            <li><a href="/aster-dex/earn/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Aster Earn</a></li>
+            <li><a href="/aster-dex/usdf/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">USDF</a></li>
+            <li><a href="/aster-dex/review/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Review</a></li>
+            <li><a href="/aster-dex/spot/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Spot</a></li>
+            <li><a href="/aster-dex/hidden-orders/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Hidden orders</a></li>
+            <li><a href="/aster-dex/liquidation-risk/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Liquidation risk</a></li>
+            <li><a href="/aster-dex/ecosystem-tools/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Ecosystem tools</a></li>
+            <li><a href="/aster-dex/staking/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Staking</a></li>
+            <li><a href="/aster-dex/tokenomics/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Tokenomics</a></li>
+            <li><a href="/aster-dex/referrals/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Referrals</a></li>
+            <li><a href="/aster-dex/tax-reporting/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Tax reporting</a></li>
+            <li><a href="/aster-dex/glossary/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Glossary</a></li>
+            <li><a href="/aster-dex/perpetuals/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Perpetuals</a></li>
+            <li><a href="/aster-dex/funding-rates/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Funding rates</a></li>
+            <li><a href="/aster-dex/grid-trading/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Grid trading</a></li>
+            <li><a href="/aster-dex/prediction/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Prediction markets</a></li>
+            <li><a href="/aster-dex/compare/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Compare modes</a></li>
+            <li><a href="/kirsty-moreland/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Kirsty Moreland — author</a></li>
+            <li><a href="/disclosure/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Disclosure</a></li>
+            <li><a href="/privacy/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Privacy policy</a></li>
+            <li><a href="/terms/" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors">Terms of use</a></li>
           </ul>
         </div>
       </div>

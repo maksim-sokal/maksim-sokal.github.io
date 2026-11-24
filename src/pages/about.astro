@@ -1,0 +1,315 @@
+---
+import "../index.css";
+import BackgroundDecor from "../components/sections/BackgroundDecor.astro";
+import Header from "../components/sections/Header.astro";
+import Breadcrumbs from "../components/sections/Breadcrumbs.astro";
+import Footer from "../components/sections/Footer.astro";
+import { buildAboutGraph, serializeGraph } from "../lib/schema";
+import { INDEPENDENT_OFFERS, PERSON_ID, SITE_URL, WEBSITE_ID } from "../entity";
+
+const pageUrl = `${SITE_URL}/about/`;
+const lastUpdated = new Date().toISOString().slice(0, 10);
+
+const profilePage = {
+  "@type": ["ProfilePage", "AboutPage"],
+  "@id": `${pageUrl}#profilepage`,
+  url: pageUrl,
+  name: "Maksim Sokal — Entity Record",
+  description:
+    "Canonical professional record for Maksim Sokal: DeFi risk analyst, external technical reviewer for Aster DEX, and CEO of Finial SEO.",
+  mainEntity: { "@id": PERSON_ID },
+  about: { "@id": PERSON_ID },
+  author: { "@id": PERSON_ID },
+  accountablePerson: { "@id": PERSON_ID },
+  inLanguage: "en",
+  isPartOf: { "@id": WEBSITE_ID },
+  dateModified: lastUpdated,
+};
+
+const breadcrumbs = {
+  "@type": "BreadcrumbList",
+  "@id": `${pageUrl}#breadcrumbs`,
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "About", item: pageUrl },
+  ],
+};
+
+const serializedGraph = serializeGraph(buildAboutGraph(profilePage, breadcrumbs));
+
+const roles = [
+  {
+    period: "2024 — present",
+    title: "Independent DeFi Risk Analyst",
+    org: "Independent practice",
+    detail:
+      "Economic invariant audits, EVM execution-trace review and liquidity modelling for DeFi protocols. Work is delivered as written findings with reproducible assertions.",
+  },
+  {
+    period: "11 Nov 2024 — present",
+    title: "External Technical & Content Reviewer",
+    org: "Aster DEX",
+    detail:
+      "Final verification layer for the Aster DEX contract registry and editorial library: architectural checks on 24+ addresses across BNB Chain, Ethereum, Arbitrum, Solana and SUI, plus peer review of 40+ published guides, reviews and comparisons.",
+  },
+  {
+    period: "2007 — present",
+    title: "SEO Strategist · CEO",
+    org: "Independent, then Finial SEO (2026)",
+    detail:
+      "Nineteen years of organic search practice spanning e-commerce, SaaS, FinTech, EdTech and YMYL health. Co-founded Finial SEO in 2026 to pair strategy with technical engineering.",
+  },
+];
+
+const profiles = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/maksim-sokal/", note: "Professional history and endorsements" },
+  { label: "Connectively", href: "https://www.connectively.us/p/maksim-sokal", note: "Expert profile for press and research requests" },
+  { label: "GitHub", href: "https://github.com/maksim-sokal", note: "Code and site source" },
+  { label: "Finial SEO author page", href: "https://finialseo.org/about/Maksim-Sokol", note: "Agency biography (surname transliterated as Sokol)" },
+  { label: "DeFi profile", href: "/", note: "Audit methodology, registry and verification record" },
+  { label: "SEO profile", href: "/seo-expert/", note: "Case studies, methodology and client outcomes" },
+];
+
+const bios = [
+  {
+    label: "One line · 25 words",
+    text: "Maksim Sokal is a DeFi risk analyst and SEO strategist, external technical reviewer for Aster DEX and CEO of Finial SEO.",
+  },
+  {
+    label: "Short · 60 words",
+    text: "Maksim Sokal is an independent DeFi risk analyst and SEO strategist based in Minsk, Belarus. He audits economic invariants and smart contract architecture for DeFi protocols, verifies the Aster DEX contract registry as external technical reviewer, and leads Finial SEO, the agency he co-founded in 2026. He has practised SEO since 2007.",
+  },
+  {
+    label: "Long · 120 words",
+    text: "Maksim Sokal is an independent DeFi risk analyst and SEO strategist. His audit practice focuses on economic invariants, EVM execution traces, game-theoretic incentive modelling and AMM mathematics; he also serves as external technical and content reviewer for Aster DEX, where he verifies the published smart contract registry and peer-reviews the editorial library. On the search side, he has practised SEO since 2007 and is co-founder and CEO of Finial SEO, working on entity-first topical architecture, E-E-A-T systems and international search for EU and US markets. He holds an MSc in Blockchain and DeFi Lab from the Moscow Institute of Physics and Technology and publishes his methodology openly.",
+  },
+];
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Maksim Sokal | DeFi Risk Analyst & SEO Strategist</title>
+    <meta
+      name="description"
+      content="Canonical professional record for Maksim Sokal — DeFi risk analyst, external technical reviewer for Aster DEX, and CEO of Finial SEO. Verified profiles, roles and press kit."
+    />
+    <meta name="author" content="Maksim Sokal" />
+    <link rel="icon" type="image/svg+xml" href="/maksim-sokal-DeFi-analyst.svg" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0b0f17" />
+    <link rel="canonical" href={pageUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Maksim Sokal — Professional Portfolio" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:title" content="About Maksim Sokal | DeFi Risk Analyst & SEO Strategist" />
+    <meta
+      property="og:description"
+      content="Canonical professional record: roles, credentials, verified profiles and press kit for Maksim Sokal."
+    />
+    <meta property="og:image" content={`${SITE_URL}/images/og-image.jpg`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Maksim Sokal — DeFi risk analyst and SEO strategist" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="About Maksim Sokal | DeFi Risk Analyst & SEO Strategist" />
+    <meta name="twitter:description" content="Roles, credentials, verified profiles and press kit." />
+    <meta name="twitter:image" content={`${SITE_URL}/images/og-image.jpg`} />
+
+    <script type="application/ld+json" is:inline set:html={serializedGraph} />
+  </head>
+  <body class="relative bg-[#0b0f17] text-slate-200 antialiased min-h-screen flex flex-col overflow-x-hidden">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-sky-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-slate-950"
+    >
+      Skip to content
+    </a>
+    <BackgroundDecor />
+
+    <Header
+      subtitle="Entity Record"
+      logo="/maksim-sokal-DeFi-analyst.svg"
+      links={[
+        { label: "DeFi Profile", href: "/" },
+        { label: "SEO Expert", href: "/seo-expert/" },
+        { label: "Research", href: "/research/" },
+        { label: "About", href: "/about/" },
+        { label: "HTML Sitemap", href: "/sitemap/" },
+      ]}
+      ctaLabel="Contact"
+      ctaHref="/#contact"
+    />
+
+    <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "About" }]} />
+
+    <main id="main-content" class="relative z-10 max-w-5xl mx-auto px-6 py-12 md:py-20 flex-1 w-full space-y-16">
+      <section class="space-y-6">
+        <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Canonical Record</span>
+        <h1 class="font-display font-medium text-3xl md:text-5xl text-slate-100 tracking-tight leading-tight">
+          Maksim Sokal
+        </h1>
+        <p class="text-sm md:text-base text-slate-300 leading-relaxed max-w-3xl">
+          Maksim Sokal is a DeFi risk analyst and SEO strategist based in Minsk, Belarus. He audits economic invariants
+          and smart contract architecture in decentralized finance protocols, serves as external technical reviewer for{" "}
+          <a href="https://www.asterdex.com/" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">Aster DEX</a>,
+          and is co-founder and CEO of <a href="https://finialseo.org/" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">Finial SEO</a>.
+        </p>
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+            <dt class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Also published as</dt>
+            <dd class="text-sm text-slate-200">Maksim Sokol · Максим Сокол</dd>
+          </div>
+          <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+            <dt class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Languages</dt>
+            <dd class="text-sm text-slate-200">English · Russian</dd>
+          </div>
+          <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+            <dt class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Based in</dt>
+            <dd class="text-sm text-slate-200">Minsk, Belarus · remote engagements</dd>
+          </div>
+          <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+            <dt class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Record updated</dt>
+            <dd class="text-sm text-slate-200"><time datetime={lastUpdated}>{lastUpdated}</time></dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="space-y-6" aria-labelledby="roles-heading">
+        <h2 id="roles-heading" class="font-display font-medium text-xl md:text-2xl text-slate-100 tracking-tight">Roles</h2>
+        <ol class="space-y-4">
+          {roles.map((role) => (
+            <li class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2">
+              <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">{role.period}</span>
+              <h3 class="font-display text-base text-slate-100">{role.title}</h3>
+              <p class="text-[11px] font-mono text-indigo-300">{role.org}</p>
+              <p class="text-xs text-slate-400 leading-relaxed">{role.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section class="space-y-6" aria-labelledby="credentials-heading">
+        <h2 id="credentials-heading" class="font-display font-medium text-xl md:text-2xl text-slate-100 tracking-tight">Credentials</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2">
+            <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Education · 2024</span>
+            <h3 class="font-display text-sm text-slate-100">MSc, Blockchain and DeFi Lab</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Moscow Institute of Physics and Technology (MIPT). Thesis work grounded in theoretical physics and applied
+              mathematics.
+            </p>
+          </div>
+          <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2">
+            <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">Appointment · 11 Nov 2024</span>
+            <h3 class="font-display text-sm text-slate-100">External Technical Reviewer, Aster DEX</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Contract registry verification and peer review of the published DeFi content library.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-6" aria-labelledby="profiles-heading">
+        <h2 id="profiles-heading" class="font-display font-medium text-xl md:text-2xl text-slate-100 tracking-tight">Verified profiles</h2>
+        <p class="text-xs text-slate-400 leading-relaxed max-w-2xl">
+          These are the profiles operated by or about Maksim Sokal. Every link carries{" "}
+          <code class="text-slate-300">rel="me"</code> so search engines can reconcile them with this record.
+        </p>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {profiles.map((profile) => (
+            <li>
+              <a
+                href={profile.href}
+                rel="me"
+                {...(profile.href.startsWith("http") ? { target: "_blank" } : {})}
+                class="group flex flex-col gap-1 bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 transition-colors"
+              >
+                <span class="text-sm text-sky-300 group-hover:text-sky-200 font-mono">{profile.label}</span>
+                <span class="text-[11px] text-slate-400 leading-relaxed">{profile.note}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="space-y-6" aria-labelledby="services-heading">
+        <h2 id="services-heading" class="font-display font-medium text-xl md:text-2xl text-slate-100 tracking-tight">Services</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {INDEPENDENT_OFFERS.map((offer) => (
+            <div class="flex flex-col gap-2 bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+              <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">{offer.category}</span>
+              <h3 class="font-display text-sm text-slate-100">{offer.name}</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">{offer.description}</p>
+              <a href={offer.url} class="text-[11px] font-mono text-sky-400 hover:text-sky-300">Learn more →</a>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="space-y-6" aria-labelledby="collaborators-heading">
+        <h2 id="collaborators-heading" class="font-display font-medium text-xl md:text-2xl text-slate-100 tracking-tight">Collaborators</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <a
+            href="/kirsty-moreland/"
+            class="group flex flex-col gap-1 bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 transition-colors"
+          >
+            <span class="text-sm text-sky-300 group-hover:text-sky-200 font-mono">Kirsty Moreland</span>
+            <span class="text-[11px] text-slate-400 leading-relaxed">DeFi writer &amp; editor · Aster DEX guides</span>
+          </a>
+          <a
+            href="https://elya-sokol.github.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex flex-col gap-1 bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 transition-colors"
+          >
+            <span class="text-sm text-sky-300 group-hover:text-sky-200 font-mono">Elya Sokol</span>
+            <span class="text-[11px] text-slate-400 leading-relaxed">CTO &amp; Head of Technical SEO, Finial SEO</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="space-y-6" aria-labelledby="press-heading">
+        <h2 id="press-heading" class="font-display font-medium text-xl md:text-2xl text-slate-100 tracking-tight">Press kit</h2>
+        <p class="text-xs text-slate-400 leading-relaxed max-w-2xl">
+          Approved biographies for conference programmes, podcast notes and editorial bylines. Please keep the role
+          descriptors and links intact. Portrait:{" "}
+          <a href="/images/Maksim-Sokal.webp" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30">Maksim-Sokal.webp</a>.
+        </p>
+        <div class="space-y-3">
+          {bios.map((bio) => (
+            <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2">
+              <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">{bio.label}</span>
+              <p class="text-xs text-slate-300 leading-relaxed">{bio.text}</p>
+            </div>
+          ))}
+        </div>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          Name note: the canonical spelling is <strong class="text-slate-300">Maksim Sokal</strong>. Some partner sites
+          transliterate the surname as <em>Sokol</em>; both refer to the same person. No other individual uses this
+          professional record.
+        </p>
+      </section>
+
+      <section class="border-t border-[#1e293b]/50 pt-6 flex flex-wrap gap-x-6 gap-y-2 text-[11px] font-mono">
+        <a href="/" class="text-sky-400 hover:text-sky-300">DeFi profile →</a>
+        <a href="/seo-expert/" class="text-sky-400 hover:text-sky-300">SEO profile →</a>
+        <a href="/research/" class="text-sky-400 hover:text-sky-300">Research →</a>
+        <a href="/aster-dex/" class="text-sky-400 hover:text-sky-300">Aster DEX →</a>
+        <a href="/sitemap/" class="text-slate-400 hover:text-sky-300">HTML sitemap →</a>
+      </section>
+    </main>
+
+    <Footer variant="neutral" />
+  </body>
+</html>

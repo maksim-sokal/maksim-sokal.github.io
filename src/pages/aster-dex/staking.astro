@@ -1,0 +1,157 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_EARLY_EXIT_EXAMPLE, ASTER_LAST_VERIFIED, ASTER_STAKING_FACTS } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/staking/`;
+const description =
+  "Aster staking explained: validator delegation, lock periods up to 208 weeks, the two reward layers, veASTER weight and the early-exit penalty.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Staking and veASTER",
+  alternativeHeadline: "Aster staking and veASTER",
+  name: "Aster staking and veASTER",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Token",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Staking" },
+    { "@type": "Thing", name: "Governance token" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Aster Chain staking", url: `${ASTER_DOCS}aster-chain/staking` },
+    { "@type": "CreativeWork", name: "Early exit mechanism", url: `${ASTER_DOCS}aster-chain/staking/early-exit-mechanism` },
+    { "@type": "CreativeWork", name: "Tokenomics", url: `${ASTER_DOCS}usdaster-token/tokenomics` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Staking", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Staking and veASTER — Rewards and Early Exit | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Staking" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Token</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Staking and veASTER
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Aster staking is a lock-based system, not a flexible savings account. You delegate ASTER to a validator and choose
+      a lock period; the lock determines your reward weight, and leaving early costs a penalty that can reach 60% of the
+      principal.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}aster-chain/staking`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official staking docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-3" aria-labelledby="how-heading">
+    <h2 id="how-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">How it works</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      {ASTER_STAKING_FACTS.map((fact) => (
+        <li>{fact}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="rewards-heading">
+    <h2 id="rewards-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Two reward layers</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Base rewards</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          150,000 ASTER per week, split according to validator performance and your delegation size. Choosing a
+          validator is a real decision, not a formality.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Loyalty rewards</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          300,000 ASTER per week plus the ASTER bought back from platform fees, distributed by veASTER weight. Longer
+          locks and trading activity increase the weight.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="exit-heading">
+    <h2 id="exit-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Early exit is expensive by design</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      The penalty scales with the remaining lock. Using Aster's published example — 10,000 ASTER, 60% maximum, 2%
+      minimum — the cost looks like this:
+    </p>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Remaining lock</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Penalty rate</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Penalty</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ASTER_EARLY_EXIT_EXAMPLE.map((row) => (
+            <tr class="border-b border-[#1e293b]/30 last:border-b-0">
+              <td class="px-5 py-3 text-xs text-slate-300">{row.remaining}</td>
+              <td class="px-5 py-3 text-xs text-slate-300 font-mono">{row.rate}</td>
+              <td class="px-5 py-3 text-xs text-slate-300 font-mono">{row.penalty}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-[11px] text-slate-400">
+      Penalised tokens are split between the next epoch reward pool and the ecosystem fund. Rewards already accrued are
+      added to the net withdrawal.
+    </p>
+  </section>
+
+  <section class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-6 space-y-2" aria-labelledby="risk-heading">
+    <h2 id="risk-heading" class="font-display font-medium text-sm text-rose-200 tracking-wide">What to weigh before locking</h2>
+    <ul class="space-y-2 text-xs text-slate-300 leading-relaxed list-disc pl-5">
+      <li>The lock is illiquid. The penalty is the price of liquidity, and it is steepest when you most want out.</li>
+      <li>Rewards are paid in ASTER. The yield is only worth what the token is worth when you sell.</li>
+      <li>Validator performance affects the base reward.</li>
+      <li>The buyback component depends on platform fee revenue, which is variable.</li>
+      <li>Governance and protocol changes can alter emission parameters.</li>
+    </ul>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/tokenomics/" class="text-sky-400 hover:text-sky-300">tokenomics and buyback</a> ·
+      <a href="/aster-dex/aster-chain/" class="text-sky-400 hover:text-sky-300">Aster Chain</a> ·
+      <a href="/aster-dex/earn/" class="text-sky-400 hover:text-sky-300">Earn products</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

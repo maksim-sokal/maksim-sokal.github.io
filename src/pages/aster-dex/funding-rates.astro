@@ -1,0 +1,159 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/funding-rates/`;
+const description =
+  "How funding works on Aster: the rate formula, premium index, interval changes, the 15-second charge window, and how funding moves your liquidation price.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Funding rates",
+  alternativeHeadline: "Aster funding rates explained",
+  name: "Aster funding rates explained",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Mechanics",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Perpetual futures" },
+    { "@type": "Thing", name: "Interest rate", sameAs: "https://www.wikidata.org/wiki/Q179179" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Funding rate", url: `${ASTER_DOCS}trading/perpetuals/fees-and-specs/funding-rate` },
+    { "@type": "CreativeWork", name: "Mark price", url: `${ASTER_DOCS}trading/perpetuals/fees-and-specs/mark-price` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Funding rates", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Funding Rates — Formula, Interval and Liquidation Impact | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Funding rates" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Mechanics</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Funding rates
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Funding is what keeps a perpetual close to spot. It is a peer-to-peer payment, not a fee Aster keeps, and it is
+      charged on a schedule that can change without a separate announcement. For a leveraged position, funding is often
+      the difference between a profitable hold and a slow loss.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}trading/perpetuals/fees-and-specs/funding-rate`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official funding docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-3" aria-labelledby="sign-heading">
+    <h2 id="sign-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Which way it flows</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-emerald-300">Positive funding</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">The perp trades above the mark. Longs pay shorts. Being long has a carrying cost.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-rose-300">Negative funding</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">The perp trades below the mark. Shorts pay longs. Being short has a carrying cost.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="formula-heading">
+    <h2 id="formula-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The formula</h2>
+    <div class="bg-brand-950/60 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+      <code class="block text-xs text-sky-200 leading-relaxed">
+        F = [P + clamp(interest rate − P, 0.05%, −0.05%)] / (8 / N)
+      </code>
+      <p class="text-[11px] text-slate-400">
+        P = average premium index; N = funding interval in hours; interest rate = 0.01% (0% for BNBUSDT).
+      </p>
+    </div>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      The clamp limits how far the interest component can move. The divisor is what makes a 4-hour interval different
+      from an 8-hour one: with N = 4, the result is divided by 2.
+    </p>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+      <h3 class="font-display text-sm text-slate-100">Aster's own example: ASTERUSDT at a 4-hour interval</h3>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        F = [P + clamp(0.01% − P, 0.05%, −0.05%)] / 2. The premium index is sampled every 5 seconds and averaged with
+        time weighting, so a single print does not set the rate.
+      </p>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="amount-heading">
+    <h2 id="amount-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">What you actually pay</h2>
+    <div class="bg-brand-950/60 border border-[#1e293b]/60 rounded-xl p-5">
+      <code class="block text-xs text-sky-200">funding amount = position size × mark price × funding rate</code>
+    </div>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      A $10,000 position at a 0.01% rate pays $1 per interval. At 0.1% it pays $10. Over a week at a 4-hour interval, the
+      second case is $420 — more than many traders expect from a "small" rate.
+    </p>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Funding is deducted from the Perps account balance. If the balance is insufficient, it can be taken from position
+      margin, which moves the liquidation price. Aster does not charge or receive funding; it is transferred between
+      traders.
+    </p>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="timing-heading">
+    <h2 id="timing-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Timing details that surprise people</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      <li>There is a 15-second deviation between the actual time and when the fee is charged. Opening at 16:00:05 UTC may still incur that interval's funding.</li>
+      <li>The interval can change when the rate hits its cap or floor, and there is no separate announcement for that change.</li>
+      <li>The current rate and interval are shown on the real-time funding and funding history pages.</li>
+      <li>Funding is calculated every block in 1001x, not on the 4/8-hour schedule used by Pro mode.</li>
+    </ul>
+    <p class="text-[11px] text-slate-400">
+      Real-time rate:{" "}
+      <a href="https://www.asterdex.com/en/futures/futures-info/real-time-funding-rate" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">Aster funding page ↗</a>
+    </p>
+  </section>
+
+  <section class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-6 space-y-2" aria-labelledby="risk-heading">
+    <h2 id="risk-heading" class="font-display font-medium text-sm text-rose-200 tracking-wide">Why it matters for risk</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      A position can be directionally right and still lose money to funding. In cross margin, funding on one position
+      reduces the buffer for all of them. In 1001x, per-block funding is part of the liquidation calculation, so a
+      static position drifts toward liquidation even when price is flat.
+    </p>
+    <p class="text-[11px] text-slate-400">
+      See <a href="/aster-dex/liquidation-risk/" class="text-sky-400 hover:text-sky-300">liquidation mechanics</a> and{" "}
+      <a href="/aster-dex/1001x/" class="text-sky-400 hover:text-sky-300">1001x</a>.
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

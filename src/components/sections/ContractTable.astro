@@ -6,13 +6,15 @@ const NETWORK_COLORS: Record<string, string> = {
   Ethereum: "text-blue-400 bg-blue-400/5 border-blue-400/10",
   Solana: "text-purple-400 bg-purple-400/5 border-purple-400/10",
   Arbitrum: "text-cyan-400 bg-cyan-400/5 border-cyan-400/10",
+  SUI: "text-teal-400 bg-teal-400/5 border-teal-400/10",
 };
 
 const EXPLORER_URLS: Record<string, string> = {
   "BNB Chain": "https://bscscan.com/address/",
   Ethereum: "https://etherscan.io/address/",
-  Solana: "https://solscan.io/token/",
+  Solana: "https://solscan.io/account/",
   Arbitrum: "https://arbiscan.io/address/",
+  SUI: "https://suiscan.xyz/mainnet/object/",
 };
 ---
 
@@ -96,3 +98,9 @@ const EXPLORER_URLS: Record<string, string> = {
     </div>
   ))}
 </div>
+
+<p class="mt-4 text-[11px] font-mono">
+  <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300 transition-colors">
+    Full registry: five bridge chains, Earn and USDF contracts →
+  </a>
+</p>

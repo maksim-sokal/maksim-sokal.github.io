@@ -1,0 +1,149 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED, ASTER_USDF_FACTS } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/usdf/`;
+const description =
+  "How USDF works: 1:1 USDT minting, Ceffu custody, the delta-neutral strategy behind asUSDF, peg mechanics and the risks that remain.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "USDF and asUSDF",
+  alternativeHeadline: "USDF and asUSDF: the stablecoin behind Aster Earn",
+  name: "USDF and asUSDF: the stablecoin behind Aster Earn",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Stablecoin",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Stablecoin", sameAs: "https://www.wikidata.org/wiki/Q55582088" },
+    { "@type": "Thing", name: "Delta neutral" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "USDF overview", url: `${ASTER_DOCS}usdf-stablecoin/overview` },
+    { "@type": "CreativeWork", name: "How USDF works", url: `${ASTER_DOCS}usdf-stablecoin/overview/how-usdf-works` },
+    { "@type": "CreativeWork", name: "Maintaining the peg", url: `${ASTER_DOCS}usdf-stablecoin/overview/maintaining-the-peg` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "USDF", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="USDF and asUSDF — Peg, Custody and Strategy Risks | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "USDF" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Stablecoin</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      USDF and asUSDF
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      USDF is Aster's yield-bearing stablecoin. It is minted 1:1 against USDT, backed by assets held at Ceffu, and
+      deployed into a delta-neutral strategy whose profits are distributed to asUSDF holders. The peg and the yield come
+      from the same structure, which is also where the risk sits.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}usdf-stablecoin/overview`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official USDF overview</a>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="flow-heading">
+    <h2 id="flow-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The capital flow</h2>
+    <ol class="space-y-3 text-xs text-slate-300 leading-relaxed list-decimal pl-5">
+      <li>Mint USDF with USDT at 1:1. The USDT enters the managed process.</li>
+      <li>The USDT is transferred to a Ceffu custody wallet.</li>
+      <li>Funds are deployed to Binance to open delta-neutral positions.</li>
+      <li>Profits are calculated weekly and distributed to the asUSDF contract.</li>
+      <li>asUSDF holders earn the yield; USDF redemption remains 1:1 with USDT.</li>
+    </ol>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      A delta-neutral position holds spot long and perpetual short (or the reverse) so that price direction nets out.
+      The return comes from funding, basis and fee differentials, not from the asset going up.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="peg-heading">
+    <h2 id="peg-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">How the peg is maintained</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Rigid redemption</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">USDF redeems 1:1 for USDT. The guarantee is only as good as the backing.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Arbitrage</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">If USDF trades below peg, buying and redeeming is profitable; above peg, the reverse. The gap closes.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Delta-neutral backing</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Balanced positions reduce directional exposure while generating yield.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="facts-heading">
+    <h2 id="facts-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Verified details</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      {ASTER_USDF_FACTS.map((fact) => (
+        <li>{fact}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="risk-heading">
+    <div class="space-y-3">
+      <h2 id="risk-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">What can go wrong</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li><strong class="text-slate-300">Strategy loss.</strong> Delta-neutral is not risk-free; basis, funding and execution can lose money.</li>
+        <li><strong class="text-slate-300">Custody and counterparty risk.</strong> Assets sit with Ceffu and on Binance.</li>
+        <li><strong class="text-slate-300">Smart contract risk.</strong> USDF and asUSDF contracts are audited but not risk-free.</li>
+        <li><strong class="text-slate-300">Oracle risk.</strong> The Atlas USDF/USD feed affects internal valuation and collateral treatment.</li>
+        <li><strong class="text-slate-300">Peg stress.</strong> A run or a backing shortfall breaks the 1:1 promise, not the code.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">How to evaluate it</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Compare the yield with the risk-free rate; an outsized spread is compensation for a risk.</li>
+        <li>Ask where the backing is held and who can move it.</li>
+        <li>Check the redemption path and whether it is actually open.</li>
+        <li>Size it as a credit exposure, not as cash.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/earn/" class="text-sky-400 hover:text-sky-300">Aster Earn products</a> ·
+      <a href="/aster-dex/audits/" class="text-sky-400 hover:text-sky-300">audit reports</a> ·
+      <a href="/aster-dex/contracts/" class="text-sky-400 hover:text-sky-300">USDF contract addresses</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

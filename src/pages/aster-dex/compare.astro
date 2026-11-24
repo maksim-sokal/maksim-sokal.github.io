@@ -1,0 +1,209 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/compare/`;
+const description =
+  "Compare Aster's trading modes — order-book perpetuals, Shield Mode, 1001x and spot — plus a checklist for comparing Aster with any other venue without relying on unverified numbers.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Compare Aster's modes",
+  alternativeHeadline: "Comparing Aster's trading modes",
+  name: "Comparing Aster's trading modes",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Comparison",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Comparison" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Perpetuals", url: "https://docs.asterdex.com/trading/perpetuals" },
+    { "@type": "CreativeWork", name: "Shield Mode", url: "https://docs.asterdex.com/trading/shield-mode" },
+    { "@type": "CreativeWork", name: "1001x", url: "https://docs.asterdex.com/trading/1001x" },
+    { "@type": "CreativeWork", name: "Spot", url: "https://docs.asterdex.com/trading/spot" },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Compare", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+
+const modes = [
+  {
+    name: "Perpetuals (Pro)",
+    execution: "Order book, limit and market orders",
+    fees: "Maker 0%, taker 0.04% (general crypto)",
+    risk: "Funding, liquidation, cross/isolated margin",
+    privacy: "Hidden orders and Account Privacy",
+    best: "Traders who want price control and post-only execution",
+    href: "/aster-dex/perpetuals/",
+  },
+  {
+    name: "Shield Mode",
+    execution: "AMM-style, immediate execution",
+    fees: "0.03% flat + 15–20% profit share",
+    risk: "Dynamic slippage, funding, liquidation",
+    privacy: "Built into the flow",
+    best: "Simplicity and privacy without managing a book",
+    href: "/aster-dex/shield-mode/",
+  },
+  {
+    name: "1001x",
+    execution: "Onchain liquidity, one-click",
+    fees: "0.08% below 500x; 0% open + dynamic close at 500x+",
+    risk: "Very high leverage, ROI caps, no added margin at 500x+",
+    privacy: "Account Privacy",
+    best: "Specialists who understand the liquidation math",
+    href: "/aster-dex/1001x/",
+  },
+  {
+    name: "Spot",
+    execution: "Order book, limit and market orders",
+    fees: "Maker 0.005%, taker 0.04%",
+    risk: "No funding, no liquidation; token and custody risk",
+    privacy: "Account Privacy",
+    best: "Owning the asset rather than a contract",
+    href: "/aster-dex/spot/",
+  },
+];
+---
+
+<AsterLayout
+  title="Compare Aster Trading Modes — Perps, Shield, 1001x, Spot | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Compare" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Comparison</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Compare Aster's modes
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Aster is not one product with four skins. The modes differ in execution, cost, leverage and failure mode. Choosing
+      the wrong one is a common source of avoidable loss.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Updated <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time>
+    </p>
+  </header>
+
+  <section class="space-y-4" aria-labelledby="modes-heading">
+    <h2 id="modes-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The four modes</h2>
+    <div class="overflow-x-auto rounded-xl border border-[#1e293b]/60">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Mode</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Execution</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Cost</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Main risk</th>
+            <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-4 py-3 font-semibold">Best for</th>
+          </tr>
+        </thead>
+        <tbody>
+          {modes.map((mode) => (
+            <tr class="border-b border-[#1e293b]/30 last:border-b-0 align-top">
+              <td class="px-4 py-4">
+                <a href={mode.href} class="text-xs text-sky-300 hover:text-sky-200 underline underline-offset-2 decoration-sky-500/30">{mode.name}</a>
+              </td>
+              <td class="px-4 py-4 text-xs text-slate-300">{mode.execution}</td>
+              <td class="px-4 py-4 text-xs text-slate-400">{mode.fees}</td>
+              <td class="px-4 py-4 text-xs text-slate-400">{mode.risk}</td>
+              <td class="px-4 py-4 text-xs text-slate-400">{mode.best}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-[11px] text-slate-400">
+      Prediction markets are a separate product with no leverage and a broader jurisdiction restriction list. See{" "}
+      <a href="/aster-dex/prediction/" class="text-sky-400 hover:text-sky-300">Predictions</a>.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="choose-heading">
+    <h2 id="choose-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Choose by job</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">I want to own the asset</span>
+        <p class="text-xs text-slate-300 mt-1">Spot. No funding, no liquidation.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">I want a price and an order type</span>
+        <p class="text-xs text-slate-300 mt-1">Perpetuals (Pro). Post-only, TWAP, trailing stops.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">I want one click and privacy</span>
+        <p class="text-xs text-slate-300 mt-1">Shield Mode. Accept dynamic slippage and profit share.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-sky-400">I want maximum leverage</span>
+        <p class="text-xs text-slate-300 mt-1">1001x, after reading the liquidation math and ROI caps.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="venue-heading">
+    <h2 id="venue-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Comparing Aster with another venue</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      We do not publish competitor fee or leverage tables we cannot verify on the date of publication. Instead, use the
+      same checklist on every venue, including this one:
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li><strong class="text-slate-300">Settlement and custody.</strong> Own L1, rollup, or an appchain? Who holds the assets?</li>
+        <li><strong class="text-slate-300">Privacy.</strong> Is the order book public? Are positions visible? Is privacy optional?</li>
+        <li><strong class="text-slate-300">Fees.</strong> Maker, taker, funding, withdrawal, and any profit share.</li>
+        <li><strong class="text-slate-300">Leverage and margin.</strong> Caps by market, cross vs isolated, can you add margin?</li>
+        <li><strong class="text-slate-300">Assets.</strong> Crypto, RWA, stocks, FX — and the liquidity of each.</li>
+      </ul>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li><strong class="text-slate-300">Liquidation.</strong> Mark price source, insurance fund, ADL, negative-balance policy.</li>
+        <li><strong class="text-slate-300">Audits and source.</strong> What was audited, by whom, and is the core open source?</li>
+        <li><strong class="text-slate-300">Jurisdiction.</strong> The product's list, not the marketing site's.</li>
+        <li><strong class="text-slate-300">API.</strong> Rate limits, signing, websocket coverage, error semantics.</li>
+        <li><strong class="text-slate-300">Exit.</strong> Withdrawal times, minimums, queues and failure modes.</li>
+      </ul>
+    </div>
+    <p class="text-[11px] text-slate-400">
+      A venue that wins on fees can lose on exit liquidity. A venue that wins on privacy can lose on jurisdiction. Score
+      the job you actually have.
+    </p>
+  </section>
+
+  <section class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-6 space-y-2">
+    <h2 class="font-display font-medium text-sm text-slate-200 tracking-wide">What would change this comparison</h2>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Fee changes, a new margin mode, a Shield Mode promotion ending, or a change to the restricted-jurisdiction list.
+      Every page in this cluster carries a verification date for that reason. Compare dated facts, not remembered ones.
+    </p>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

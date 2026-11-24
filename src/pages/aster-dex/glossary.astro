@@ -1,0 +1,88 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_GLOSSARY, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/glossary/`;
+const description =
+  "Aster DEX glossary: perpetuals, mark price, funding, maintenance margin, liquidation, ADL, veASTER, ALP, asBNB, USDF, hidden orders, API Wallets and more.";
+
+const webPage = {
+  "@type": "WebPage",
+  "@id": `${url}#webpage`,
+  url,
+  name: "Aster DEX glossary",
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+  dateModified: ASTER_LAST_VERIFIED,
+  about: { "@id": ASTER_DEX_ID },
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  mainEntity: { "@id": `${url}#terms` },
+};
+
+const termSet = {
+  "@type": "DefinedTermSet",
+  "@id": `${url}#terms`,
+  name: "Aster DEX glossary",
+  description,
+  hasDefinedTerm: ASTER_GLOSSARY.map((entry) => ({
+    "@type": "DefinedTerm",
+    name: entry.term,
+    description: entry.definition,
+    inDefinedTermSet: { "@id": `${url}#terms` },
+  })),
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Glossary", url },
+]);
+
+const graph = buildAsterPageGraph([webPage, termSet, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster DEX Glossary — Perps, Margin, Earn and API Terms | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Glossary" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+  ogType="website"
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Reference</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Glossary
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      The terms used across the Aster guides, defined as they are used here. Where a term has a specific meaning in
+      Aster's documentation, the definition follows that meaning rather than a generic market usage.
+    </p>
+  </header>
+
+  <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5" aria-label="Glossary terms">
+    {ASTER_GLOSSARY.map((entry) => (
+      <div class="border-b border-[#1e293b]/40 pb-3 space-y-1">
+        <dt class="font-display text-sm text-slate-100">{entry.term}</dt>
+        <dd class="text-xs text-slate-400 leading-relaxed">{entry.definition}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <p class="text-[11px] text-slate-500">
+    {ASTER_GLOSSARY.length} terms. Last verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time>.
+  </p>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

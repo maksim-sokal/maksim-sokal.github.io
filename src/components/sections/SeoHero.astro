@@ -3,6 +3,8 @@ import {
   Award, BookOpen, Linkedin, Globe, ArrowRight, ShieldCheck
 } from "lucide-react";
 import { SEO_HERO_STATS } from "../../data-seo";
+
+const buildDate = new Date().toISOString().slice(0, 10);
 ---
 
 <section id="hero" class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-4">
@@ -32,7 +34,7 @@ import { SEO_HERO_STATS } from "../../data-seo";
           <span class="font-mono text-[10px] uppercase tracking-wider">In SEO Since 2007</span>
         </span>
 
-        <a href="https://www.linkedin.com/in/maksim-sokal/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-900/80 border border-slate-800 rounded-lg text-xs text-slate-300 hover:border-sky-500/20 hover:text-sky-300 transition-all duration-300 group">
+        <a href="https://www.linkedin.com/in/maksim-sokal/" target="_blank" rel="me noopener noreferrer" aria-label="LinkedIn profile" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-900/80 border border-slate-800 rounded-lg text-xs text-slate-300 hover:border-sky-500/20 hover:text-sky-300 transition-all duration-300 group">
           <Linkedin className="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" />
           <span class="font-mono text-[10px] uppercase tracking-wider">LinkedIn</span>
         </a>
@@ -63,6 +65,10 @@ import { SEO_HERO_STATS } from "../../data-seo";
         </div>
       ))}
     </div>
+
+    <p class="text-[10px] font-mono text-slate-500">
+      Profile updated <time datetime={buildDate}>{buildDate}</time>
+    </p>
 
     <div class="flex flex-wrap gap-4 pt-4">
       <a href="#case-studies" class="bg-sky-500/10 hover:bg-sky-500/20 border border-sky-400/40 hover:border-sky-400 text-sky-300 text-xs font-mono uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-2 shadow-lg shadow-sky-500/5 group">

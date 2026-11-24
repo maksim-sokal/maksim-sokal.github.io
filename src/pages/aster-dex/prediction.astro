@@ -1,0 +1,200 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import {
+  ASTER_DOCS,
+  ASTER_LAST_VERIFIED,
+  ASTER_PREDICTION_RESTRICTED_COUNTRIES,
+  ASTER_PREDICTION_RESTRICTED_REGIONS,
+} from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/prediction/`;
+const description =
+  "How Aster Predictions works: binary shares priced as probability, price and event settlement, shared Yes/No liquidity, fees and the separate jurisdiction list.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Aster Predictions",
+  alternativeHeadline: "Aster Predictions: binary markets explained",
+  name: "Aster Predictions: binary markets explained",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Prediction",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Prediction market", sameAs: "https://www.wikidata.org/wiki/Q282283" },
+    { "@type": "Thing", name: "Binary option" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Prediction markets", url: `${ASTER_DOCS}trading/prediction` },
+    { "@type": "CreativeWork", name: "Prediction service region", url: `${ASTER_DOCS}trading/prediction/service-region` },
+    { "@type": "CreativeWork", name: "Prediction user agreement", url: `${ASTER_DOCS}trading/prediction/prediction-user-agreement` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Prediction", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Predictions — Binary Markets, Settlement and Restrictions | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Prediction" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-amber-400 uppercase tracking-widest block">Restricted product</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Aster Predictions
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Predictions is a separate binary-market product: you buy shares in an outcome priced between $0.0001 and $0.9999,
+      and winning shares settle at $1. There is no leverage and no liquidation; the maximum loss is the stake.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time>
+    </p>
+  </header>
+
+  <section class="bg-rose-500/5 border border-rose-400/25 rounded-xl p-6 space-y-3" aria-labelledby="restricted-heading">
+    <h2 id="restricted-heading" class="font-display font-medium text-sm text-rose-200 tracking-wide">This product has a separate, broader restriction list</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      Prediction markets are not available in the countries below, which is a <strong>different list</strong> from the
+      general Aster eligibility rules. It includes Belarus, Germany, France, Italy, Japan, Poland, Singapore and the UK,
+      among others. Access is determined by IP geolocation; using a VPN does not remove the restriction.
+    </p>
+    <details class="bg-brand-950/40 border border-[#1e293b]/60 rounded-lg p-4">
+      <summary class="text-xs font-mono text-rose-200 cursor-pointer">
+        Full restricted list ({ASTER_PREDICTION_RESTRICTED_COUNTRIES.length} countries, {ASTER_PREDICTION_RESTRICTED_REGIONS.length} regions)
+      </summary>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 mt-3">
+        {ASTER_PREDICTION_RESTRICTED_COUNTRIES.map((country) => (
+          <span class="text-[11px] text-slate-400 font-mono">{country}</span>
+        ))}
+      </div>
+      <ul class="mt-3 space-y-1">
+        {ASTER_PREDICTION_RESTRICTED_REGIONS.map((region) => (
+          <li class="text-[11px] text-slate-400 font-mono">{region}</li>
+        ))}
+      </ul>
+    </details>
+    <p class="text-[11px] text-slate-400 leading-relaxed">
+      If you are in a restricted jurisdiction, do not use the product. This page is an explainer, not a recommendation
+      or a workaround. See also <a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300">eligibility</a>.
+    </p>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="pricing-heading">
+    <h2 id="pricing-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Price equals implied probability</h2>
+    <p class="text-xs text-slate-300 leading-relaxed">
+      A share at 0.54 implies a 54% probability. The Yes and No books share liquidity through mirroring:{" "}
+      <code>No price = 1 − Yes price</code>. Switching sides changes the view, not the underlying pool.
+    </p>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="markets-heading">
+    <h2 id="markets-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Two kinds of market</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Price markets</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          A target price is set from the index snapshot at market open. At settlement, Up wins if the settlement index
+          is greater than or equal to the target; Down wins otherwise. Settlement uses a TWAP of the spot index over the
+          period before close, not a single print.
+        </p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Event markets</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Settle Yes or No based on the official outcome of the event. Resolution follows the event's published result,
+          with a review process for disputes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="lifecycle-heading">
+    <h2 id="lifecycle-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Lifecycle and execution</h2>
+    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed list-disc pl-5">
+      <li><strong class="text-slate-300">Upcoming</strong> — advance trading is available; the start price is not yet known.</li>
+      <li><strong class="text-slate-300">Live</strong> — orders accepted.</li>
+      <li><strong class="text-slate-300">Settling / closed</strong> — new orders blocked.</li>
+      <li><strong class="text-slate-300">Ended</strong> — settled; charts stop updating.</li>
+      <li>Market orders are IOC with slippage protection and may partially fill.</li>
+      <li>Limit orders rest on the book. Selling requires holding the shares.</li>
+      <li>Trading is suspended for 500 ms before settlement.</li>
+    </ul>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="fees-heading">
+    <h2 id="fees-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Fees</h2>
+    <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-slate-400">Maker / taker at launch</span>
+        <span class="text-slate-100 font-mono">0%</span>
+      </div>
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-slate-400">Settlement fee</span>
+        <span class="text-slate-100 font-mono">0.05% of winning shares</span>
+      </div>
+      <p class="text-[11px] text-slate-400 leading-relaxed pt-1">
+        The settlement fee is charged only on the winning side. Losing shares pay nothing at settlement. Trading fees can
+        be introduced, so check the platform before trading.
+      </p>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="risk-heading">
+    <div class="space-y-3">
+      <h2 id="risk-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Risks</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Total loss of the stake if the outcome is wrong.</li>
+        <li>Liquidity risk: you may not be able to exit at a reasonable price.</li>
+        <li>Baseline uncertainty for advance orders: the start price is set after you order.</li>
+        <li>Oracle and manipulation risk around settlement.</li>
+        <li>Resolution risk for event markets and the platform's review process.</li>
+        <li>Regulatory risk: the product can be restricted or withdrawn.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">How it differs from perps</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>No leverage and no liquidation price.</li>
+        <li>Bounded payoff: $0 or $1 per share.</li>
+        <li>Time-boxed: each market settles at a defined time.</li>
+        <li>Probability pricing rather than a continuous price chart.</li>
+        <li>A separate jurisdiction list and user agreement.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/eligibility/" class="text-sky-400 hover:text-sky-300">eligibility</a> ·
+      <a href="/aster-dex/compare/" class="text-sky-400 hover:text-sky-300">compare modes</a> ·
+      <a href="/aster-dex/glossary/" class="text-sky-400 hover:text-sky-300">glossary</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>

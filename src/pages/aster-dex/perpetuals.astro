@@ -1,0 +1,196 @@
+---
+import AsterLayout from "../../layouts/AsterLayout.astro";
+import { ASTER_DEX_ID, AUTHORS, PERSON_ID, SITE_URL } from "../../entity";
+import { buildAsterPageGraph, buildBreadcrumbs } from "../../lib/schema";
+import { ASTER_DOCS, ASTER_LAST_VERIFIED } from "../../data/aster";
+
+const url = `${SITE_URL}/aster-dex/perpetuals/`;
+const description =
+  "Aster perpetual futures explained: Pro-mode order book, order types, time-in-force, margin modes, stock and pre-IPO perps, fees and the mechanics that decide the outcome.";
+
+const articleNode = {
+  "@type": "TechArticle",
+  "@id": `${url}#article`,
+  headline: "Perpetual futures",
+  alternativeHeadline: "Perpetual futures on Aster",
+  name: "Perpetual futures on Aster",
+  description,
+  url,
+  mainEntityOfPage: url,
+  inLanguage: "en",
+  datePublished: "2026-11-24",
+  dateModified: ASTER_LAST_VERIFIED,
+  author: { "@id": AUTHORS.kirsty.id },
+  editor: { "@id": AUTHORS.maksim.id },
+  publisher: { "@id": PERSON_ID },
+  isPartOf: { "@id": `${SITE_URL}/aster-dex/#collection` },
+  articleSection: "Trading modes",
+  about: [
+    { "@id": ASTER_DEX_ID },
+    { "@type": "Thing", name: "Perpetual futures" },
+    { "@type": "Thing", name: "Order book" },
+  ],
+  citation: [
+    { "@type": "CreativeWork", name: "Perpetuals", url: `${ASTER_DOCS}trading/perpetuals` },
+    { "@type": "CreativeWork", name: "Order types", url: `${ASTER_DOCS}trading/perpetuals/order-types` },
+    { "@type": "CreativeWork", name: "Margin", url: `${ASTER_DOCS}trading/perpetuals/margin` },
+  ],
+};
+
+const breadcrumbs = buildBreadcrumbs(`${url}#breadcrumbs`, [
+  { name: "Home", url: `${SITE_URL}/` },
+  { name: "Aster DEX", url: `${SITE_URL}/aster-dex/` },
+  { name: "Perpetuals", url },
+]);
+
+const graph = buildAsterPageGraph([articleNode, breadcrumbs]);
+---
+
+<AsterLayout
+  title="Aster Perpetual Futures — Order Book, Orders and Margin | Maksim Sokal"
+  description={description}
+  canonical={url}
+  graph={graph}
+  trail={[{ label: "Perpetuals" }]}
+  modified={new Date(ASTER_LAST_VERIFIED)}
+>
+  <header class="space-y-5 max-w-3xl">
+    <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Trading Modes</span>
+    <h1 class="font-display font-medium text-3xl md:text-4xl text-slate-100 tracking-tight leading-tight">
+      Perpetual futures
+    </h1>
+    <p class="text-sm text-slate-300 leading-relaxed">
+      Pro mode is Aster's order-book perpetual venue. It is the mode with the most control and the most ways to get the
+      details wrong: order type, time-in-force, margin mode and funding all change the result. This page is the map; the
+      fee, funding and liquidation pages carry the numbers.
+    </p>
+    <p class="text-[11px] font-mono text-slate-400">
+      Verified <time datetime={ASTER_LAST_VERIFIED}>{ASTER_LAST_VERIFIED}</time> ·{" "}
+      <a href={`${ASTER_DOCS}trading/perpetuals`} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">official perpetuals docs</a>
+    </p>
+  </header>
+
+  <section class="space-y-3" aria-labelledby="market-heading">
+    <h2 id="market-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">What trades on it</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+        <span class="text-sm text-slate-100">Crypto perpetuals</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Major pairs plus selected Group B listings with a separate fee schedule.</span>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+        <span class="text-sm text-slate-100">RWA and USD1 markets</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Real-world-asset pairs and USD1-quoted contracts with their own taker rates.</span>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+        <span class="text-sm text-slate-100">Stock perpetuals</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">US, Hong Kong and KRX equity exposure, with dividend treatment documented separately.</span>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-1">
+        <span class="text-sm text-slate-100">Pre-launch and pre-IPO</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Contracts on assets before their public listing. Different risk profile, same margin engine.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="orders-heading">
+    <h2 id="orders-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Order types and time-in-force</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Orders</h3>
+        <ul class="space-y-1.5 text-xs text-slate-400 leading-relaxed">
+          <li><strong class="text-slate-300">Limit</strong> — rests at your price.</li>
+          <li><strong class="text-slate-300">Market</strong> — executes against the book.</li>
+          <li><strong class="text-slate-300">Stop / stop-market</strong> — triggers at a price.</li>
+          <li><strong class="text-slate-300">Take-profit / TP-market</strong> — closes at a target.</li>
+          <li><strong class="text-slate-300">Trailing stop</strong> — follows price by a distance.</li>
+          <li><strong class="text-slate-300">TWAP, scaled, chase</strong> — execution algorithms for size.</li>
+        </ul>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Time-in-force</h3>
+        <ul class="space-y-1.5 text-xs text-slate-400 leading-relaxed">
+          <li><strong class="text-slate-300">GTC</strong> — good till cancelled.</li>
+          <li><strong class="text-slate-300">IOC</strong> — fills what it can, cancels the rest.</li>
+          <li><strong class="text-slate-300">FOK</strong> — all or nothing.</li>
+          <li><strong class="text-slate-300">GTX</strong> — post-only; rejected if it would cross.</li>
+        </ul>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          Post-only is the difference between paying maker and taker fees. On a 0% maker / 0.04% taker schedule, it is
+          the whole cost.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4" aria-labelledby="margin-heading">
+    <h2 id="margin-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">Margin, hedge mode and sub-accounts</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Cross margin</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Default. All positions share collateral; a loss in one affects the buffer for the rest.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Isolated margin</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">One position, one margin allocation. Liquidation is contained.</p>
+      </div>
+      <div class="bg-brand-900/35 border border-[#1e293b]/60 rounded-xl p-5 space-y-2">
+        <h3 class="font-display text-sm text-slate-100">Hedge mode</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Hold long and short on the same contract. In cross margin they share a liquidation price.</p>
+      </div>
+    </div>
+    <p class="text-xs text-slate-400 leading-relaxed">
+      Single-asset and multi-asset margin modes change which collateral counts. Sub-accounts let you separate strategies;
+      Grid 2.0 adds a dedicated bot subaccount on top.
+    </p>
+  </section>
+
+  <section class="space-y-3" aria-labelledby="mechanics-heading">
+    <h2 id="mechanics-heading" class="font-display font-medium text-xl text-slate-100 tracking-tight">The three mechanics that decide the result</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <a href="/aster-dex/fees/" class="group bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+        <span class="text-sm text-slate-100 group-hover:text-sky-200">Fees</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Maker 0%, taker 0.04% on general crypto; Group B and RWA differ.</span>
+      </a>
+      <a href="/aster-dex/funding-rates/" class="group bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+        <span class="text-sm text-slate-100 group-hover:text-sky-200">Funding</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Peer-to-peer, interval varies, and it moves the liquidation price.</span>
+      </a>
+      <a href="/aster-dex/liquidation-risk/" class="group bg-brand-900/35 border border-[#1e293b]/60 hover:border-sky-500/30 rounded-xl p-5 space-y-1 transition-colors">
+        <span class="text-sm text-slate-100 group-hover:text-sky-200">Liquidation</span>
+        <span class="block text-[11px] text-slate-400 leading-relaxed">Mark price, staged IOC close, insurance fund and ADL.</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-6" aria-labelledby="fit-heading">
+    <div class="space-y-3">
+      <h2 id="fit-heading" class="font-display font-medium text-lg text-slate-100 tracking-tight">Pro mode suits</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Traders who want price control and post-only execution.</li>
+        <li>Strategies that depend on specific order types or TWAP.</li>
+        <li>Users who need stock or pre-IPO exposure on a perp venue.</li>
+      </ul>
+    </div>
+    <div class="space-y-3">
+      <h2 class="font-display font-medium text-lg text-slate-100 tracking-tight">It does not suit</h2>
+      <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+        <li>Anyone who wants a one-click position with no book management.</li>
+        <li>Traders who cannot monitor funding and margin.</li>
+        <li>Users in restricted jurisdictions.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[#1e293b]/60 pt-6 space-y-2">
+    <p class="text-[11px] text-slate-400">
+      Related: <a href="/aster-dex/shield-mode/" class="text-sky-400 hover:text-sky-300">Shield Mode</a> ·
+      <a href="/aster-dex/1001x/" class="text-sky-400 hover:text-sky-300">1001x</a> ·
+      <a href="/aster-dex/hidden-orders/" class="text-sky-400 hover:text-sky-300">hidden orders</a>
+    </p>
+    <p class="text-[11px] text-slate-400">
+      Written by <a href="/kirsty-moreland/" class="text-sky-400 hover:text-sky-300">Kirsty Moreland</a> · Technical review by{" "}
+      <a href="/about/" class="text-sky-400 hover:text-sky-300">Maksim Sokal</a> ·
+      <a href="/disclosure/" class="text-slate-400 hover:text-sky-300">Disclosure</a>
+    </p>
+  </section>
+</AsterLayout>
