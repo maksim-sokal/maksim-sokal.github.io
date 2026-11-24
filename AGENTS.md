@@ -10,8 +10,11 @@ npm run lint         # tsc --noEmit only (no ESLint/Prettier)
 npm run check        # astro check (TypeScript + .astro templates)
 npm run validate:entities  # JSON-LD graph checks against dist/ (run after build)
 npm run validate:entities -- --online  # also fetches every Person sameAs URL
+npm run audit:schema # schema-to-visible-content alignment audit (run after build)
 npm run clean        # rm -rf dist
 ```
+
+**Deployment:** see `DEPLOYMENT.md`. Push to `main` with the `maksim-sokal` username and the token in `.env` via a temporary `GIT_ASKPASS`; never print, commit, or put the token in a remote URL. The Pages workflow builds and deploys automatically.
 
 ## Architecture
 - **Pages**: `src/pages/index.astro` (DeFi profile), `src/pages/seo-expert.astro` (SEO profile), `src/pages/about.astro` (canonical entity record + press kit), `src/pages/research/*` (research index, practice hubs, article route), `src/pages/sitemap.astro` (HTML sitemap), `src/pages/404.astro`
