@@ -1,5 +1,6 @@
 {
-  "extends": "astro/tsconfigs/base",
+  // Explicit relative path: some editor TS servers cannot resolve Astro's package exports in `extends`.
+  "extends": "./node_modules/astro/tsconfigs/base.json",
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"],
   "compilerOptions": {
