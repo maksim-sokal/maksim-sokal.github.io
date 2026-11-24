@@ -21,33 +21,38 @@ import { SEO_CASE_STUDIES, SEO_PUBLICATIONS, SEO_APEX_CASE } from "../../data-se
   </p>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {SEO_CASE_STUDIES.map((cs) => (
-      <a
-        href={cs.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="bg-[#111624]/40 border border-[#1e293b]/50 rounded-xl p-6 hover:border-sky-500/20 transition-all duration-300 group flex flex-col justify-between space-y-4"
-      >
-        <div class="space-y-3">
-          <div class="flex items-start justify-between gap-3">
-            <h4 class="font-display font-medium text-slate-200 text-sm tracking-wide group-hover:text-sky-300 transition-colors">
-              {cs.client}
-            </h4>
-            <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-400 transition-colors shrink-0 mt-0.5" />
+    {SEO_CASE_STUDIES.map((cs) => {
+      const Card = cs.url ? "a" : "div";
+      return (
+        <Card
+          href={cs.url}
+          target={cs.url ? "_blank" : undefined}
+          rel={cs.url ? "noopener noreferrer" : undefined}
+          class="bg-[#111624]/40 border border-[#1e293b]/50 rounded-xl p-6 hover:border-sky-500/20 transition-all duration-300 group flex flex-col justify-between space-y-4"
+        >
+          <div class="space-y-3">
+            <div class="flex items-start justify-between gap-3">
+              <h4 class="font-display font-medium text-slate-200 text-sm tracking-wide group-hover:text-sky-300 transition-colors">
+                {cs.client}
+              </h4>
+              {cs.url && (
+                <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-400 transition-colors shrink-0 mt-0.5" />
+              )}
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-2xl font-mono font-semibold text-sky-300 text-glow">{cs.growth}</span>
+              <span class="text-[9px] font-mono text-emerald-400 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/10">
+                {cs.position}
+              </span>
+              <span class="text-[9px] font-mono text-slate-400 px-2 py-0.5 rounded border border-slate-800">
+                {cs.niche}
+              </span>
+            </div>
           </div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <span class="text-2xl font-mono font-semibold text-sky-300 text-glow">{cs.growth}</span>
-            <span class="text-[9px] font-mono text-emerald-400 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/10">
-              {cs.position}
-            </span>
-            <span class="text-[9px] font-mono text-slate-400 px-2 py-0.5 rounded border border-slate-800">
-              {cs.niche}
-            </span>
-          </div>
-        </div>
-        <p class="text-xs text-slate-400 leading-relaxed font-sans">{cs.description}</p>
-      </a>
-    ))}
+          <p class="text-xs text-slate-400 leading-relaxed font-sans">{cs.description}</p>
+        </Card>
+      );
+    })}
 
     <a
       href="https://finialseo.org/en/services/seo-promotion"

@@ -1,5 +1,4 @@
 ---
-import { ExternalLink } from "lucide-react";
 import { ASTER_AUDIT_REPORTS } from "../../data";
 
 const AUDITOR_COLORS: Record<string, string> = {
@@ -22,7 +21,6 @@ const AUDITOR_COLORS: Record<string, string> = {
         <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Audited Component</th>
         <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Security Auditor</th>
         <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Focus of Assessment</th>
-        <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Report</th>
       </tr>
     </thead>
     <tbody>
@@ -39,17 +37,6 @@ const AUDITOR_COLORS: Record<string, string> = {
             </span>
           </td>
           <td class="px-5 py-4 text-slate-400 text-xs">{r.focus}</td>
-          <td class="px-5 py-4">
-            <a
-              href={r.pdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sky-300 hover:text-sky-200 underline underline-offset-2 decoration-sky-500/30 transition-colors text-xs"
-            >
-              View PDF
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </td>
         </tr>
       ))}
     </tbody>
@@ -71,15 +58,6 @@ const AUDITOR_COLORS: Record<string, string> = {
         <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-mono mb-0.5">Focus</span>
         <span class="text-slate-400 text-xs font-sans">{r.focus}</span>
       </div>
-      <a
-        href={r.pdfUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 text-sky-300 hover:text-sky-200 underline underline-offset-2 decoration-sky-500/30 transition-colors text-xs font-mono"
-      >
-        View PDF
-        <ExternalLink className="w-3 h-3" />
-      </a>
     </div>
   ))}
 </div>

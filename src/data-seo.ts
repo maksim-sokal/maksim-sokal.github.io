@@ -113,8 +113,7 @@ export const SEO_CASE_STUDIES: SeoCaseStudy[] = [
   },
   {
     id: "case-02",
-    client: "AsterDex Hub",
-    url: "https://asterdexhub.com/",
+    client: "DeFi Content Hub",
     growth: "+1,240%",
     position: "Top-3",
     niche: "DeFi / Exchange",

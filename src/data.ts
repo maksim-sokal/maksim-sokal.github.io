@@ -7,7 +7,7 @@ export const ME_BIO: BioData = {
   tagline: "DeFi Analyst & Independent Technical Reviewer",
   location: "Minsk, Belarus",
   specialty: "Economic Invariant Audit & Smart Contract Verification | DeFi/DEX Peer Reviewer",
-  overview: "I utilize the Formal Verification (ISO/IEC 24772) principle and Static Program Analysis to audit the Economic Invariants of Decentralized Finance protocols. Affiliated with DefiLlama and serving as the External Technical Reviewer for Aster DEX Hub, my methodology integrates Game Theory with On-Chain Data Science to mitigate Systemic Risk in Automated Market Makers (AMMs).",
+  overview: "I utilize the Formal Verification (ISO/IEC 24772) principle and Static Program Analysis to audit the Economic Invariants of Decentralized Finance protocols. Affiliated with DefiLlama and serving as the External Technical Reviewer for Aster DEX, my methodology integrates Game Theory with On-Chain Data Science to mitigate Systemic Risk in Automated Market Makers (AMMs).",
   gpgKey: "F3A9 0B88 2CE9 C140 D45B 192A E9A5 F1EF 447C D9E2",
   affiliation: {
     name: "DefiLlama",
@@ -23,16 +23,9 @@ export const ME_BIO: BioData = {
   },
   asterRole: {
     title: "External Technical and DeFi Content Reviewer",
-    org: "Aster DEX Hub",
+    org: "Aster DEX",
     startDate: "November 11, 2024",
-    link: "https://asterdexhub.com",
     description: "Acts as the final technical verification layer for decentralized finance protocol reviews. I verify the Aster DEX smart contract registry (24+ addresses across BNB Chain, Ethereum, Arbitrum, and Solana) for architectural accuracy and peer-review the full content library — 40+ guides, reviews, and comparisons — to guarantee absolute editorial integrity."
-  },
-  asterWork: {
-    contractVerificationUrl: "https://asterdexhub.com/smart-contracts.html",
-    expertProfileUrl: "https://asterdexhub.com/experts/maksim-sokal.html",
-    verifiedContracts: 24,
-    contentLibraryCount: 40
   },
   expertOffer: {
     name: "Technical Editorial Review & Fact-Checking",
@@ -139,49 +132,42 @@ export const ASTER_AUDIT_REPORTS: AuditReport[] = [
     component: "asBNB Earn Protocol",
     auditor: "PeckShield",
     focus: "Smart Contract Integrity & Yield Mechanics",
-    pdfUrl: "https://asterdexhub.com/audits/asbnb-earn-security-audit-peckshield.pdf"
   },
   {
     id: "report-02",
     component: "asBNB Liquid Staking",
     auditor: "Salus Security",
     focus: "Staking Logic & Token Security",
-    pdfUrl: "https://asterdexhub.com/audits/asbnb-liquid-staked-bnb-security-audit-salus-security.pdf"
   },
   {
     id: "report-03",
     component: "USDF Stablecoin & asUSDF",
     auditor: "Halborn",
     focus: "Peg Stability & Collateralization",
-    pdfUrl: "https://asterdexhub.com/audits/usdf-asusdf-security-audit-halborn.pdf"
   },
   {
     id: "report-04",
     component: "USDF Earn Protocol",
     auditor: "PeckShield",
     focus: "Yield Generation & Vault Security",
-    pdfUrl: "https://asterdexhub.com/audits/usdf-stablecoin-earn-security-audit-peckshield.pdf"
   },
   {
     id: "report-05",
     component: "asCAKE Liquid Staking",
     auditor: "Salus Security",
     focus: "Staking Contract & Reward Distribution",
-    pdfUrl: "https://asterdexhub.com/audits/ascake-liquid-staked-cake-security-audit-salus-security.pdf"
   },
   {
     id: "report-06",
     component: "Aster DEX Vault",
     auditor: "Salus Security",
     focus: "Core Vault Logic & Asset Management",
-    pdfUrl: "https://asterdexhub.com/audits/aster-dex-vault-security-audit-report-salus.pdf"
   },
   {
     id: "report-07",
     component: "Astherus Earn Protocol",
     auditor: "Salus Security",
     focus: "Legacy Earn Contract Security",
-    pdfUrl: "https://asterdexhub.com/audits/astherus-earn-protocol-security-audit-salus-security.pdf"
   }
 ];
 

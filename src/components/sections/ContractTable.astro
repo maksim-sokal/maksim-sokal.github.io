@@ -7,6 +7,13 @@ const NETWORK_COLORS: Record<string, string> = {
   Solana: "text-purple-400 bg-purple-400/5 border-purple-400/10",
   Arbitrum: "text-cyan-400 bg-cyan-400/5 border-cyan-400/10",
 };
+
+const EXPLORER_URLS: Record<string, string> = {
+  "BNB Chain": "https://bscscan.com/address/",
+  Ethereum: "https://etherscan.io/address/",
+  Solana: "https://solscan.io/token/",
+  Arbitrum: "https://arbiscan.io/address/",
+};
 ---
 
 {VERIFIED_CONTRACTS.length === 0 && (
@@ -37,9 +44,10 @@ const NETWORK_COLORS: Record<string, string> = {
           </td>
           <td class="px-5 py-4">
             <a
-              href="https://asterdexhub.com/smart-contracts.html"
+              href={`${EXPLORER_URLS[c.network] ?? ""}${c.address}`}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`View ${c.address} on the ${c.network} explorer`}
               class="text-sky-300 hover:text-sky-200 underline underline-offset-2 decoration-sky-500/30 transition-colors text-xs break-all"
             >
               {c.address}
@@ -66,9 +74,10 @@ const NETWORK_COLORS: Record<string, string> = {
       <div class="space-y-0.5">
         <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-mono">Verified Address</span>
         <a
-          href="https://asterdexhub.com/"
+          href={`${EXPLORER_URLS[c.network] ?? ""}${c.address}`}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`View ${c.address} on the ${c.network} explorer`}
           class="text-sky-300 hover:text-sky-200 underline underline-offset-2 decoration-sky-500/30 transition-colors text-xs font-mono break-all"
         >
           {c.address}

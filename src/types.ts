@@ -36,7 +36,6 @@ export interface AuditReport {
   component: string;
   auditor: string;
   focus: string;
-  pdfUrl: string;
 }
 
 export interface VerifiedContract {
@@ -65,14 +64,7 @@ export interface BioData {
     title: string;
     org: string;
     startDate: string;
-    link: string;
     description: string;
-  };
-  asterWork: {
-    contractVerificationUrl: string;
-    expertProfileUrl: string;
-    verifiedContracts: number;
-    contentLibraryCount: number;
   };
   expertOffer: {
     name: string;

@@ -24,7 +24,7 @@ export interface SeoExpertiseItem {
 export interface SeoCaseStudy {
   id: string;
   client: string;
-  url: string;
+  url?: string;
   growth: string;
   position: string;
   niche: string;
