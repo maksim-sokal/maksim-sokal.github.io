@@ -46,6 +46,26 @@ export interface SeoTrustFactor {
   description: string;
 }
 
+export interface SeoApexTimelinePoint {
+  phase: string;
+  label: string;
+  value: string;
+  drop?: boolean;
+  peak?: boolean;
+}
+
+export interface SeoApexCase {
+  client: string;
+  url: string;
+  baseline: string;
+  drop: string;
+  result: string;
+  position: string;
+  context: string;
+  actions: string[];
+  timeline: SeoApexTimelinePoint[];
+}
+
 export interface SeoMethodologyStep {
   id: string;
   num: string;

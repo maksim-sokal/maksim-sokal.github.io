@@ -1,0 +1,80 @@
+---
+import "../index.css";
+import BackgroundDecor from "../components/sections/BackgroundDecor.astro";
+import Header from "../components/sections/Header.astro";
+import Footer from "../components/sections/Footer.astro";
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found | Maksim Sokal</title>
+    <meta name="description" content="The requested page could not be found. Browse the DeFi Analyst or SEO Expert profiles instead." />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="theme-color" content="#0b0f17" />
+    <link rel="icon" type="image/svg+xml" href="/maksim-sokal-DeFi-analyst.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    />
+  </head>
+  <body class="relative bg-[#0b0f17] text-[#f1f5f9] antialiased selection:bg-sky-500/20 selection:text-sky-300 min-h-screen flex flex-col overflow-x-hidden">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-sky-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-slate-950"
+    >
+      Skip to content
+    </a>
+    <BackgroundDecor />
+    <Header
+      subtitle="404 — Not Found"
+      logo="/maksim-sokal-DeFi-analyst.svg"
+      links={[
+        { label: "DeFi Profile", href: "/" },
+        { label: "SEO Expert", href: "/seo-expert/" },
+        { label: "HTML Sitemap", href: "/sitemap/" },
+      ]}
+      ctaLabel="Contact"
+      ctaHref="/#contact"
+    />
+
+    <main id="main-content" class="relative z-10 flex-1 w-full max-w-7xl mx-auto px-6 py-24 md:py-32">
+      <div class="max-w-2xl space-y-6">
+        <span class="text-xs font-mono text-sky-400 uppercase tracking-widest block">Error 404</span>
+        <h1 class="font-display font-bold text-5xl md:text-7xl text-slate-100 tracking-tight leading-[0.95]">
+          State not found.
+        </h1>
+        <p class="text-slate-400 text-sm md:text-base leading-relaxed font-sans max-w-xl">
+          The page you requested does not exist in this portfolio. Every published route is listed in the HTML sitemap —
+          or jump straight into one of the two professional profiles.
+        </p>
+        <div class="flex flex-wrap gap-4 pt-2">
+          <a
+            href="/"
+            class="bg-sky-500/10 hover:bg-sky-500/20 border border-sky-400/40 hover:border-sky-400 text-sky-300 text-xs font-mono uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all duration-300"
+          >
+            DeFi Analyst Profile
+          </a>
+          <a
+            href="/seo-expert/"
+            class="bg-sky-500/10 hover:bg-sky-500/20 border border-sky-400/40 hover:border-sky-400 text-sky-300 text-xs font-mono uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all duration-300"
+          >
+            SEO Expert Profile
+          </a>
+          <a
+            href="/sitemap/"
+            class="bg-brand-900/40 hover:bg-brand-900/70 border border-[#1e293b]/60 text-slate-300 text-xs font-mono uppercase tracking-widest px-6 py-3.5 rounded-xl transition-all duration-300"
+          >
+            Open Sitemap
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <Footer variant="neutral" />
+  </body>
+</html>

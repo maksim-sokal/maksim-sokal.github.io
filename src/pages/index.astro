@@ -14,9 +14,21 @@ import Footer from '../components/sections/Footer.astro';
 ---
 <BaseLayout>
   <BackgroundDecor />
-  <Header />
+  <Header
+    subtitle="DeFi Risk Audits"
+    logo="/maksim-sokal-DeFi-analyst.svg"
+    links={[
+      { label: "About", href: "#about" },
+      { label: "Experience & Audits", href: "#experience" },
+      { label: "Methodology", href: "#methodology" },
+      { label: "Trust & Authority", href: "#eeat" },
+      { label: "SEO Expert", href: "/seo-expert/" },
+    ]}
+    ctaLabel="Verify Contact"
+    ctaHref="#contact"
+  />
   <Breadcrumbs trail={[{ label: "Home" }]} />
-  <main class="relative z-10 max-w-7xl mx-auto px-6 py-12 md:py-24 space-y-32">
+  <main id="main-content" class="relative z-10 max-w-7xl mx-auto px-6 py-12 md:py-24 space-y-32">
     <Hero />
     <About />
     <Experience />

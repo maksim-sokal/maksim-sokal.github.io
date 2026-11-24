@@ -1,53 +1,74 @@
+---
+interface NavLink {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  subtitle: string;
+  logo: string;
+  links: NavLink[];
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+const { subtitle, logo, links, ctaLabel, ctaHref } = Astro.props;
+---
+
 <header class="sticky top-0 z-50 w-full bg-[#070a13]/70 backdrop-blur-md border-b border-[#1e293b]/40">
   <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-    <div class="flex items-center gap-3">
+    <a href="/" class="flex items-center gap-3" aria-label="Maksim Sokal — home">
       <div class="w-9 h-9 flex items-center justify-center mix-blend-lighten select-none">
-        <img src="/maksim-sokal-DeFi-analyst.svg" alt="M.S." class="w-full h-full" />
+        <img src={logo} alt="" width="36" height="36" class="w-full h-full" />
       </div>
       <div>
         <span class="font-display font-bold text-slate-100 text-sm tracking-wide block uppercase">Maksim Sokal</span>
-        <span class="text-[9px] text-sky-400/80 font-mono tracking-widest block uppercase">DEFI RISK AUDITS</span>
+        <span class="text-[9px] text-sky-400/80 font-mono tracking-widest block uppercase">{subtitle}</span>
       </div>
-    </div>
+    </a>
 
-    <button data-nav-toggle class="md:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5" aria-label="Toggle navigation menu" aria-controls="mobile-nav" aria-expanded="false">
+    <button
+      type="button"
+      data-nav-toggle
+      class="md:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5"
+      aria-label="Toggle navigation menu"
+      aria-controls="mobile-nav"
+      aria-expanded="false"
+    >
       <span class="block w-5 h-0.5 bg-slate-300 rounded transition-all duration-300 origin-center"></span>
       <span class="block w-5 h-0.5 bg-slate-300 rounded transition-all duration-300"></span>
       <span class="block w-5 h-0.5 bg-slate-300 rounded transition-all duration-300 origin-center"></span>
     </button>
 
-    <nav id="mobile-nav" data-mobile-nav class="hidden md:flex items-center gap-8 max-md:fixed max-md:inset-x-0 max-md:top-20 max-md:flex-col max-md:bg-[#070a13]/95 max-md:backdrop-blur-md max-md:border-b max-md:border-[#1e293b]/40 max-md:p-6 max-md:gap-5 max-md:z-50">
-      <a href="#about" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
-        About
-        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
-      </a>
-      <a href="#experience" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
-        Experience & Audits
-        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
-      </a>
-      <a href="#methodology" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
-        Methodology
-        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
-      </a>
-      <a href="#eeat" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
-        Trust & Authority
-        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
-      </a>
-      <a href="/seo-expert" class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group">
-        SEO Expert
-        <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
-      </a>
-      <a href="#contact" class="md:hidden text-xs font-mono uppercase tracking-widest bg-sky-500/10 hover:bg-sky-500/20 border border-sky-400/30 hover:border-sky-400/70 text-sky-300 px-4 py-2.5 rounded-lg transition-all duration-300 text-center w-full">
-        Verify Contact
+    <nav
+      id="mobile-nav"
+      aria-label="Main navigation"
+      data-mobile-nav
+      class="hidden md:flex items-center gap-8 max-md:fixed max-md:inset-x-0 max-md:top-20 max-md:flex-col max-md:bg-[#070a13]/95 max-md:backdrop-blur-md max-md:border-b max-md:border-[#1e293b]/40 max-md:p-6 max-md:gap-5 max-md:z-50"
+    >
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class="text-xs font-mono text-slate-400 hover:text-sky-300 transition-colors uppercase tracking-widest relative py-2 group"
+        >
+          {link.label}
+          <span class="absolute bottom-0 left-0 w-0 h-[1.5px] bg-sky-400 group-hover:w-full transition-all duration-300"></span>
+        </a>
+      ))}
+      <a
+        href={ctaHref}
+        class="md:hidden text-xs font-mono uppercase tracking-widest bg-sky-500/10 hover:bg-sky-500/20 border border-sky-400/30 hover:border-sky-400/70 text-sky-300 px-4 py-2.5 rounded-lg transition-all duration-300 text-center w-full"
+      >
+        {ctaLabel}
       </a>
     </nav>
 
     <div class="hidden md:block">
       <a
-        href="#contact"
+        href={ctaHref}
         class="text-[11px] font-mono tracking-widest bg-sky-500/10 hover:bg-sky-500/20 border border-sky-400/30 hover:border-sky-400/70 text-sky-300 px-4 py-2.5 rounded-lg transition-all duration-300 uppercase cursor-pointer"
       >
-        Verify Contact
+        {ctaLabel}
       </a>
     </div>
   </div>
@@ -72,27 +93,35 @@
 </style>
 
 <script>
-  const toggle = document.querySelector("[data-nav-toggle]");
-  const nav = document.querySelector("[data-mobile-nav]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  const nav = document.querySelector<HTMLElement>("[data-mobile-nav]");
 
   if (toggle && nav) {
+    const setOpen = (open: boolean) => {
+      nav.classList.toggle("is-open", open);
+      toggle.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+    };
+
     toggle.addEventListener("click", () => {
-      const isOpen = nav.classList.toggle("is-open");
-      toggle.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", String(isOpen));
+      setOpen(!nav.classList.contains("is-open"));
     });
 
     nav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        nav.classList.remove("is-open");
-        toggle.classList.remove("is-open");
-      });
+      link.addEventListener("click", () => setOpen(false));
     });
 
-    document.addEventListener("click", (e) => {
-      if (!toggle.contains(e.target) && !nav.contains(e.target)) {
-        nav.classList.remove("is-open");
-        toggle.classList.remove("is-open");
+    document.addEventListener("click", (event) => {
+      if (!(event.target instanceof Node)) return;
+      if (!toggle.contains(event.target) && !nav.contains(event.target)) {
+        setOpen(false);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && nav.classList.contains("is-open")) {
+        setOpen(false);
+        toggle.focus();
       }
     });
   }

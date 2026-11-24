@@ -3,6 +3,7 @@ build/
 dist/
 coverage/
 .astro/
+.playwright-mcp/
 .DS_Store
 *.log
 .env*

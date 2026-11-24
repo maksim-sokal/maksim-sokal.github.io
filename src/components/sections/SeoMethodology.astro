@@ -14,25 +14,25 @@ import { SEO_METHODOLOGY_STEPS } from "../../data-seo";
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-6">
     {SEO_METHODOLOGY_STEPS.map((step) => (
-      <div key={step.id} class="bg-[#111624]/40 border border-[#1e293b]/50 rounded-xl p-6 hover:border-indigo-500/10 transition-all duration-300 relative group flex flex-col justify-between">
+      <div class="bg-[#111624]/40 border border-[#1e293b]/50 rounded-xl p-6 hover:border-indigo-500/10 transition-all duration-300 relative group flex flex-col justify-between">
         <div class="space-y-4">
           <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-400/20 flex items-center justify-center text-xs font-mono text-sky-400">
               {step.num}
             </div>
             <div>
-              <h4 class="font-display font-medium text-slate-200 text-sm tracking-wide">{step.title}</h4>
-              <p class="text-[9px] font-mono text-slate-500">{step.technicalLabel}</p>
+              <h3 class="font-display font-medium text-slate-200 text-sm tracking-wide">{step.title}</h3>
+              <p class="text-[9px] font-mono text-slate-400">{step.technicalLabel}</p>
             </div>
           </div>
-          <p class="text-xs text-slate-500 leading-relaxed font-sans">
+          <p class="text-xs text-slate-400 leading-relaxed font-sans">
             {step.description}
           </p>
         </div>
 
         <div class="mt-6 bg-[#090d16] p-4 rounded-lg border border-slate-800/60 font-mono text-xs text-indigo-300 select-all flex justify-between items-center group-hover:border-sky-500/10 transition-colors">
           <code class="text-[12px]">{step.codeSymbol} {step.gate}</code>
-          <span class="text-[9px] text-slate-500 uppercase tracking-wider font-semibold group-hover:text-sky-400/80 transition-colors">GATE</span>
+          <span class="text-[9px] text-slate-400 uppercase tracking-wider font-semibold group-hover:text-sky-400/80 transition-colors">GATE</span>
         </div>
       </div>
     ))}
@@ -44,7 +44,7 @@ import { SEO_METHODOLOGY_STEPS } from "../../data-seo";
       </span>
       <div class="mt-2 bg-[#090d16] p-3 rounded-lg border border-slate-800/60 font-mono text-xs text-indigo-300 select-all flex justify-between items-center w-full max-w-70">
         <code class="text-[12px]">ICE = I × C × E</code>
-        <span class="text-[9px] text-slate-500 uppercase tracking-wider font-semibold group-hover:text-sky-400/80 transition-colors">PRIORITY</span>
+        <span class="text-[9px] text-slate-400 uppercase tracking-wider font-semibold group-hover:text-sky-400/80 transition-colors">PRIORITY</span>
       </div>
     </div>
   </div>

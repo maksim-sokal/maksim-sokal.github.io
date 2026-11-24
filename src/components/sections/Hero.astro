@@ -2,7 +2,7 @@
 import {
   Award, BookOpen, Linkedin, Globe, ArrowRight
 } from "lucide-react";
-import { TRUST_FACTORS } from "../../data";
+import { HERO_STATS, LINKEDIN_URL } from "../../data";
 ---
 
 <section id="hero" class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-4">
@@ -40,7 +40,7 @@ import { TRUST_FACTORS } from "../../data";
           <span class="font-mono text-[10px] uppercase tracking-wider">MSc, MIPT Lab</span>
         </a>
 
-        <a href="https://by.linkedin.com/in/maksim-sokal" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-900/80 border border-slate-800 rounded-lg text-xs text-slate-300 hover:border-sky-500/20 hover:text-sky-300 transition-all duration-300 group">
+        <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-900/80 border border-slate-800 rounded-lg text-xs text-slate-300 hover:border-sky-500/20 hover:text-sky-300 transition-all duration-300 group">
           <Linkedin className="w-3.5 h-3.5 text-sky-400 group-hover:scale-110 transition-transform" />
           <span class="font-mono text-[10px] uppercase tracking-wider">LinkedIn</span>
         </a>
@@ -57,18 +57,12 @@ import { TRUST_FACTORS } from "../../data";
     </p>
 
     <div class="grid grid-cols-3 gap-6 pt-4 border-t border-brand-800/40 max-w-lg">
-      <div>
-        <span class="block text-xl font-mono text-slate-100 font-semibold">{TRUST_FACTORS[0].metric}</span>
-        <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">TVL Protected</span>
-      </div>
-      <div>
-        <span class="block text-xl font-mono text-slate-100 font-semibold">{TRUST_FACTORS[1].metric}</span>
-        <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Exploits Post-Audit</span>
-      </div>
-      <div>
-        <span class="block text-xl font-mono text-slate-100 font-semibold">{TRUST_FACTORS[2].metric}</span>
-        <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Asserts Written</span>
-      </div>
+      {HERO_STATS.map((stat) => (
+        <div>
+          <span class="block text-xl font-mono text-slate-100 font-semibold">{stat.value}</span>
+          <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">{stat.label}</span>
+        </div>
+      ))}
     </div>
 
     <div class="flex flex-wrap gap-4 pt-4">
@@ -97,7 +91,11 @@ import { TRUST_FACTORS } from "../../data";
         <img
           src="/images/Maksim-Sokal.webp"
           alt="Maksim Sokal - DeFi Risk Analyst Portrait"
+          width="490"
+          height="642"
           class="w-full h-full object-cover grayscale brightness-95 group-hover:grayscale-0 group-hover:scale-[1.02] transition-all duration-700 z-10 relative"
+          fetchpriority="high"
+          decoding="async"
           referrerpolicy="strict-origin-when-cross-origin"
         />
       </div>

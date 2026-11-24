@@ -1,0 +1,257 @@
+---
+interface Props {
+  glitchColors?: string[];
+  glitchSpeed?: number;
+  outerVignette?: boolean;
+  smooth?: boolean;
+  desktopBreakpoint?: number;
+}
+
+const {
+  glitchColors = ["#38bdf8", "#818cf8", "#34d399", "#0ea5e9"],
+  glitchSpeed = 50,
+  outerVignette = true,
+  smooth = true,
+  desktopBreakpoint = 1024,
+} = Astro.props;
+---
+
+<div
+  class="relative w-full h-full bg-[#0b0f17] overflow-hidden"
+  data-letter-glitch
+  data-colors={glitchColors.join(",")}
+  data-speed={glitchSpeed}
+  data-smooth={String(smooth)}
+  data-breakpoint={desktopBreakpoint}
+>
+  <canvas class="block w-full h-full"></canvas>
+  {outerVignette && (
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none bg-[radial-gradient(circle,rgba(11,15,23,0)_60%,rgba(11,15,23,1)_100%)]"></div>
+  )}
+</div>
+
+<script>
+  type Rgb = { r: number; g: number; b: number };
+
+  interface Letter {
+    char: string;
+    from: Rgb;
+    to: Rgb;
+    current: Rgb;
+    progress: number;
+  }
+
+  const CHARACTER_SET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>,".split("");
+  const FONT_SIZE = 16;
+  const CHAR_WIDTH = 10;
+  const CHAR_HEIGHT = 20;
+  const TRANSITION_STEP = 0.05;
+
+  const randomChar = (): string =>
+    CHARACTER_SET[Math.floor(Math.random() * CHARACTER_SET.length)];
+
+  const parseHex = (hex: string): Rgb | null => {
+    const match = /^#?([a-f\d]{6})$/i.exec(hex.trim());
+    if (match) {
+      const value = parseInt(match[1], 16);
+      return { r: (value >> 16) & 255, g: (value >> 8) & 255, b: value & 255 };
+    }
+    const short = /^#?([a-f\d])([a-f\d])([a-f\d])$/i.exec(hex.trim());
+    if (short) {
+      return {
+        r: parseInt(short[1] + short[1], 16),
+        g: parseInt(short[2] + short[2], 16),
+        b: parseInt(short[3] + short[3], 16),
+      };
+    }
+    return null;
+  };
+
+  const randomColor = (palette: Rgb[]): Rgb =>
+    palette[Math.floor(Math.random() * palette.length)];
+
+  const cssColor = (color: Rgb): string =>
+    `rgb(${color.r}, ${color.g}, ${color.b})`;
+
+  const lerp = (start: Rgb, end: Rgb, factor: number): Rgb => ({
+    r: Math.round(start.r + (end.r - start.r) * factor),
+    g: Math.round(start.g + (end.g - start.g) * factor),
+    b: Math.round(start.b + (end.b - start.b) * factor),
+  });
+
+  const initLetterGlitch = (root: HTMLElement) => {
+    const canvas = root.querySelector("canvas");
+    if (!(canvas instanceof HTMLCanvasElement)) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const palette = (root.dataset.colors ?? "")
+      .split(",")
+      .map(parseHex)
+      .filter((color): color is Rgb => color !== null);
+
+    if (palette.length === 0) return;
+
+    const glitchSpeed = Number(root.dataset.speed) || 50;
+    const smooth = root.dataset.smooth !== "false";
+    const breakpoint = Number(root.dataset.breakpoint) || 1024;
+
+    const letters: Letter[] = [];
+    let columns = 0;
+    let rows = 0;
+    let width = 0;
+    let height = 0;
+    let frame: number | null = null;
+    let lastGlitch = 0;
+    let needsDraw = false;
+    let running = false;
+    let visible = false;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      ctx.font = `${FONT_SIZE}px "JetBrains Mono", ui-monospace, monospace`;
+      ctx.textBaseline = "top";
+
+      letters.forEach((letter, index) => {
+        const x = (index % columns) * CHAR_WIDTH;
+        const y = Math.floor(index / columns) * CHAR_HEIGHT;
+        ctx.fillStyle = cssColor(letter.current);
+        ctx.fillText(letter.char, x, y);
+      });
+    };
+
+    const seed = () => {
+      letters.length = 0;
+      for (let index = 0; index < columns * rows; index++) {
+        const color = randomColor(palette);
+        letters.push({
+          char: randomChar(),
+          from: color,
+          to: color,
+          current: color,
+          progress: 1,
+        });
+      }
+    };
+
+    const resize = () => {
+      const rect = root.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      width = Math.max(rect.width, 1);
+      height = Math.max(rect.height, 1);
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      columns = Math.ceil(width / CHAR_WIDTH);
+      rows = Math.ceil(height / CHAR_HEIGHT);
+      seed();
+      draw();
+    };
+
+    const shouldAnimate = () =>
+      window.innerWidth >= breakpoint &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const updateLetters = () => {
+      if (letters.length === 0) return;
+      const updateCount = Math.max(1, Math.floor(letters.length * 0.05));
+
+      for (let index = 0; index < updateCount; index++) {
+        const letter = letters[Math.floor(Math.random() * letters.length)];
+        if (!letter) continue;
+
+        letter.char = randomChar();
+        letter.to = randomColor(palette);
+
+        if (smooth) {
+          letter.from = letter.current;
+          letter.progress = 0;
+        } else {
+          letter.current = letter.to;
+          letter.progress = 1;
+        }
+      }
+
+      needsDraw = true;
+    };
+
+    const advanceTransitions = () => {
+      if (!smooth) return;
+
+      letters.forEach((letter) => {
+        if (letter.progress >= 1) return;
+        letter.progress = Math.min(letter.progress + TRANSITION_STEP, 1);
+        letter.current = lerp(letter.from, letter.to, letter.progress);
+        needsDraw = true;
+      });
+    };
+
+    const animate = (now: number) => {
+      if (!running) return;
+
+      if (now - lastGlitch >= glitchSpeed) {
+        updateLetters();
+        lastGlitch = now;
+      }
+
+      advanceTransitions();
+
+      if (needsDraw) {
+        draw();
+        needsDraw = false;
+      }
+
+      frame = window.requestAnimationFrame(animate);
+    };
+
+    const start = () => {
+      if (running || !visible || !shouldAnimate()) return;
+      running = true;
+      lastGlitch = performance.now();
+      frame = window.requestAnimationFrame(animate);
+    };
+
+    const stop = () => {
+      running = false;
+      if (frame !== null) {
+        window.cancelAnimationFrame(frame);
+        frame = null;
+      }
+    };
+
+    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        stop();
+        resize();
+        start();
+      }, 150);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      visible = entry.isIntersecting;
+      if (visible) {
+        start();
+      } else {
+        stop();
+      }
+    });
+
+    resize();
+    observer.observe(root);
+    window.addEventListener("resize", handleResize);
+    start();
+  };
+
+  document
+    .querySelectorAll<HTMLElement>("[data-letter-glitch]")
+    .forEach(initLetterGlitch);
+</script>

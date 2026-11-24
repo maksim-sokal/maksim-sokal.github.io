@@ -9,18 +9,21 @@ const { gpgKey } = Astro.props;
   {gpgKey}
 </p>
 <div class="flex justify-between items-center pt-1">
-  <span class="text-[9px] text-slate-500 font-mono">Use key to decrypt contract signages</span>
+  <span class="text-[9px] text-slate-400 font-mono">Use key to decrypt contract signages</span>
   <button
+    type="button"
     data-copy-gpg
     data-gpg-key={gpgKey}
     class="text-[9px] font-mono text-sky-400 hover:text-sky-300 cursor-pointer bg-sky-500/5 px-2.5 py-1.5 rounded border border-sky-400/20"
   >
     Copy GPG Public Key
   </button>
+  <span class="sr-only" role="status" aria-live="polite" data-copy-status></span>
 </div>
 
 <script>
   const button = document.querySelector("[data-copy-gpg]");
+  const status = document.querySelector("[data-copy-status]");
 
   if (button) {
     const gpgKey = button.getAttribute("data-gpg-key") ?? "";
@@ -40,8 +43,10 @@ const { gpgKey } = Astro.props;
     button.addEventListener("click", () => {
       const done = () => {
         button.textContent = "Copied Signature Key!";
+        if (status) status.textContent = "GPG public key copied to clipboard.";
         setTimeout(() => {
           button.textContent = defaultText;
+          if (status) status.textContent = "";
         }, 2000);
       };
 

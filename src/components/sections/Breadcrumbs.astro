@@ -11,15 +11,15 @@ interface Props {
 const { trail } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumb" class="relative z-10 max-w-7xl mx-auto px-6 pt-6">
+<nav aria-label="Breadcrumb" class="relative z-10 w-full max-w-7xl mx-auto px-6 pt-6">
   <ol class="flex flex-wrap items-center gap-2 text-[11px] font-mono text-slate-400">
     {trail.map((item, i) => (
       <li class="flex items-center gap-2">
         {i > 0 && (
-          <span class="text-slate-600" aria-hidden="true">›</span>
+          <span class="text-slate-400" aria-hidden="true">›</span>
         )}
         {item.href ? (
-          <a href={item.href} class="text-slate-500 hover:text-sky-300 transition-colors">{item.label}</a>
+          <a href={item.href} class="text-slate-400 hover:text-sky-300 transition-colors">{item.label}</a>
         ) : (
           <span class="text-slate-200" aria-current="page">{item.label}</span>
         )}

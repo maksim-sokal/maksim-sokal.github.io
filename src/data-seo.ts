@@ -1,4 +1,5 @@
-import type { SeoBioData, SeoExpertiseItem, SeoCaseStudy, SeoPublication, SeoTrustFactor, SeoMethodologyStep, SeoCoFounder, SeoService } from "./types-seo";
+import type { HeroStat } from "./types";
+import type { SeoBioData, SeoExpertiseItem, SeoCaseStudy, SeoPublication, SeoTrustFactor, SeoMethodologyStep, SeoCoFounder, SeoService, SeoApexCase } from "./types-seo";
 
 export const SEO_BIO: SeoBioData = {
   name: "Maksim Sokal",
@@ -20,7 +21,7 @@ export const SEO_CO_FOUNDER: SeoCoFounder = {
   name: "Elya Sokol",
   role: "CTO & Head of Technical SEO",
   url: "https://elya-sokol.github.io/",
-  image: "https://finialseo.org/img/Elya-Sokol.webp",
+  image: "/images/Elya-Sokol.webp",
   bio: "Co-founded Finial SEO with Maksim in 2026, owning the technical half of the practice: Core Web Vitals engineering, web infrastructure, and NLP-assisted content pipelines. Every engagement ships with Maksim's strategy layer and Elya's engineering layer working as one.",
   focus: ["Technical SEO", "Core Web Vitals", "Astro Framework", "Web Engineering", "Python NLP"],
 };
@@ -104,11 +105,11 @@ export const SEO_CASE_STUDIES: SeoCaseStudy[] = [
     id: "case-01",
     client: "Apex Online Pharmacy",
     url: "https://apexonlinepharmacy.com/",
-    growth: "+950%",
+    growth: "+214%",
     position: "Top-3",
     niche: "YMYL / Pharma",
     description:
-      "Organic traffic growth of +950%, reaching top-3 for key YMYL queries in the pharmaceutical niche after a full E-E-A-T recovery program.",
+      "Organic sessions recovered from the post-update minimum of 14K to 44K (+214%), reaching top-3 for key YMYL queries in the pharmaceutical niche after a full E-E-A-T recovery program.",
   },
   {
     id: "case-02",
@@ -229,6 +230,15 @@ export const SEO_TRUST_FACTORS: SeoTrustFactor[] = [
   },
 ];
 
+const trustMetric = (id: string): string =>
+  SEO_TRUST_FACTORS.find((factor) => factor.id === id)?.metric ?? "";
+
+export const SEO_HERO_STATS: HeroStat[] = [
+  { value: `${SEO_BIO.experienceYears}+`, label: "Years In SEO" },
+  { value: trustMetric("trust-02"), label: "Avg Traffic Growth" },
+  { value: trustMetric("trust-01"), label: "Sites In Top-10" },
+];
+
 export const SEO_METHODOLOGY_STEPS: SeoMethodologyStep[] = [
   {
     id: "step-01",
@@ -282,15 +292,15 @@ export const SEO_METHODOLOGY_STEPS: SeoMethodologyStep[] = [
   },
 ];
 
-export const SEO_APEX_CASE = {
+export const SEO_APEX_CASE: SeoApexCase = {
   client: "Apex Online Pharmacy",
   url: "https://apexonlinepharmacy.com/",
-  baseline: "800K visits / month",
-  drop: "-65% after Core Update",
-  result: "+950% in 5 months",
+  baseline: "38K weekly sessions",
+  drop: "-63% after Core Update",
+  result: "+214% vs minimum in 5 months",
   position: "Top-3 for YMYL queries",
   context:
-    "A global online pharmacy generating ~800K monthly visits. After a Google Core Update, traffic collapsed by 65% due to anonymous authorship, missing pharmaceutical expertise proofs, minimal structured data, and no trust layer.",
+    "A global online pharmacy generating ~165K monthly visits (38K weekly sessions). After a Google Core Update, traffic collapsed by 63% due to anonymous authorship, missing pharmaceutical expertise proofs, minimal structured data, and no trust layer.",
   actions: [
     "Author restructuring — anonymous 'Editorial' replaced with certified pharmacists and personal author hub pages linking each article to its expert profile.",
     "First-hand Experience layer — 'How we tested this medication' blocks with real photos, batch numbers, production dates, and dosage case studies.",

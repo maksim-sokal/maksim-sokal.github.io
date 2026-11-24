@@ -1,4 +1,6 @@
-import type { AuditLog, ExpertiseItem, TrustFactor, BioData, VerifiedContract, AuditReport } from "./types";
+import type { AuditLog, ExpertiseItem, TrustFactor, HeroStat, BioData, VerifiedContract, AuditReport } from "./types";
+
+export const LINKEDIN_URL = "https://www.linkedin.com/in/maksim-sokal/";
 
 export const ME_BIO: BioData = {
   name: "Maksim Sokal",
@@ -241,6 +243,15 @@ export const TRUST_FACTORS: TrustFactor[] = [
     metric: "24+",
     description: "Smart contract addresses verified across BNB Chain, Ethereum, Arbitrum, and Solana for the Aster DEX ecosystem registry."
   }
+];
+
+const trustMetric = (id: string): string =>
+  TRUST_FACTORS.find((factor) => factor.id === id)?.metric ?? "";
+
+export const HERO_STATS: HeroStat[] = [
+  { value: trustMetric("trust-01"), label: "TVL Protected" },
+  { value: trustMetric("trust-02"), label: "Exploits Post-Audit" },
+  { value: trustMetric("trust-03"), label: "Asserts Written" },
 ];
 
 

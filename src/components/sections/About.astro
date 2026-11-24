@@ -1,7 +1,7 @@
 ---
 import { ShieldCheck, Award, BookOpen, ExternalLink } from "lucide-react";
-import { ME_BIO } from "../../data";
-import LetterGlitch from "../react/LetterGlitch.tsx";
+import { LINKEDIN_URL, ME_BIO } from "../../data";
+import LetterGlitch from "./LetterGlitch.astro";
 ---
 
 <section id="about" class="border-t border-brand-800/30 pt-16">
@@ -21,7 +21,6 @@ import LetterGlitch from "../react/LetterGlitch.tsx";
             glitchSpeed={50}
             smooth={true}
             outerVignette={true}
-            client:visible
           />
         </div>
       </div>
@@ -41,7 +40,7 @@ import LetterGlitch from "../react/LetterGlitch.tsx";
         Prior to moving independent, I designed multi-asset liquidation models and evaluated concentrated-liquidity tick spans using a rigorous physics-backed mathematical baseline. My primary mandate is to provide an analytical edge—guiding investors, creators, and protocol teams away from the ephemeral glare of hype-driven projects and towards high-conviction, sustainable opportunities.
       </p>
       <p>
-        You can follow my professional journey, verify recent publications, and connect directly on my <a href="https://by.linkedin.com/in/maksim-sokal" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline font-mono text-xs">LinkedIn Profile</a>, my official <a href="https://featured.com/p/maksim-sokal" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 underline font-mono text-xs">Featured.com Expert Profile</a>, and my <a href="https://asterdexhub.com/experts/maksim-sokal.html" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300 underline font-mono text-xs">Aster DEX Expert Profile</a>.
+        You can follow my professional journey, verify recent publications, and connect directly on my <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline font-mono text-xs">LinkedIn Profile</a>, my official <a href="https://featured.com/p/maksim-sokal" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 underline font-mono text-xs">Featured.com Expert Profile</a>, and my <a href="https://asterdexhub.com/experts/maksim-sokal.html" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300 underline font-mono text-xs">Aster DEX Expert Profile</a>.
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 pt-8 border-t border-[#1e293b]/40">
@@ -89,11 +88,11 @@ import LetterGlitch from "../react/LetterGlitch.tsx";
         <h4 class="font-display font-medium text-slate-200 text-sm">{ME_BIO.expertOffer.name}</h4>
         <div class="grid grid-cols-2 gap-4 py-1 font-mono text-[9px] text-slate-400">
           <div>
-            <span class="block text-slate-500 uppercase">Service Category</span>
+            <span class="block text-slate-400 uppercase">Service Category</span>
             <span class="text-slate-200 font-semibold">{ME_BIO.expertOffer.serviceType}</span>
           </div>
           <div>
-            <span class="block text-slate-500 uppercase">Coverage Region</span>
+            <span class="block text-slate-400 uppercase">Coverage Region</span>
             <span class="text-slate-200 font-semibold">{ME_BIO.expertOffer.areaServed}</span>
           </div>
         </div>

@@ -1,21 +1,80 @@
+---
+interface Props {
+  variant?: "defi" | "seo" | "neutral";
+}
+
+type FooterVariant = NonNullable<Props["variant"]>;
+
+const COPY: Record<
+  FooterVariant,
+  {
+    tagline: string;
+    secondary: { prefix: string; label: string; href: string } | null;
+    disclaimerTitle: string;
+    disclaimer: string;
+  }
+> = {
+  defi: {
+    tagline:
+      "© 2026 Maksim Sokal. All cryptographic execution proofs and asserts published openly. Independent practice · Minsk, Belarus.",
+    secondary: { prefix: "Partner", label: "KeyForDEX", href: "https://keyfordex.com/" },
+    disclaimerTitle: "Methodology Disclaimer",
+    disclaimer:
+      "Under no circumstances does this web asset constitute financial, investment, or legal advice. Auditing is a probabilistic verification and mechanism assessment strategy — we do not warrant complete exploit immunity.",
+  },
+  seo: {
+    tagline:
+      "© 2026 Maksim Sokal. Strategy and methodology published openly. White-hat growth engineering and data-driven E-E-A-T architecture.",
+    secondary: { prefix: "Agency", label: "Finial SEO", href: "https://finialseo.org/" },
+    disclaimerTitle: "Methodology Disclaimer",
+    disclaimer:
+      "Results may vary depending on niche, competition, and algorithmic updates. We operate exclusively with White-Hat methods and do not guarantee specific rankings within fixed timeframes.",
+  },
+  neutral: {
+    tagline:
+      "© 2026 Maksim Sokal. Professional portfolio — DeFi risk analysis and SEO strategy profiles.",
+    secondary: null,
+    disclaimerTitle: "Methodology Disclaimer",
+    disclaimer:
+      "The content on this site is informational only and does not constitute financial, investment, or legal advice. Results vary by project and market conditions.",
+  },
+};
+
+const { variant = "defi" } = Astro.props;
+const copy = COPY[variant];
+---
+
 <footer class="bg-brand-950/80 border-t border-[#1e293b]/50 py-12 relative z-10">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
     <div class="space-y-3">
       <span class="font-display font-medium text-slate-300 text-sm tracking-wide block">Maksim Sokal</span>
-      <p class="text-[10px] text-slate-500 font-sans leading-relaxed max-w-sm">
-        &copy; 2026 Maksim Sokal. All cryptographic execution proofs and asserts published openly. Swiss operational consensus bound.
+      <p class="text-[10px] text-slate-400 font-sans leading-relaxed max-w-sm">
+        {copy.tagline}
       </p>
-      <p class="text-[10px] text-slate-500 font-sans">
-        Partner: <a href="https://keyfordex.com/" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30 transition-colors">KeyForDEX</a>
-        &middot; <a href="/sitemap" class="text-slate-500 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30 transition-colors">HTML Sitemap</a>
+      <p class="text-[10px] text-slate-400 font-sans">
+        {copy.secondary && (
+          <>
+            {copy.secondary.prefix}:{" "}
+            <a
+              href={copy.secondary.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sky-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30 transition-colors"
+            >
+              {copy.secondary.label}
+            </a>
+            {" · "}
+          </>
+        )}
+        <a href="/sitemap/" class="text-slate-400 hover:text-sky-300 underline underline-offset-2 decoration-sky-500/30 transition-colors">
+          HTML Sitemap
+        </a>
       </p>
     </div>
 
-    <div class="space-y-2 md:text-right font-sans text-[10px] text-slate-500 leading-normal max-w-md md:ml-auto">
-      <p class="uppercase font-bold text-slate-400 mb-1">Methodology Disclaimer</p>
-      <p>
-        Under no circumstances does this web asset constitute financial, investment, or legal advice. Auditing is a probabilistic verification and mechanism assessment strategy — we do not warrant complete exploit immunity.
-      </p>
+    <div class="space-y-2 md:text-right font-sans text-[10px] text-slate-400 leading-normal max-w-md md:ml-auto">
+      <p class="uppercase font-bold text-slate-400 mb-1">{copy.disclaimerTitle}</p>
+      <p>{copy.disclaimer}</p>
     </div>
   </div>
 </footer>

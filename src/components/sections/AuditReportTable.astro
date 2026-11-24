@@ -10,7 +10,7 @@ const AUDITOR_COLORS: Record<string, string> = {
 ---
 
 {ASTER_AUDIT_REPORTS.length === 0 && (
-  <div class="text-center text-slate-500 text-sm font-mono py-12">
+  <div class="text-center text-slate-400 text-sm font-mono py-12">
     No audit reports available.
   </div>
 )}
@@ -19,10 +19,10 @@ const AUDITOR_COLORS: Record<string, string> = {
   <table class="w-full text-sm font-mono">
     <thead>
       <tr class="bg-brand-950/60 border-b border-[#1e293b]/40">
-        <th class="text-left text-[10px] text-slate-500 uppercase tracking-widest px-5 py-3 font-semibold">Audited Component</th>
-        <th class="text-left text-[10px] text-slate-500 uppercase tracking-widest px-5 py-3 font-semibold">Security Auditor</th>
-        <th class="text-left text-[10px] text-slate-500 uppercase tracking-widest px-5 py-3 font-semibold">Focus of Assessment</th>
-        <th class="text-left text-[10px] text-slate-500 uppercase tracking-widest px-5 py-3 font-semibold">Report</th>
+        <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Audited Component</th>
+        <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Security Auditor</th>
+        <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Focus of Assessment</th>
+        <th scope="col" class="text-left text-[10px] text-slate-400 uppercase tracking-widest px-5 py-3 font-semibold">Report</th>
       </tr>
     </thead>
     <tbody>
@@ -68,7 +68,7 @@ const AUDITOR_COLORS: Record<string, string> = {
         </span>
       </div>
       <div>
-        <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-mono mb-0.5">Focus</span>
+        <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-mono mb-0.5">Focus</span>
         <span class="text-slate-400 text-xs font-sans">{r.focus}</span>
       </div>
       <a

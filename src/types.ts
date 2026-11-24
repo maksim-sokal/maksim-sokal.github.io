@@ -26,6 +26,11 @@ export interface TrustFactor {
   description: string;
 }
 
+export interface HeroStat {
+  value: string;
+  label: string;
+}
+
 export interface AuditReport {
   id: string;
   component: string;
